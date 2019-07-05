@@ -100,8 +100,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cspcapp/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="468" column="32" selection-start-line="468" selection-start-column="32" selection-end-line="468" selection-end-column="32" />
+            <state relative-caret-position="58">
+              <caret line="462" column="16" lean-forward="true" selection-start-line="462" selection-start-column="16" selection-end-line="462" selection-end-column="16" />
               <folding>
                 <element signature="e#11170#11198#0" expanded="true" />
               </folding>
@@ -176,6 +176,9 @@
       <find>coursee</find>
     </findStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -208,6 +211,7 @@
     <option name="width" value="1440" />
     <option name="height" value="900" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -251,6 +255,7 @@
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="sqlite&#10;postgresql" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
@@ -316,12 +321,12 @@
       <workItem from="1558602083291" duration="3851000" />
       <workItem from="1558610197851" duration="39000" />
       <workItem from="1558610257543" duration="9714000" />
-      <workItem from="1561815421141" duration="6069000" />
+      <workItem from="1561815421141" duration="6135000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="72133000" />
+    <option name="totallyTimeSpent" value="72199000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -334,6 +339,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.16738197" />
@@ -348,7 +354,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="8" />
       <window_info anchor="bottom" id="Find" order="9" weight="0.32891566" />
-      <window_info anchor="bottom" id="Run" order="10" sideWeight="0.49928468" visible="true" weight="0.2039312" />
+      <window_info anchor="bottom" id="Run" order="10" sideWeight="0.49928468" weight="0.2039312" />
       <window_info anchor="bottom" id="Debug" order="11" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="12" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="13" weight="0.4" />
@@ -620,8 +626,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cspcapp/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="468" column="32" selection-start-line="468" selection-start-column="32" selection-end-line="468" selection-end-column="32" />
+        <state relative-caret-position="58">
+          <caret line="462" column="16" lean-forward="true" selection-start-line="462" selection-start-column="16" selection-end-line="462" selection-end-column="16" />
           <folding>
             <element signature="e#11170#11198#0" expanded="true" />
           </folding>
