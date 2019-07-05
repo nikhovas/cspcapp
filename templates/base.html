@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="html5">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block title %}{% endblock %}
+    <!— Bootstrap —>
+{#    <link href="css/bootstrap.min.css" rel="stylesheet">#}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js">
+    <link href="{% static 'base.css' %}" rel="stylesheet">
+    <link href="{% static 'students_overview.css' %}" rel="stylesheet">
+    <link href="{% static 'student_detail_view.css' %}" rel="stylesheet">
+</head>
+
+<body>
+<div class="sidebar">
+    <div class="login-info">
+        this is login
+        <div>
+            Адмииииииинов Адмииин Адмииииииииииинович
+        </div>
+    </div>
+    <div class="sidebar-element">
+        Общий список
+    </div>
+    <div class="sidebar-element">
+        Просмотр персоны
+    </div>
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Clients</a>
+    <a href="#">Contact</a>
+</div>
+
+<div class="window-content">
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+</html>

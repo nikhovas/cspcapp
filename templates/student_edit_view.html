@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    <title>{{ object.studentPerson.initials }}</title>
+{% endblock %}
+
+{% block content %}
+
+    <h3 style="color: black;">Персональные данные</h3>
+
+    {% for person in person_arr %}
+        <div class="person-box">
+            <h3>{{ person.1 }}</h3>
+            <div style="display: inline-block; width: 49%;">
+                Фамилия
+                <h4>{{ person.3.surname_txt }}</h4>
+            </div>
+            <div style="display: inline-block; width: 49%;">
+                Имя
+                <h4>{{ person.3.name_txt }}</h4>
+            </div>
+            <div style="display: inline-block; width: 49%;">
+                Отчество
+                <h4>{{ person.3.father_name_txt }}</h4>
+            </div>
+            <div style="display: inline-block; width: 49%;">
+                Паспорт
+                <h4>{{ person.3.passport_no }}</h4>
+            </div>
+            <div style="display: inline-block; width: 49%;">
+                Дата выдачи
+                <h4>{{ person.3.passport_issue_date|date:"Y-m-d" }}</h4>
+            </div>
+            <div style="display: inline-block; width: 49%;">
+                Код подразделения
+                <h4>{{ person.3.passport_issue_authority_no|stringformat:"06d"}}</h4>
+            </div>
+            {#next block#}
+            <div style="display: inline-block; width: 49%;">
+                ИНН
+                <h4>{{ person.2.0.inn_no }}</h4>
+            </div>
+            <div style="display: inline-block; width: 49%;">
+                Дата рождения
+                <h4>{{ person.2.0.birth_date|date:"Y-m-d" }}</h4>
+            </div>
+            <div style="display: inline-block; width: 49%;">
+                Телефон
+                <h4>{{ person.2.0.phone_no }}</h4>
+            </div>
+            <div style="display: inline-block; width: 49%;">
+                Почта
+                <h4>{{ person.2.0.email_txt }}</h4>
+            </div>
+            {#next block#}
+            <div style="display: inline-block; width: 49%;">
+                Город
+                <h4>{{ person.4.city }}</h4>
+            </div>
+            <div style="display: inline-block; width: 49%;">
+                Улица
+                <h4>{{ person.4.street }}</h4>
+            </div>
+            <div style="display: inline-block; width: 30%;">
+                Дом
+                <h4>{{ person.4.house_no }}</h4>
+            </div>
+            <div style="display: inline-block; width: 30%;">
+                Корпус
+                <h4>{{ person.4.building_no }}</h4>
+            </div>
+            <div style="display: inline-block; width: 30%;">
+                Квартира
+                <h4>{{ person.4.flat_no }}</h4>
+            </div>
+        </div>
+    {% endfor %}
+
+    <h3 style="color: black; width: 100%">Учебные заведения</h3>
+
+    <div class="education-box" style="width: 160px">
+        <h4>{{ education_start_year }}</h4>
+        Начало
+    </div>
+
+    {% for elem in school_info %}
+        <div class="education-box">
+            <h4>{{ elem.0 }}</h4>
+            <h4>{{ elem.1 }} класс</h4>
+            <h4>{{ elem.2 }}</h4>
+        </div>
+    {% endfor %}
+
+    <h3 style="color: black; width: 100%">Договоры</h3>
+
+    {% for contract in contracts %}
+        <div class="contract-box">
+            <div style="display: inline-block; width: 98%;">
+                Напрваление
+                <h4>{{ contract.1 }}</h4>
+            </div>
+            <div style="display: inline-block; word-break: break-all; width: 98%;">
+                Название
+                <h4>{{ contract.2 }}</h4>
+            </div>
+            <div style="display: inline-block; width: 49%;">
+                Плательщик
+                <h4>{{ contract.3 }}</h4>
+            </div>
+            <div style="display: inline-block; width: 49%;">
+                Статус оплаты
+                <h4>{{ contract.4 }}</h4>
+            </div>
+            <div style="display: inline-block; width: 49%;">
+                Дата заключения
+                <h4>{{ contract.5 }}</h4>
+            </div>
+            <div style="display: inline-block; width: 49%;">
+                Расторжен
+                <h4>{{ contract.6 }}</h4>
+            </div>
+        </div>
+    {% endfor %}
+
+
+
+{% endblock %}
+
+{#{% block headercenter %}#}
+{#    <li><a href="{% url 'CSPCApp_student_list' %}">Ученики</a></li>#}
+{#    <li><a href="{% url 'CSPCApp_student_list' %}">Ученики</a></li>#}
+{#    <li>{{ object.studentPerson.initials }}</li>#}
+{#{% endblock %}#}
+
+{% block cautions %}
+    <div style="z-index: 7;margin-left: 130px; display: inline-block">
+        <div class="breadcrumb" style="background-color: rgba(0, 0, 0, 0.2); font-size:12pt; margin: 0px;">
+                <li>
+                    <div style="height: 23px;">
+
+                        <a href="{{ object.get_update_url }}"  name="typing" value="save" class="buttonstyle" style="background-color: rgba(255, 0, 0, 0.0); width: 200px">Редактировать</a>
+                    </div>
+                </li>
+        </div>
+   </div>
+{% endblock %}
