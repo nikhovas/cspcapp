@@ -15,9 +15,11 @@
     </h2>
 
     <div style="background-color: red; color: white;">
-        Сделать вкладки краткая/подробная информация <br>
-        Содержимое ниже в подробно <br>
-        Краткую инфу в таблицу
+        1) Сделать вкладки краткая/подробная информация <br>
+        2) Содержимое ниже в подробно <br>
+        3) Краткую инфу в таблицу <br>
+        4) Добавить кнопку редактирования для каждого из элементов (це очень долго) <br>
+        5)
     </div>
 
 
@@ -47,7 +49,7 @@
                 Тип
                 <h4>{{ document.document_type_txt }}</h4>
             </div>
-            <div style="display: inline-block; word-break: break-all; width: 98%;">
+            <div style="display: inline-block; word-break: break-all; width: 49%;">
                 Фамилия
                 <h4>{{ document.person_surname_txt }}</h4>
             </div>
@@ -63,9 +65,17 @@
                 Номер подразделения
                 <h4>{{ document.authority_no }}</h4>
             </div>
+            <div style="display: inline-block; width: 98%;">
+                Выдан
+                <h4>{{ document.authority_txt }}</h4>
+            </div>
+            <div style="display: inline-block; width: 49%;">
+                Дата выдачи
+                <h4>{{ document.valid_from_dt }}</h4>
+            </div>
             <div style="display: inline-block; width: 49%;">
                 Годен с
-                <h4>{{ document.valid_from_dt }}</h4>
+                <h4>{{ document.addition_dttm }}</h4>
             </div>
         </div>
     {% endfor %}
@@ -97,7 +107,7 @@
             </div>
             <div style="display: inline-block; width: 49%;">
                 Годен с
-                <h4>{{ address.valid_from_dttm }}</h4>
+                <h4>{{ address.addition_dttm }}</h4>
             </div>
         </div>
     {% endfor %}
