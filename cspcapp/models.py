@@ -1,5 +1,6 @@
 from django.db import models
 from django.db import connection
+from django.contrib.auth.models import User
 
 
 class Contract(models.Model):
@@ -153,3 +154,13 @@ class StudentsOverviewView(models.Model):
     class Meta:
         managed = False
         db_table = 'students_overview_view'
+
+
+class AuthUserXPerson(models.Model):
+    auth_user = models.ForeignKey(User, models.DO_NOTHING, primary_key=True)
+    person = models.ForeignKey('Person', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user_x_person'
+        unique_together = (('auth_user', 'person'),)

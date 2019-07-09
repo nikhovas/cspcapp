@@ -1,3 +1,7 @@
+body {
+    background-color: whitesmoke;
+}
+
 .login-box {
     position: fixed; /* or absolute */
     top: calc(50% - 130px);

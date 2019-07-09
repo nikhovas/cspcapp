@@ -12,10 +12,10 @@
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
         <div>
-            <input type="text" name="username" autofocus="" required="" id="id_username" class="textbox"/>
+            <input type="text" name="username" autofocus="" required="" id="id_username" class="textbox" placeholder="Логин"/>
         </div>
         <div>
-            <input type="password" name="password" required="" id="id_password" class="textbox">
+            <input type="password" name="password" required="" id="id_password" class="textbox" placeholder="Пароль" />
         </div>
         <div>
             <input type="submit" value="Войти" class="button"/>

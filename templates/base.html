@@ -25,11 +25,11 @@
         </div>
     </div>
     <div class="sidebar-element">
-        Общий список
+        <a href="/">Общий список</a>
     </div>
-    <div class="sidebar-element">
-        Просмотр персоны
-    </div>
+    {% block common_list_sublevel %}
+    {% endblock %}
+
     <a href="#">About</a>
     <a href="#">Services</a>
     <a href="#">Clients</a>
