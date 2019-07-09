@@ -1,10 +1,12 @@
 from django.conf.urls import url
 from . import views
+from . import api_requests
 
 
 urlpatterns = [
     url(r'^student/detail/(?P<pk>\S+)/$', views.student_detail_view, name='cspcapp_student_detail'),
     url(r'^base/$', views.meta_base_view, name='cspcapp_base'),
+    # url(r'^api/edit_address_info/', api_requests.edit_address_info, name='edit_address_info')
     url(r'^', views.students_overview, name='cspcapp_students_overview')
 ]
 

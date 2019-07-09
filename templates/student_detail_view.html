@@ -7,240 +7,197 @@
 
 {% block content %}
 
-
-
-
     <h2 style="color: black">
-        {{ documents.0.person_surname_txt }} {{ documents.0.person_name_txt }} {{ documents.0.person_father_name_txt }} ID: {{ person.pk }}
+        {{ person.person_surname_txt }} {{ person.person_name_txt }} {{ person.person_father_name_txt }} ID: {{ person.pk }}
     </h2>
 
-    <div style="background-color: red; color: white;">
-        1) Сделать вкладки краткая/подробная информация <br>
-        2) Содержимое ниже в подробно <br>
-        3) Краткую инфу в таблицу <br>
-        4) Добавить кнопку редактирования для каждого из элементов (це очень долго) <br>
-        5)
+    <div>
+        [добавить редактирование, привести в нормальный вид с синим фоном]
     </div>
 
-
-
-    <h3 style="color: black;">Общая информация</h3>
-
-    <div class="dynamic-info-box">
-        <h4>Тип</h4>
-        <h5>[на доработке]</h5>
+    <div style="display: inline-block">
+        <table class="table main-table" style="width: 350px;">
+            <tr>
+                <td> Фамилия </td>
+                <td> {{ person.person_surname_txt }} </td>
+            </tr>
+            <tr>
+                <td> Имя </td>
+                <td> {{ person.person_name_txt }} </td>
+            </tr>
+            <tr>
+                <td> Отчество </td>
+                <td> {{ person.person_father_name_txt }} </td>
+            </tr>
+            <tr>
+                <td> Дата рождения </td>
+                <td> {{ person.birth_dt }} </td>
+            </tr>
+        </table>
     </div>
 
-    <div class="dynamic-info-box">
-        <h4>Дата рождения</h4>
-        <h5>{{ person.birth_dt }}</h5>
+    <div style="display: inline-block">
+        <table class="table main-table" style="width: 350px">
+            <tr>
+                <td> Дата начала учебы </td>
+                <td> {{ student_person.education_start_year }} </td>
+            </tr>
+            <tr>
+                <td> Школа </td>
+                <td> {{ student_person.school_name_txt }} </td>
+            </tr>
+            <tr>
+                <td> Литер класса </td>
+                <td> {{ student_person.liter }} </td>
+            </tr>
+        </table>
     </div>
-
-    <div class="dynamic-info-box">
-        <h4>ИНН</h4>
-        <h5>{{ person.inn_no }}</h5>
-    </div>
-
-    <h3 style="color: black;">Документы</h3>
-
-    {% for document in documents %}
-        <div class="contract-box">
-            <div style="display: inline-block; width: 98%;">
-                Тип
-                <h4>{{ document.document_type_txt }}</h4>
-            </div>
-            <div style="display: inline-block; word-break: break-all; width: 49%;">
-                Фамилия
-                <h4>{{ document.person_surname_txt }}</h4>
-            </div>
-            <div style="display: inline-block; width: 49%;">
-                Имя
-                <h4>{{ document.person_name_txt }}</h4>
-            </div>
-            <div style="display: inline-block; width: 49%;">
-                Отчество
-                <h4>{{ document.person_father_name_txt }}</h4>
-            </div>
-            <div style="display: inline-block; width: 49%;">
-                Номер подразделения
-                <h4>{{ document.authority_no }}</h4>
-            </div>
-            <div style="display: inline-block; width: 98%;">
-                Выдан
-                <h4>{{ document.authority_txt }}</h4>
-            </div>
-            <div style="display: inline-block; width: 49%;">
-                Дата выдачи
-                <h4>{{ document.valid_from_dt }}</h4>
-            </div>
-            <div style="display: inline-block; width: 49%;">
-                Годен с
-                <h4>{{ document.addition_dttm }}</h4>
-            </div>
-        </div>
-    {% endfor %}
-
-
-    <h3 style="color: black;">Адреса</h3>
-
-    {% for address in addresses %}
-        <div class="contract-box">
-            <div style="display: inline-block; width: 98%;">
-                Рег[временно]
-                <h4>{{ address.region_cd }}</h4>
-            </div>
-            <div style="display: inline-block; word-break: break-all; width: 98%;">
-                Город
-                <h4>{{ address.city_txt }}</h4>
-            </div>
-            <div style="display: inline-block; width: 49%;">
-                Улица
-                <h4>{{ address.street_txt }}</h4>
-            </div>
-            <div style="display: inline-block; width: 49%;">
-                Дом
-                <h4>{{ address.house_txt }}</h4>
-            </div>
-            <div style="display: inline-block; width: 49%;">
-                Квартира
-                <h4>{{ address.flat_nm }}</h4>
-            </div>
-            <div style="display: inline-block; width: 49%;">
-                Годен с
-                <h4>{{ address.addition_dttm }}</h4>
-            </div>
-        </div>
-    {% endfor %}
-
-    <h3 style="color: black;">Контакты</h3>
-
-    {% for phone in phones %}
-        <div class="contract-box">
-            <h4>{{ phone.phone_no }}</h4>
-        </div>
-    {% endfor %}
-
-    <h3 style="color: black;">Связанные люди</h3>
-
-    {% for person in person_arr %}
-        <div class="person-box">
-            <form method="POST" action="/student/update/personbox/">
-                <h3>{{ person.1 }}</h3>
-                <div style="display: inline-block; width: 49%;">
-                    Фамилия
-                    <h4>{{ person.3.surname_txt }}</h4>
-                </div>
-                <div style="display: inline-block; width: 49%;">
-                    Имя
-                    <h4>{{ person.3.name_txt }}</h4>
-                </div>
-                <div style="display: inline-block; width: 49%;">
-                    Отчество
-                    <h4>{{ person.3.father_name_txt }}</h4>
-                </div>
-                <div style="display: inline-block; width: 49%;">
-                    Паспорт
-                    <h4>{{ person.3.passport_no }}</h4>
-                </div>
-                <div style="display: inline-block; width: 49%;">
-                    Дата выдачи
-                    <h4>{{ person.3.passport_issue_date|date:"Y-m-d" }}</h4>
-                </div>
-                <div style="display: inline-block; width: 49%;">
-                    Код подразделения
-                    <h4>{{ person.3.passport_issue_authority_no|stringformat:"06d"}}</h4>
-                </div>
-                {#next block#}
-                <div style="display: inline-block; width: 49%;">
-                    ИНН
-                    <h4>{{ person.2.0.inn_no }}</h4>
-                </div>
-                <div style="display: inline-block; width: 49%;">
-                    Дата рождения
-                    <h4>{{ person.2.0.birth_date|date:"Y-m-d" }}</h4>
-                </div>
-                <div style="display: inline-block; width: 49%;">
-                    Телефон
-                    <h4>{{ person.2.0.phone_no }}</h4>
-                </div>
-                <div style="display: inline-block; width: 49%;">
-                    Почта
-                    <h4>{{ person.2.0.email_txt }}</h4>
-                </div>
-                {#next block#}
-                <div style="display: inline-block; width: 49%;">
-                    Город
-                    <h4>{{ person.4.city }}</h4>
-                </div>
-                <div style="display: inline-block; width: 49%;">
-                    Улица
-                    <h4>{{ person.4.street }}</h4>
-                </div>
-                <div style="display: inline-block; width: 30%;">
-                    Дом
-                    <h4>{{ person.4.house_no }}</h4>
-                </div>
-                <div style="display: inline-block; width: 30%;">
-                    Корпус
-                    <h4>{{ person.4.building_no }}</h4>
-                </div>
-                <div style="display: inline-block; width: 30%;">
-                    Квартира
-                    <h4>{{ person.4.flat_no }}</h4>
-                </div>
-                <button type="submit" >ghjghj</button>
-            </form>
-        </div>
-    {% endfor %}
-
-    <h3 style="color: black; width: 100%">Учебные заведения</h3>
-
-    <div class="education-box" style="width: 160px">
-        <h4>{{ education_start_year }}</h4>
-        Начало
-    </div>
-
-    {% for elem in school_info %}
-        <div class="education-box">
-            <h4>{{ elem.0 }}</h4>
-            <h4>{{ elem.1 }} класс</h4>
-            <h4>{{ elem.2 }}</h4>
-        </div>
-    {% endfor %}
 
     <h3 style="color: black; width: 100%">Договоры</h3>
 
-    {% for contract in contracts %}
-        <div class="contract-box">
-            <div style="display: inline-block; width: 98%;">
-                Напрваление
-                <h4>{{ contract.1 }}</h4>
-            </div>
-            <div style="display: inline-block; word-break: break-all; width: 98%;">
-                Название
-                <h4>{{ contract.2 }}</h4>
-            </div>
-            <div style="display: inline-block; width: 49%;">
-                Плательщик
-                <h4>{{ contract.3 }}</h4>
-            </div>
-            <div style="display: inline-block; width: 49%;">
-                Статус оплаты
-                <h4>{{ contract.4 }}</h4>
-            </div>
-            <div style="display: inline-block; width: 49%;">
-                Дата заключения
-                <h4>{{ contract.5 }}</h4>
-            </div>
-            <div style="display: inline-block; width: 49%;">
-                Расторжен
-                <h4>{{ contract.6 }}</h4>
-            </div>
-        </div>
-    {% endfor %}
+    <table class="table main-table" style="width: 100%">
+        <thead>
+            <tr>
+                <td>Общие данные</td>
+                <td>Потребитель</td>
+                <td>Плательщик</td>
+                <td></td>
+            </tr>
+        </thead>
+        {% for contract in contracts %}
+            <tr>
+                <td>
+                    <div class="main-contract-data-box" style="width: 200px">
+                        <div style="display: inline-block; width: 98%;">
+                            {{ contract.course_element.course.sphere_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 98%;">
+                            {{ contract.course_element.course.name_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 98%;">
+                            {{ contract.course_element.course.short_nm }}
+                        </div>
+                        <div style="display: inline-block; width: 98%;">
+                            Цена в час: {{ contract.course_element.course.price_per_hour }} руб
+                        </div>
+                        <div style="display: inline-block; width: 98%;">
+                            Кол-во часов: {{ contract.course_element.course.number_of_hours }}
+                        </div>
+                        <div style="display: inline-block; width: 98%;">
+                            Итого к оплате: in develop
+                        </div>
+                    </div>
 
+                    <div class="main-contract-data-box" style="width: 200px">
+                        <div style="display: inline-block; width: 98%;">
+                            список: {{ contract.course_element }}
+                        </div>
+                    </div>
 
+                    [выше с редактированием]<br>
+                    [кнопка развернуть список оплаты]
+                </td>
+                <td>
+                    <div class="passport-data-box">
+                        <div style="display: inline-block; width: 32%;">
+                            {{ contract.student_document.person_surname_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 32%;">
+                            {{ contract.student_document.person_name_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 32%;">
+                            {{ contract.student_document.person_father_name_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 98%;">
+                            {{ contract.student_document.authority_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 33%;">
+                            {{ contract.student_document.document_type_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 30%;">
+                            {{ contract.student_document.authority_no }}
+                        </div>
+                        <div style="display: inline-block; width: 33%;">
+                            {{ contract.student_document.issue_dt }}
+                        </div>
+                    </div>
 
+                    <div class="passport-data-box">
+                        <div style="display: inline-block; width: 98%;">
+                            лист регионов
+                        </div>
+                        <div style="display: inline-block; width: 98%;">
+                            {{ contract.student_address.city_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 98%;">
+                            {{ contract.student_address.street_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 98%;">
+                            {{ contract.student_address.house_txt }} - {{ contract.student_address.building_no }} - {{ contract.student_address.structure_no }} - {{ contract.student_address.flat_nm }}
+                        </div>
+                    </div>
+
+                    <div class="one-field-data-box" style="width: 49%">
+                        <div style="display: inline-block; width: 98%;">
+                            +{{ contract.student_phone_no }}
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="passport-data-box">
+                        <div style="display: inline-block; width: 32%;">
+                            {{ contract.payer_document.person_surname_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 32%;">
+                            {{ contract.payer_document.person_name_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 32%;">
+                            {{ contract.payer_document.person_father_name_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 98%;">
+                            {{ contract.payer_document.authority_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 33%;">
+                            {{ contract.payer_document.document_type_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 30%;">
+                            {{ contract.payer_document.authority_no }}
+                        </div>
+                        <div style="display: inline-block; width: 33%;">
+                            {{ contract.payer_document.issue_dt }}
+                        </div>
+                    </div>
+
+                    <div class="passport-data-box">
+                        <div style="display: inline-block; width: 98%;">
+                            лист регионов
+                        </div>
+                        <div style="display: inline-block; width: 98%;">
+                            {{ contract.payer_address.city_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 98%;">
+                            {{ contract.payer_address.street_txt }}
+                        </div>
+                        <div style="display: inline-block; width: 98%;">
+                            {{ contract.payer_address.house_txt }} - {{ contract.payer_address.building_no }} - {{ contract.payer_address.structure_no }} - {{ contract.payer_address.flat_nm }}
+                        </div>
+                    </div>
+
+                    <div class="one-field-data-box" style="width: 40%; display: inline-block;">
+                        <div style="display: inline-block; width: 98%;">
+                            +{{ contract.student_phone_no }}
+                        </div>
+                    </div>
+
+                    <div class="one-field-data-box" style="width: 40%; display: inline-block;">
+                        <div style="display: inline-block; width: 98%;">
+                            {{ contract.payer_inn_no }}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}
 
 {#{% block headercenter %}#}

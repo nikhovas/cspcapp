@@ -59,3 +59,50 @@
 .contract-box h1, h2, h3, h4, h5 {
     color: white;
 }
+
+.passport-data-box {
+    width: 100%;
+    height: 100px;
+    background-color: #3b5998;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid grey;
+    color: white;
+    display: inline-block;
+}
+
+.passport-data-box h1, h2, h3, h4, h5 {
+    color: white;
+}
+
+.main-contract-data-box {
+    width: 100%;
+    height: 100%;
+    background-color: #3b5998;
+    /*background-color: black;*/
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid grey;
+    color: white;
+    display: inline-block;
+}
+
+.main-contract-data-box h1, h2, h3, h4, h5 {
+    color: white;
+}
+
+.one-field-data-box {
+    width: 40%;
+    height: 100%;
+    background-color: #3b5998;
+    /*background-color: black;*/
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid grey;
+    color: white;
+    display: inline-block;
+}
+
+.one-field-data-box h1, h2, h3, h4, h5 {
+    color: white;
+}

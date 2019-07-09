@@ -1,31 +1,25 @@
 from django.shortcuts import render
 from .models import *
+from django.core.handlers.wsgi import WSGIRequest
 from django.db import connections
 import sqlite3
 from . import sql_raws
 
 
-def students_overview(request):
+def students_overview(request: WSGIRequest):
     return render(request, 'students_overview.html', {'students_list': StudentsOverviewView.objects.all()})
 
 
-def student_detail_view(request, pk):
-    # template_variables = {'person': Person.objects.filter(pk=pk)[0],
-    #                       'documents': PersonDocument.objects.filter(person_id=pk),
-    #                       'addresses': PersonHomeAddress.objects.filter(person_id=pk),
-    #                       'connected_persons': PersonXPerson.objects.filter(person_id=pk),
-    #                       'school_info': StudentSchoolInfo.objects.filter(person_id=pk).order_by('education_start'),
-    #                       'contracts': ContractOverviewByPerson.execute(pk)}
-    #                       # 'phones': PersonPhone.objects.filter(person_id=pk),
-    #                       # 'emails': PersonEmail.objects.filter(person_id=pk)}
+def student_detail_view(request: WSGIRequest, pk: int):
+    student_person = StudentPerson.objects.filter(pk=pk)[0]
+    student_info = {'student_person': student_person,
+                    'person': student_person.person,
+                    'contracts': Contract.objects.filter(student_document__person=pk),
+                    }
 
-    template_variables = {'person': Person.objects.filter(pk=pk)[0],
-                          'documents': PersonDocument.objects.filter(person_id=pk),
-                          'addresses': PersonHomeAddress.objects.filter(person_id=pk),
-                          'connected_persons': PersonXPerson.objects.filter(person_id=pk),
-                          'school_info': StudentSchoolInfo.objects.filter(person_id=pk).order_by('education_start')}
 
-    return render(request, 'student_detail_view.html', template_variables)
+
+    return render(request, 'student_detail_view.html', student_info)
 
 
 def meta_base_view(request):
