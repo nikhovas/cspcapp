@@ -19,9 +19,9 @@
 <body>
 <div class="sidebar">
     <div class="login-info">
-        this is login
+        {{ user.username }}
         <div>
-            Адмииииииинов Адмииин Адмииииииииииинович
+            {{ user.get_full_name }}
         </div>
     </div>
     <div class="sidebar-element">

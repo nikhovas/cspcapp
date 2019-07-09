@@ -1,0 +1,44 @@
+{% load staticfiles %}
+
+
+
+<head>
+    <link href="{% static 'registration.css' %}" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="login-box">
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div>
+            <input type="text" name="username" autofocus="" required="" id="id_username" class="textbox"/>
+        </div>
+        <div>
+            <input type="password" name="password" required="" id="id_password" class="textbox">
+        </div>
+        <div>
+            <input type="submit" value="Войти" class="button"/>
+            <input type="hidden" name="next" value="{{ next }}" />
+        </div>
+    </form>
+
+    <div class="info-box">
+        {% if next %}
+            {% if user.is_authenticated %}
+                <p>Ваш аккаунт не имеет доступа к этой странице</p>
+            {% else %}
+                <p>Авторизуйтесь, чтобы увидеть эту страницу</p>
+            {% endif %}
+        {% elif form.errors %}
+            <p>Имя пользователя и пароль не совпадают</p>
+        {% endif %}
+    </div>
+
+
+
+</div>
+
+
+
+</body>
