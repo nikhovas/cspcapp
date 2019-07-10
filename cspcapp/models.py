@@ -140,6 +140,16 @@ class StudentPerson(models.Model):
         db_table = 'student_person'
 
 
+class AuthUserXPerson(models.Model):
+    auth_user = models.ForeignKey(User, models.DO_NOTHING, primary_key=True)
+    person = models.ForeignKey('Person', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user_x_person'
+        unique_together = (('auth_user', 'person'),)
+
+
 # view models
 
 class StudentsOverviewView(models.Model):
@@ -156,11 +166,56 @@ class StudentsOverviewView(models.Model):
         db_table = 'students_overview_view'
 
 
-class AuthUserXPerson(models.Model):
-    auth_user = models.ForeignKey(User, models.DO_NOTHING, primary_key=True)
-    person = models.ForeignKey('Person', models.DO_NOTHING)
+# functions
+
+class StudentsOverviewFunction(models.Model):
+    person = models.ForeignKey(Person, models.DO_NOTHING, primary_key=True)
+    person_surname_txt = models.CharField(max_length=50)
+    person_name_txt = models.CharField(max_length=50)
+    person_father_name_txt = models.CharField(max_length=50, blank=True, null=True)
+    school_name_txt = models.CharField(max_length=50, blank=True, null=True)
+    grade = models.SmallIntegerField()
+    liter = models.CharField(max_length=1, blank=True, null=True)
+    has_debt = models.BooleanField(null=True)
+
+    @staticmethod
+    def execute(surname: str, name: str, father_name: str, document_series: str, document_no: int, school: str,
+                grade: int, liter: str, dept: bool):
+        cur = connection.cursor()
+        cur.callproc('students_filtered_stub', [name, surname, father_name, document_no, document_series,
+                                                school, grade, liter, dept])
+        columns = [column[0] for column in cur.description]
+        print(columns)
+        for row in cur:
+            yield StudentsOverviewFunction(**dict(zip(columns, row)))
 
     class Meta:
         managed = False
-        db_table = 'auth_user_x_person'
-        unique_together = (('auth_user', 'person'),)
+
+
+# class ContractOverviewByPerson(models.Model):
+#     contract_id = models.IntegerField()
+#     contract_dt = models.DateField()
+#     person_id = models.IntegerField()
+#     document_series = models.CharField(max_length=10, blank=True, null=True)
+#     document_no = models.IntegerField()
+#     person_surname_txt = models.CharField(max_length=50)
+#     person_name_txt = models.CharField(max_length=50)
+#     person_father_name_txt = models.CharField(max_length=50, blank=True, null=True)
+#     connection_type_txt = models.CharField(max_length=50)
+#     course_id = models.IntegerField()
+#     sphere_txt = models.CharField(max_length=100, blank=True, null=True)
+#     name_txt = models.CharField(max_length=100)
+#     number_of_payments = models.BigIntegerField()
+#
+#     @staticmethod
+#     def execute(person_id: int):
+#         cur = connection.cursor()
+#         cur.callproc('contract_overview_by_person', [person_id])
+#         columns = [column[0] for column in cur.description]
+#         print(columns)
+#         for row in cur:
+#             yield ContractOverviewByPerson(**dict(zip(columns, row)))
+#
+#     class Meta:
+#         managed = False

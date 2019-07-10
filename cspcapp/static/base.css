@@ -40,8 +40,8 @@ body {
   color: whitesmoke;
   display: block;
     height: 90px;
-    border-bottom: 2px;
-    border-top: 2px;
+    border-bottom-width: 2px;
+    border-top-width: 2px;
     border-bottom-color: white;
     border-top-color: white;
 }

@@ -49,11 +49,13 @@
             <h3>Поиск</h3>
             <input type="text" name="surname" value="{{ preview_connections.surname }}" placeholder="Фамилия"/>
             <input type="text" name="name" value="{{ preview_connections.name }}" placeholder="Имя"/>
-            <input type="text" name="fathername" value="{{ preview_connections.fathername }}" placeholder="Отчество"/>
+            <input type="text" name="father_name" value="{{ preview_connections.father_name }}" placeholder="Отчество"/>
             <input type="text" name="school" value="{{ preview_connections.school }}" placeholder="Школа"/>
             <input type="number" name="grade" value="{{ preview_connections.grade }}" min="1" max="11" style="width: 40px; float: left; margin-right: 10px;" placeholder="11">
-            <input type="text" name="letter" value="{{ preview_connections.letter }}" style="width: 25px; float: left; margin-right: 10px;" placeholder="Б">
-            <input type="text" name="passport" value="{{ preview_connections.passport }}" style="width: 163px;" placeholder="Паспорт">
+            <input type="text" name="liter" value="{{ preview_connections.letter }}" style="width: 25px; float: left; margin-right: 10px;" placeholder="Б">
+            <input type="text" name="document_series" value="{{ preview_connections.document_series }}" style="width: 60px; float: left; margin-right: 10px;" placeholder="Серия">
+            <input type="text" name="document_no" value="{{ preview_connections.document_no }}" style="width: 93px;" placeholder="Номер">
+            <input type="checkbox" name="dept" style="margin-right: 10px;">Только с неоплатой
             <table style="">
                 <tr>
                     <td><button type="submit"><span class="glyphicon glyphicon-search"></span></button></td>
