@@ -179,13 +179,12 @@ class StudentsOverviewFunction(models.Model):
     has_debt = models.BooleanField(null=True)
 
     @staticmethod
-    def execute(surname: str, name: str, father_name: str, document_series: str, document_no: int, school: str,
-                grade: int, liter: str, dept: bool):
+    def execute(surname: str = None, name: str = None, father_name: str = None, document_series: str = None,
+                document_no: int = None, school: str = None, grade: int = None, liter: str = None, dept: bool = False):
         cur = connection.cursor()
         cur.callproc('students_filtered_stub', [name, surname, father_name, document_no, document_series,
                                                 school, grade, liter, dept])
         columns = [column[0] for column in cur.description]
-        print(columns)
         for row in cur:
             yield StudentsOverviewFunction(**dict(zip(columns, row)))
 

@@ -1,24 +1,14 @@
 from django.shortcuts import render
 from .models import *
 from django.core.handlers.wsgi import WSGIRequest
-from django.db import connections
-import sqlite3
-from . import sql_raws
 from .utilities import reformat_request_get_params, overview_get_format
 
 
 def students_overview(request: WSGIRequest):
-    request_get = overview_get_format(dict(reformat_request_get_params(request.GET)))
-    # arr = dict(request_get)
-    # print(arr)
-    try:
-        query = StudentsOverviewFunction.execute(**dict(request_get))
-    except:
-        query = StudentsOverviewView.objects.all()
-
-    # query = StudentsOverviewFunction.execute(**arr)
-
-    return render(request, 'students_overview.html', {'students_list': query})
+    request_get = dict(overview_get_format(reformat_request_get_params(request.GET)))
+    query = StudentsOverviewFunction.execute(**request_get)
+    get_request_preview = {i: j for i, j in request_get.items() if j is not None}
+    return render(request, 'students_overview.html', {'students_list': query, 'request_get': get_request_preview})
 
 
 def student_detail_view(request: WSGIRequest, pk: int):
