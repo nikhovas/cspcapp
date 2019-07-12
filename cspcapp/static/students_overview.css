@@ -78,7 +78,7 @@
     border-width: 0;
 }
 
-.main-table a {
+.main-table a, button{
     display: inline-block;
     margin-right: 2px;
     background-color: #3b5998;
@@ -95,7 +95,5 @@
 .main-table a span {
     top: 4px;
 }
-
-
 
 

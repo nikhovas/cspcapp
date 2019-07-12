@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    <title>Список студентов</title>
+{% endblock %}
+
+
+
+
+{% block content %}
+
+    <h1>
+    Список курсов
+    </h1>
+
+    <table class="table main-table" style="width: 100%;">
+        <thead>
+            <tr>
+                <td>№</td>
+                <td>Сфера</td>
+                <td>Имя</td>
+                <td>Краткое имя</td>
+                <td>Цена за час</td>
+                <td>Кол-во часов</td>
+                <td>Цена за полугодие</td>
+                <td></td>
+            </tr>
+        </thead>
+        {% for course, course_element_list in courses_info %}
+            <tr>
+                <td>{{ course.pk }}</td>
+                <td>{{ course.sphere_txt }}</td>
+                <td>{{ course.name_txt }}</td>
+                <td>{{ course.short_nm }}</td>
+                <td>{{ course.price_per_hour }}</td>
+                <td>{{ course.number_of_hours }}</td>
+                <td>dev</td>
+                <td>
+                    <button>
+                        <span class="glyphicon glyphicon-arrow-down"></span>
+                    </button>
+                    <button>
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </button>
+                    <button>
+                            <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+
+        <tfoot>
+            <tr>
+                <td>+</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>-</td>
+                <td>
+                    <button>
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    <button>
+                        <span class="glyphicon glyphicon-erase"></span>
+                    </button>
+                </td>
+
+            </tr>
+        </tfoot>
+
+    </table>
+
+{% endblock %}
