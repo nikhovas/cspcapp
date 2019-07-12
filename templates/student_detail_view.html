@@ -11,10 +11,6 @@
         {{ person.person_surname_txt }} {{ person.person_name_txt }} {{ person.person_father_name_txt }} ID: {{ person.pk }}
     </h2>
 
-    <div>
-        [добавить редактирование, привести в нормальный вид с синим фоном]
-    </div>
-
     <div style="display: inline-block">
         <table class="table main-table" style="width: 350px;">
             <tr>
@@ -56,155 +52,209 @@
     <h3 style="color: black; width: 100%">Договоры</h3>
 
     <table class="table main-table" style="width: 100%">
+        <colgroup>
+            <col style="width: 90px">
+            <col>
+            <col>
+        </colgroup>
         <thead>
             <tr>
                 <td>Общие данные</td>
                 <td>Потребитель</td>
                 <td>Плательщик</td>
-                <td></td>
             </tr>
         </thead>
         {% for contract in contracts %}
             <tr>
                 <td>
-                    <div class="main-contract-data-box" style="width: 200px">
-                        <div style="display: inline-block; width: 98%;">
-                            {{ contract.course_element.course.sphere_txt }}
+                    <div>
+                        <div class="non-editing-field-container">
+                            <div class="main-contract-data-box" style="">
+                                <div style="display: inline-block; width: 98%;">
+                                    {{ contract.course_element.course.sphere_txt }}
+                                </div>
+                                <div style="display: inline-block; width: 98%;">
+                                    {{ contract.course_element.course.name_txt }}
+                                </div>
+                                <div style="display: inline-block; width: 98%;">
+                                    {{ contract.course_element.course.short_nm }}
+                                </div>
+                                <div style="display: inline-block; width: 98%;">
+                                     {{ contract.course_element.course.price_per_hour }} руб - {{ contract.course_element.course.number_of_hours }} ч - in develop
+                                </div>
+                            </div>
                         </div>
-                        <div style="display: inline-block; width: 98%;">
-                            {{ contract.course_element.course.name_txt }}
-                        </div>
-                        <div style="display: inline-block; width: 98%;">
-                            {{ contract.course_element.course.short_nm }}
-                        </div>
-                        <div style="display: inline-block; width: 98%;">
-                            Цена в час: {{ contract.course_element.course.price_per_hour }} руб
-                        </div>
-                        <div style="display: inline-block; width: 98%;">
-                            Кол-во часов: {{ contract.course_element.course.number_of_hours }}
-                        </div>
-                        <div style="display: inline-block; width: 98%;">
-                            Итого к оплате: in develop
-                        </div>
+
+
                     </div>
 
-                    <div class="main-contract-data-box" style="width: 200px">
+                    <div class="editing-field-container" style="width: 200px">
+                        <div class="main-contract-data-box" >
                         <div style="display: inline-block; width: 98%;">
-                            список: {{ contract.course_element }}
+                            {{ contract.course_element.teacher_person.surname_txt }}Демфамилия<br>
+                            пн вт ср чт
                         </div>
                     </div>
+                        <button style="background-color: #3b5998; height: 60px;">
+                            <span class="glyphicon glyphicon-pencil"/>
+                        </button>
+                    </div>
 
-                    [выше с редактированием]<br>
-                    [кнопка развернуть список оплаты]
+                    <button class="long-button" style="margin-left: 0">
+                            <span class="glyphicon glyphicon-print"/>
+                        </button>
+
+                    <button class="long-button">
+                            <span class="glyphicon glyphicon-remove"/>
+                        </button>
+
+                    <button class="long-button">
+                            <span class="glyphicon glyphicon-credit-card"/>
+                        </button>
+
+                    <button class="long-button">
+                            <span class="glyphicon glyphicon-arrow-down"/>
+                        </button>
                 </td>
                 <td>
-                    <div class="passport-data-box">
-                        <div style="display: inline-block; width: 32%;">
-                            {{ contract.student_document.person_surname_txt }}
+
+                    <div class="editing-field-container">
+                        <div class="passport-data-box">
+                            <div style="display: inline-block; width: 32%;">
+                                {{ contract.student_document.person_surname_txt }}
+                            </div>
+                            <div style="display: inline-block; width: 32%;">
+                                {{ contract.student_document.person_name_txt }}
+                            </div>
+                            <div style="display: inline-block; width: 32%;">
+                                {{ contract.student_document.person_father_name_txt }}
+                            </div>
+                            <div style="display: inline-block; width: 98%;">
+                                {{ contract.student_document.authority_txt }}
+                            </div>
+                            <div style="display: inline-block; width: 23%;">
+                                {{ contract.student_document.document_type_txt }}
+                            </div>
+                            <div style="display: inline-block; width: 23%;">
+                                {{ contract.student_document.authority_no }}
+                            </div>
+                            <div style="display: inline-block; width: 23%;">
+                                {{ contract.student_document.issue_dt }}
+                            </div>
+                            <div style="display: inline-block; width: 30px;">
+                                {{ contract.student_document.document_series }}
+                            </div>
+                            <div style="display: inline-block; width: 80px;">
+                                {{ contract.student_document.document_no }}
+                            </div>
                         </div>
-                        <div style="display: inline-block; width: 32%;">
-                            {{ contract.student_document.person_name_txt }}
-                        </div>
-                        <div style="display: inline-block; width: 32%;">
-                            {{ contract.student_document.person_father_name_txt }}
-                        </div>
-                        <div style="display: inline-block; width: 98%;">
-                            {{ contract.student_document.authority_txt }}
-                        </div>
-                        <div style="display: inline-block; width: 23%;">
-                            {{ contract.student_document.document_type_txt }}
-                        </div>
-                        <div style="display: inline-block; width: 23%;">
-                            {{ contract.student_document.authority_no }}
-                        </div>
-                        <div style="display: inline-block; width: 23%;">
-                            {{ contract.student_document.issue_dt }}
-                        </div>
-                        <div style="display: inline-block; width: 30px;">
-                            {{ contract.student_document.document_series }}
-                        </div>
-                        <div style="display: inline-block; width: 80px;">
-                            {{ contract.student_document.document_no }}
-                        </div>
+
+                        <button style="background-color: #3b5998; height: 89px;">
+                            <span class="glyphicon glyphicon-pencil"/>
+                        </button>
                     </div>
 
-                    <div class="passport-data-box">
-                        <div style="display: inline-block; width: 98%;">
-                            лист регионов
+
+                    <div class="editing-field-container">
+                        <div class="address-data-box">
+                            <div style="display: inline-block; width: 98%;">
+                                лист регионов     {{ contract.student_address.city_txt }}
+                            </div>
+                            <div style="display: inline-block; width: 98%;">
+
+                            </div>
+                            <div style="display: inline-block; width: 98%;">
+                                {{ contract.student_address.street_txt }} - {{ contract.student_address.house_txt }} - {{ contract.student_address.building_no }} - {{ contract.student_address.structure_no }} - {{ contract.student_address.flat_nm }}
+                            </div>
                         </div>
-                        <div style="display: inline-block; width: 98%;">
-                            {{ contract.student_address.city_txt }}
-                        </div>
-                        <div style="display: inline-block; width: 98%;">
-                            {{ contract.student_address.street_txt }}
-                        </div>
-                        <div style="display: inline-block; width: 98%;">
-                            {{ contract.student_address.house_txt }} - {{ contract.student_address.building_no }} - {{ contract.student_address.structure_no }} - {{ contract.student_address.flat_nm }}
-                        </div>
+                        <button style="background-color: #3b5998; height: 65px;">
+                            <span class="glyphicon glyphicon-pencil"/>
+                        </button>
                     </div>
 
-                    <div class="one-field-data-box" style="width: 49%">
-                        <div style="display: inline-block; width: 98%;">
-                            +{{ contract.student_phone_no }}
+                    <div class="editing-field-container">
+                        <div class="one-field-data-box">
+                            <div>
+                                +{{ contract.student_phone_no }}
+                            </div>
                         </div>
+                        <button style="background-color: #3b5998; height: 40px;">
+                            <span class="glyphicon glyphicon-pencil"/>
+                        </button>
                     </div>
                 </td>
                 <td>
-                    <div class="passport-data-box">
-                        <div style="display: inline-block; width: 32%;">
-                            {{ contract.payer_document.person_surname_txt }}
+                    <div class="editing-field-container">
+                        <div class="passport-data-box">
+                            <div style="display: inline-block; width: 32%;">
+                                {{ contract.payer_document.person_surname_txt }}
+                            </div>
+                            <div style="display: inline-block; width: 32%;">
+                                {{ contract.payer_document.person_name_txt }}
+                            </div>
+                            <div style="display: inline-block; width: 32%;">
+                                {{ contract.payer_document.person_father_name_txt }}
+                            </div>
+                            <div style="display: inline-block; width: 98%;">
+                                {{ contract.payer_document.authority_txt }}
+                            </div>
+                            <div style="display: inline-block; width: 23%;">
+                                {{ contract.payer_document.document_type_txt }}
+                            </div>
+                            <div style="display: inline-block; width: 23%;">
+                                {{ contract.payer_document.authority_no }}
+                            </div>
+                            <div style="display: inline-block; width: 23%;">
+                                {{ contract.payer_document.issue_dt }}
+                            </div>
+                            <div style="display: inline-block; width: 30px;">
+                                {{ contract.payer_document.document_series }}
+                            </div>
+                            <div style="display: inline-block; width: 80px;">
+                                {{ contract.payer_document.document_no }}
+                            </div>
                         </div>
-                        <div style="display: inline-block; width: 32%;">
-                            {{ contract.payer_document.person_name_txt }}
-                        </div>
-                        <div style="display: inline-block; width: 32%;">
-                            {{ contract.payer_document.person_father_name_txt }}
-                        </div>
-                        <div style="display: inline-block; width: 98%;">
-                            {{ contract.payer_document.authority_txt }}
-                        </div>
-                        <div style="display: inline-block; width: 23%;">
-                            {{ contract.payer_document.document_type_txt }}
-                        </div>
-                        <div style="display: inline-block; width: 23%;">
-                            {{ contract.payer_document.authority_no }}
-                        </div>
-                        <div style="display: inline-block; width: 23%;">
-                            {{ contract.payer_document.issue_dt }}
-                        </div>
-                        <div style="display: inline-block; width: 30px;">
-                            {{ contract.payer_document.document_series }}
-                        </div>
-                        <div style="display: inline-block; width: 80px;">
-                            {{ contract.payer_document.document_no }}
-                        </div>
+
+                        <button style="background-color: #3b5998; height: 89px;">
+                            <span class="glyphicon glyphicon-pencil"/>
+                        </button>
                     </div>
 
-                    <div class="passport-data-box">
-                        <div style="display: inline-block; width: 98%;">
-                            лист регионов
+
+                    <div class="editing-field-container">
+                        <div class="address-data-box">
+                            <div style="display: inline-block; width: 98%;">
+                                лист регионов       {{ contract.payer_address.city_txt }}
+                            </div>
+                            <div style="display: inline-block; width: 98%;">
+                                {{ contract.payer_address.street_txt }} - {{ contract.payer_address.house_txt }} - {{ contract.payer_address.building_no }} - {{ contract.payer_address.structure_no }} - {{ contract.payer_address.flat_nm }}
+                            </div>
                         </div>
-                        <div style="display: inline-block; width: 98%;">
-                            {{ contract.payer_address.city_txt }}
-                        </div>
-                        <div style="display: inline-block; width: 98%;">
-                            {{ contract.payer_address.street_txt }}
-                        </div>
-                        <div style="display: inline-block; width: 98%;">
-                            {{ contract.payer_address.house_txt }} - {{ contract.payer_address.building_no }} - {{ contract.payer_address.structure_no }} - {{ contract.payer_address.flat_nm }}
-                        </div>
+                        <button style="background-color: #3b5998; height: 65px;">
+                            <span class="glyphicon glyphicon-pencil"/>
+                        </button>
                     </div>
 
-                    <div class="one-field-data-box" style="width: 40%; display: inline-block;">
-                        <div style="display: inline-block; width: 98%;">
-                            +{{ contract.student_phone_no }}
+                    <div class="editing-field-container" style="width: calc(50% - 3px); float: left; margin-right: 6px;">
+                        <div class="one-field-data-box">
+                            <div>
+                                +{{ contract.payer_phone_no }}
+                            </div>
                         </div>
+                        <button style="background-color: #3b5998; height: 40px;">
+                            <span class="glyphicon glyphicon-pencil"/>
+                        </button>
                     </div>
 
-                    <div class="one-field-data-box" style="width: 40%; display: inline-block;">
-                        <div style="display: inline-block; width: 98%;">
-                            {{ contract.payer_inn_no }}
+                    <div class="editing-field-container" style="width: calc(50% - 3px)">
+                        <div class="one-field-data-box">
+                            <div>
+                                {{ contract.payer_inn_no }}
+                            </div>
                         </div>
+                        <button style="background-color: #3b5998; height: 40px;">
+                            <span class="glyphicon glyphicon-pencil"/>
+                        </button>
                     </div>
                 </td>
             </tr>
