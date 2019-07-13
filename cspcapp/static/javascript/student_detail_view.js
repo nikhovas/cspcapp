@@ -1,3 +1,36 @@
+//Django basic setup for accepting ajax requests.
+// Cookie obtainer Django
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+// Setup ajax connections safetly
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
 function demo() {
     alert('gsdagadsf')
 }
@@ -12,6 +45,8 @@ class DocumentEditFunctions {
         document.getElementById("document_data_button_" + document_id.toString()).onclick = function() {DocumentEditFunctions.disableEditDocumentMode(document_id); };
     }
 
+    //TODO make it work
+
     static disableEditDocumentMode(document_id) {
         let form_name = "#document_data_form_" + document_id.toString();
 
@@ -22,12 +57,20 @@ class DocumentEditFunctions {
             dataType : "json",
             success : function(json) {
 
-                alert(typeof(json));
+                // alert(typeof(json));
                 // json_obj = JSON.json
-                if (json['success'] === true) {
-                    alert('Success!');
+                // JSON.parse(json)['success']
+                // alert(json.response);
+                // if (JSON.parse(json)['success'] === true) {
+                //     alert('Success!');
+                // } else {
+                //     alert('Some Error!');
+                // }
+
+                if (json.is_valid) {
+                    console.log(json.response);
                 } else {
-                    alert('Some Error!');
+                    console.log("You didn't message : I want an AJAX response");
                 }
             },
             error : function(xhr,errmsg,err) {
