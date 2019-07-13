@@ -4,7 +4,7 @@ body {
 
 .sidebar {
     height: 100%;
-    width: 40px;
+    width: 240px;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -16,6 +16,7 @@ body {
 
 /* The navigation menu links */
 .sidebar a {
+  padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 20px;
   color: whitesmoke;
@@ -28,17 +29,21 @@ body {
 }
 
 .window-content {
-  margin-left: 40px; /* Same as the width of the sidebar */
+  margin-left: 240px; /* Same as the width of the sidebar */
   padding: 0px 10px;
 }
 
 .login-info {
-    padding: 8px 10px;
-    text-decoration: none;
-    font-size: 20px;
-    color: whitesmoke;
-    display: block;
-    border-bottom: 3px solid wheat;
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: whitesmoke;
+  display: block;
+    height: 90px;
+    border-bottom-width: 2px;
+    border-top-width: 2px;
+    border-bottom-color: white;
+    border-top-color: white;
 }
 
 .login-info div {
@@ -47,12 +52,11 @@ body {
 }
 
 .sidebar-element {
-    margin-top: 10px;
-    padding: 6px 10px 8px;
-    text-decoration: none;
-    font-size: 20px;
-    color: whitesmoke;
-    display: block;
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: whitesmoke;
+  display: block;
     /*background-color: black;*/
 }
 

@@ -8,9 +8,9 @@
     {% block title %}{% endblock %}
     <!— Bootstrap —>
 {#    <link href="css/bootstrap.min.css" rel="stylesheet">#}
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js">
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
     <link href="{% static 'css/students_overview.css' %}" rel="stylesheet">
     <link href="{% static 'css/student_detail_view.css' %}" rel="stylesheet">
@@ -21,24 +21,24 @@
 <body>
 <div class="sidebar">
     <div class="login-info">
-        <span class="glyphicon glyphicon-user"></span>
+        {{ user.username }}
+        <div>
+            {{ user.get_full_name }}
+        </div>
     </div>
     <div class="sidebar-element">
-        <a href="#"><span class="glyphicon glyphicon-option-horizontal"></span></a>
-    </div>
-    <div class="sidebar-element">
-        <a href="/"><span class="glyphicon glyphicon-list-alt"></span></a>
+        <a href="/">Общий список</a>
     </div>
     {% block common_list_sublevel %}
     {% endblock %}
     <div class="sidebar-element">
-        <a href="/courses/"><span class="glyphicon glyphicon-tasks"></span></a>
+        <a href="/courses/">Список курсов</a>
     </div>
     <div class="sidebar-element">
-        <a href="/teachers/"><span class="glyphicon glyphicon-briefcase"></span></a>
+        <a href="/teachers/">Список учителей</a>
     </div>
     <div class="sidebar-element">
-        <a href="#"><span class="glyphicon glyphicon-folder-open"></span></a>
+        <a href="/">Утилиты</a>
     </div>
 
 </div>
