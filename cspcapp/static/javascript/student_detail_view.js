@@ -19,9 +19,13 @@ class DocumentEditFunctions {
             url : "/api/document_data_edit/",
             type : "POST",
             data : $(form_name).serialize(),
+            dataType : "json",
             success : function(json) {
-                if (json['success'] == true) {
 
+                alert(typeof(json));
+                // json_obj = JSON.json
+                if (json['success'] === true) {
+                    alert('Success!');
                 } else {
                     alert('Some Error!');
                 }

@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8ef8cf9b-66d3-4eb1-ac2d-aee5389709be" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/cspcapp/static/javascript/student_detail_view.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cspcapp/static/base.css" beforeDir="false" afterPath="$PROJECT_DIR$/cspcapp/static/css/base.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cspcapp/static/registration.css" beforeDir="false" afterPath="$PROJECT_DIR$/cspcapp/static/css/registration.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cspcapp/static/student_detail_view.css" beforeDir="false" afterPath="$PROJECT_DIR$/cspcapp/static/css/student_detail_view.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cspcapp/static/students_overview.css" beforeDir="false" afterPath="$PROJECT_DIR$/cspcapp/static/css/students_overview.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/student_detail_view.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/student_detail_view.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cspcapp/static/javascript/student_detail_view.js" beforeDir="false" afterPath="$PROJECT_DIR$/cspcapp/static/javascript/student_detail_view.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,15 +43,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/courses_info_view.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="709">
-              <caret line="48" column="21" selection-start-line="48" selection-start-column="21" selection-end-line="48" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cspcapp/static/css/students_overview.css">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="115">
@@ -67,19 +52,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/student_edit_view.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3358">
-              <caret line="146" column="14" selection-start-line="146" selection-start-column="14" selection-end-line="146" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/student_detail_view.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="611">
-              <caret line="146" column="54" lean-forward="true" selection-start-line="146" selection-start-column="54" selection-end-line="146" selection-end-column="54" />
+            <state relative-caret-position="126">
+              <caret line="124" column="99" selection-start-line="124" selection-start-column="99" selection-end-line="124" selection-end-column="99" />
               <folding>
                 <element signature="e#393#422#0#HTML" expanded="true" />
                 <element signature="e#498#519#0#HTML" expanded="true" />
@@ -133,8 +109,29 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cspcapp/static/javascript/student_detail_view.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="506">
-              <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+            <state relative-caret-position="553">
+              <caret line="34" column="13" lean-forward="true" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cspcapp/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="184">
+              <caret line="8" column="68" selection-start-line="8" selection-start-column="50" selection-end-line="8" selection-end-column="68" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cspcapp/api_requests.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="188">
+              <caret line="25" column="29" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -161,19 +158,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/teachers_info_view.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="19" column="6" lean-forward="true" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
+            <state relative-caret-position="391">
+              <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -213,8 +201,6 @@
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/76c4bcac-2255-47df-8c8d-27e514067953/console.sql" />
         <option value="$PROJECT_DIR$/cspcapp/migrations/0001_initial.py" />
         <option value="$PROJECT_DIR$/cspcapp/view_models.py" />
-        <option value="$PROJECT_DIR$/cspcapp/api_requests.md" />
-        <option value="$PROJECT_DIR$/cspcapp/api_requests.py" />
         <option value="$PROJECT_DIR$/cspcapp/forms.py" />
         <option value="$PROJECT_DIR$/cspc/settings.py" />
         <option value="$PROJECT_DIR$/cspc/urls.py" />
@@ -224,16 +210,18 @@
         <option value="$PROJECT_DIR$/cspcapp/utilities.py" />
         <option value="$PROJECT_DIR$/cspcapp/models.py" />
         <option value="$PROJECT_DIR$/templates/teachers_info_view.html" />
-        <option value="$PROJECT_DIR$/cspcapp/urls.py" />
         <option value="$PROJECT_DIR$/cspcapp/views.py" />
         <option value="$PROJECT_DIR$/templates/courses_info_view.html" />
         <option value="$PROJECT_DIR$/templates/students_overview.html" />
         <option value="$PROJECT_DIR$/cspcapp/static/students_overview.css" />
         <option value="$PROJECT_DIR$/cspcapp/static/student_detail_view.css" />
         <option value="$PROJECT_DIR$/cspcapp/static/javascript/student_detail.js" />
-        <option value="$PROJECT_DIR$/templates/base.html" />
-        <option value="$PROJECT_DIR$/cspcapp/static/javascript/student_detail_view.js" />
+        <option value="$PROJECT_DIR$/cspcapp/api_requests.md" />
         <option value="$PROJECT_DIR$/templates/student_detail_view.html" />
+        <option value="$PROJECT_DIR$/templates/base.html" />
+        <option value="$PROJECT_DIR$/cspcapp/urls.py" />
+        <option value="$PROJECT_DIR$/cspcapp/api_requests.py" />
+        <option value="$PROJECT_DIR$/cspcapp/static/javascript/student_detail_view.js" />
       </list>
     </option>
   </component>
@@ -382,7 +370,7 @@
       <workItem from="1562359445366" duration="37687000" />
       <workItem from="1562782293364" duration="14151000" />
       <workItem from="1562935391606" duration="485000" />
-      <workItem from="1562961966063" duration="11405000" />
+      <workItem from="1562961966063" duration="16390000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1562359492261</created>
@@ -461,11 +449,25 @@
       <option name="project" value="LOCAL" />
       <updated>1562973884203</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="ajax and other javscript start work">
+      <created>1563005974298</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1563005974298</updated>
+    </task>
+    <task id="LOCAL-00013" summary="ajax and other javscript start work">
+      <created>1563012157527</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1563012157527</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="135927000" />
+    <option name="totallyTimeSpent" value="140912000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -520,7 +522,8 @@
     <MESSAGE value="add login require to all pages" />
     <MESSAGE value="add course and teachrs pages" />
     <MESSAGE value="student detail view design update" />
-    <option name="LAST_COMMIT_MESSAGE" value="student detail view design update" />
+    <MESSAGE value="ajax and other javscript start work" />
+    <option name="LAST_COMMIT_MESSAGE" value="ajax and other javscript start work" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/1f4fbb80-2aca-4a7b-a0f4-6800cce52bd2/console.sql">
@@ -613,36 +616,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/api_requests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="9" column="58" selection-start-line="9" selection-start-column="58" selection-end-line="9" selection-end-column="58" />
-          <folding>
-            <element signature="e#0#87#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/api_requests.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="368">
-            <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cspc/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="20" column="37" lean-forward="true" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
-          <folding>
-            <element signature="e#628#660#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cspc/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="437">
@@ -711,16 +684,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="10" column="18" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/registration/login.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="460">
@@ -749,22 +712,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="529">
-          <caret line="28" column="53" selection-start-line="28" selection-start-column="53" selection-end-line="28" selection-end-column="53" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/students_overview.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-537">
           <caret line="11" column="81" selection-start-line="11" selection-start-column="81" selection-end-line="11" selection-end-column="81" />
           <folding>
             <element signature="n#style#0;n#table#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cspcapp/static/css/student_detail_view.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="137">
+          <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cspcapp/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="529">
+          <caret line="28" column="53" selection-start-line="28" selection-start-column="53" selection-end-line="28" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -776,24 +746,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/static/css/student_detail_view.css">
+    <entry file="file://$PROJECT_DIR$/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
+        <state relative-caret-position="391">
+          <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="19" column="6" lean-forward="true" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
+    <entry file="file://$PROJECT_DIR$/cspcapp/api_requests.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="545">
+            <caret line="26" column="21" selection-start-line="26" selection-start-column="3" selection-end-line="26" selection-end-column="21" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/student_detail_view.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="611">
-          <caret line="146" column="54" lean-forward="true" selection-start-line="146" selection-start-column="54" selection-end-line="146" selection-end-column="54" />
+        <state relative-caret-position="126">
+          <caret line="124" column="99" selection-start-line="124" selection-start-column="99" selection-end-line="124" selection-end-column="99" />
           <folding>
             <element signature="e#393#422#0#HTML" expanded="true" />
             <element signature="e#498#519#0#HTML" expanded="true" />
@@ -843,10 +816,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cspc/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="20" column="37" lean-forward="true" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
+          <folding>
+            <element signature="e#628#660#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cspcapp/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="8" column="68" selection-start-line="8" selection-start-column="50" selection-end-line="8" selection-end-column="68" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cspcapp/api_requests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="25" column="29" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/cspcapp/static/javascript/student_detail_view.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+        <state relative-caret-position="553">
+          <caret line="34" column="13" lean-forward="true" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
         </state>
       </provider>
     </entry>
