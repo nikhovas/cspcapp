@@ -122,19 +122,21 @@
 
                     <div class="editing-field-container">
                         <div class="passport-data-box" id="document_data_{{ contract.student_document.pk }}">
-                            {% csrf_token %}
-                            <input type="hidden" name="id" value="{{ contract.student_document.pk }}">
-                            <input type="text" name="person_surname_txt" value="{{ contract.student_document.person_surname_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
-                            <input type="text" name="person_name_txt" value="{{ contract.student_document.person_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
-                            <input type="text" name="person_father_name_txt" value="{{ contract.student_document.person_father_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
-                            <input type="text" name="authority_txt" value="{{ contract.student_document.authority_txt }}" style="background-color: #3b5998; border-width: 0; width: 100%" readonly/>
-                            <input type="text" name="document_type_txt" value="{{ contract.student_document.document_type_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 314px)" readonly/>
-                            <input type="text" name="authority_no" value="{{ contract.student_document.authority_no }}" style="background-color: #3b5998; border-width: 0; width: 90px" readonly/>
-                            <input type="text" name="issue_dt_day" value="{{ contract.student_document.issue_dt.day }}" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px" readonly/>-
-                            <input type="text" name="issue_dt_month" value="{{ contract.student_document.issue_dt.month }}" style="background-color: #3b5998; border-width: 0; width: 16px" readonly/>-
-                            <input type="text" name="issue_dt_year" value="{{ contract.student_document.issue_dt.year }}" style="background-color: #3b5998; border-width: 0; width: 33px" readonly/>
-                            <input type="text" name="document_series" value="{{ contract.student_document.document_series }}" style="background-color: #3b5998; border-width: 0; width: 33px; margin-left: 20px" readonly/>
-                            <input type="text" name="document_no" value="{{ contract.student_document.document_no }}" style="background-color: #3b5998; border-width: 0; width: 50px" readonly/>
+                            <form action="" method="post" id="document_data_form_{{ contract.student_document.pk }}" name="document_data_form_{{ contract.student_document.pk }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ contract.student_document.pk }}">
+                                <input type="text" name="person_surname_txt" value="{{ contract.student_document.person_surname_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="person_name_txt" value="{{ contract.student_document.person_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="person_father_name_txt" value="{{ contract.student_document.person_father_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="authority_txt" value="{{ contract.student_document.authority_txt }}" style="background-color: #3b5998; border-width: 0; width: 100%" readonly/>
+                                <input type="text" name="document_type_txt" value="{{ contract.student_document.document_type_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 314px)" readonly/>
+                                <input type="text" name="authority_no" value="{{ contract.student_document.authority_no }}" style="background-color: #3b5998; border-width: 0; width: 90px" readonly/>
+                                <input type="text" name="issue_dt_day" value="{{ contract.student_document.issue_dt.day }}" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px" readonly/>-
+                                <input type="text" name="issue_dt_month" value="{{ contract.student_document.issue_dt.month }}" style="background-color: #3b5998; border-width: 0; width: 16px" readonly/>-
+                                <input type="text" name="issue_dt_year" value="{{ contract.student_document.issue_dt.year }}" style="background-color: #3b5998; border-width: 0; width: 33px" readonly/>
+                                <input type="text" name="document_series" value="{{ contract.student_document.document_series }}" style="background-color: #3b5998; border-width: 0; width: 33px; margin-left: 20px" readonly/>
+                                <input type="text" name="document_no" value="{{ contract.student_document.document_no }}" style="background-color: #3b5998; border-width: 0; width: 50px" readonly/>
+                            </form>
                         </div>
 
                         <button style="background-color: #3b5998; height: 89px;" onclick="DocumentEditFunctions.enableEditDocumentMode({{ contract.student_document.pk }})" id="document_data_button_{{ contract.student_document.pk }}">

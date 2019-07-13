@@ -15,14 +15,18 @@ from django.http import JsonResponse
 #         return JsonResponse({'result': False})
 #
 #
-# def edit_passport_info(request: WSGIRequest) -> JsonResponse:
-#     document = PersonHomeAddress.objects.get(pk=request.POST['person_document_id'])
-#     form = PersonDocumentForm(request.POST, instance=document)
-#     if form.is_valid():
-#         form.save()
-#         return JsonResponse({'result': True})
-#     else:
-#         return JsonResponse({'result': False})
+def document_data_edit(request: WSGIRequest) -> JsonResponse:
+    # document = PersonHomeAddress.objects.get(pk=request.POST['person_document_id'])
+    # form = PersonDocumentForm(request.POST, instance=document)
+    # if form.is_valid():
+    #     form.save()
+    #     return JsonResponse({'result': True})
+    # else:
+    #     return JsonResponse({'result': False})
+    # here request for update
+    print(request.POST)
+    print(111)
+    return JsonResponse({'result': True})
 #
 #
 # def edit_inn(request: WSGIRequest) -> JsonResponse:

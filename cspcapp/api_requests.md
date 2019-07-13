@@ -24,7 +24,7 @@
 
 
 
-# `edit_passport_info`
+# `edit_document_info`
 
 `person_document_id` - передается как служебное
 
