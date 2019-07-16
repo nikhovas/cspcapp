@@ -7,11 +7,18 @@ urlpatterns = [
     url(r'^student/detail/(?P<pk>\S+)/$', views.student_detail_view, name='cspcapp_student_detail'),
     url(r'^base/$', views.meta_base_view, name='cspcapp_base'),
     url(r'^api/document_data_edit/', api_requests.document_data_edit, name='document_data_edit'),
+    url(r'^api/address_data_edit/', api_requests.address_data_edit, name='address_data_edit'),
+    url(r'^api/inn_data_edit/', api_requests.inn_data_edit, name='inn_data_edit'),
+    url(r'^api/phone_data_edit/', api_requests.phone_data_edit, name='phone_data_edit'),
+    url(r'^api/payer_phone_data_edit/', api_requests.payer_phone_data_edit, name='payer_phone_data_edit'),
+    url(r'^api/payment_data_edit/', api_requests.payment_data_edit, name='payment_data_edit'),
+    url(r'^api/payment_add/', api_requests.payment_add, name='payment_add'),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^courses/$', views.courses_view, name='cspcapp_courses_view'),
     url(r'^teachers/$', views.teachers_view, name='cspcapp_teachers_view'),
     url(r'^', views.students_overview, name='cspcapp_students_overview')
 ]
+
 
 # urlpatterns += (
 #     # urls for Student

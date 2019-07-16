@@ -2,7 +2,9 @@ from .models import PersonHomeAddress, PersonDocument, Person
 from django.core.handlers.wsgi import WSGIRequest
 # from .forms import PersonHomeAddressForm, PersonDocumentForm, PersonInnForm, PersonBirthDateForm, PersonPhoneForm, \
 #     PersonEmailForm
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.core import serializers
+import json
 
 
 # def edit_address_info(request: WSGIRequest) -> JsonResponse:
@@ -15,18 +17,40 @@ from django.http import JsonResponse
 #         return JsonResponse({'result': False})
 #
 #
-def document_data_edit(request: WSGIRequest) -> JsonResponse:
-    # document = PersonHomeAddress.objects.get(pk=request.POST['person_document_id'])
-    # form = PersonDocumentForm(request.POST, instance=document)
-    # if form.is_valid():
-    #     form.save()
-    #     return JsonResponse({'result': True})
-    # else:
-    #     return JsonResponse({'result': False})
-    # here request for update
+def document_data_edit(request: WSGIRequest) -> HttpResponse:
     print(request.POST)
-    print(111)
     return JsonResponse({'result': True})
+
+
+def address_data_edit(request: WSGIRequest) -> HttpResponse:
+    print(request.POST)
+    return JsonResponse({'result': True})
+
+
+def inn_data_edit(request: WSGIRequest) -> HttpResponse:
+    print(request.POST)
+    return JsonResponse({'result': True})
+
+
+def phone_data_edit(request: WSGIRequest) -> HttpResponse:
+    print(request.POST)
+    return JsonResponse({'result': True})
+
+
+def payer_phone_data_edit(request: WSGIRequest) -> HttpResponse:
+    print(request.POST)
+    return JsonResponse({'result': True})
+
+
+def payment_data_edit(request: WSGIRequest) -> HttpResponse:
+    print(request.POST)
+    return JsonResponse({'result': True})
+
+
+def payment_add(request: WSGIRequest) -> HttpResponse:
+    # do db logic
+    new_element_id = 9999
+    return JsonResponse({'result': True, 'new_element_id': new_element_id})
 #
 #
 # def edit_inn(request: WSGIRequest) -> JsonResponse:

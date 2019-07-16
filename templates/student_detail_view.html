@@ -9,6 +9,10 @@
 
 {% block content %}
 
+    <div id="csrf_token_div">
+    {% csrf_token %}
+    </div>
+
     <h2 style="color: black">
         {{ person.person_surname_txt }} {{ person.person_name_txt }} {{ person.person_father_name_txt }} ID: {{ person.pk }}
     </h2>
@@ -53,36 +57,41 @@
 
     <h3 style="color: black; width: 100%">Договоры</h3>
 
-    <table class="table main-table" style="width: 100%">
+    <table class="table main-table contracts-table" style="width: 100%">
         <colgroup>
-            <col style="width: 90px">
+            <col style="width: 45px">
+            <col style="width: 45px">
+            <col>
+            <col>
+            <col>
+            <col>
             <col>
             <col>
         </colgroup>
         <thead>
             <tr>
-                <td>Общие данные</td>
-                <td>Потребитель</td>
-                <td>Плательщик</td>
+                <td colspan="2">Общие данные</td>
+                <td colspan="3">Потребитель</td>
+                <td colspan="3">Плательщик</td>
             </tr>
         </thead>
         {% for contract in contracts %}
             <tr>
-                <td>
+                <td colspan="2">
                     <div>
                         <div class="non-editing-field-container">
                             <div class="main-contract-data-box" style="">
                                 <div style="display: inline-block; width: 98%;">
-                                    {{ contract.course_element.course.sphere_txt }}
+                                    {{ contract.0.course_element.course.sphere_txt }}
                                 </div>
                                 <div style="display: inline-block; width: 98%;">
-                                    {{ contract.course_element.course.name_txt }}
+                                    {{ contract.0.course_element.course.name_txt }}
                                 </div>
                                 <div style="display: inline-block; width: 98%;">
-                                    {{ contract.course_element.course.short_nm }}
+                                    {{ contract.0.course_element.course.short_nm }}
                                 </div>
                                 <div style="display: inline-block; width: 98%;">
-                                     {{ contract.course_element.course.price_per_hour }} руб - {{ contract.course_element.course.number_of_hours }} ч - in develop
+                                     {{ contract.0.course_element.course.price_per_hour }} руб - {{ contract.0.course_element.course.number_of_hours }} ч - in develop
                                 </div>
                             </div>
                         </div>
@@ -93,7 +102,7 @@
                     <div class="editing-field-container" style="width: 200px">
                         <div class="main-contract-data-box" >
                         <div style="display: inline-block; width: 98%;">
-                            {{ contract.course_element.teacher_person.surname_txt }}Демфамилия<br>
+                            {{ contract.0.course_element.teacher_person.surname_txt }}Демфамилия<br>
                             пн вт ср чт
                         </div>
                     </div>
@@ -114,146 +123,415 @@
                             <span class="glyphicon glyphicon-credit-card"/>
                         </button>
 
-                    <button class="long-button">
+                    <button class="long-button" onclick="paymentsToggle({{ contract.0.pk }})">
                             <span class="glyphicon glyphicon-arrow-down"/>
                         </button>
                 </td>
-                <td>
+                <td colspan="3">
 
                     <div class="editing-field-container">
-                        <div class="passport-data-box" id="document_data_{{ contract.student_document.pk }}">
-                            <form action="" method="post" id="document_data_form_{{ contract.student_document.pk }}" name="document_data_form_{{ contract.student_document.pk }}">
+                        <div class="passport-data-box" id="document_data_{{ contract.0.student_document.pk }}">
+                            <form action="" method="post" id="document_data_form_{{ contract.0.student_document.pk }}" name="document_data_form_{{ contract.0.student_document.pk }}">
                                 {% csrf_token %}
-                                <input type="hidden" name="id" value="{{ contract.student_document.pk }}">
-                                <input type="text" name="person_surname_txt" value="{{ contract.student_document.person_surname_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
-                                <input type="text" name="person_name_txt" value="{{ contract.student_document.person_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
-                                <input type="text" name="person_father_name_txt" value="{{ contract.student_document.person_father_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
-                                <input type="text" name="authority_txt" value="{{ contract.student_document.authority_txt }}" style="background-color: #3b5998; border-width: 0; width: 100%" readonly/>
-                                <input type="text" name="document_type_txt" value="{{ contract.student_document.document_type_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 314px)" readonly/>
-                                <input type="text" name="authority_no" value="{{ contract.student_document.authority_no }}" style="background-color: #3b5998; border-width: 0; width: 90px" readonly/>
-                                <input type="text" name="issue_dt_day" value="{{ contract.student_document.issue_dt.day }}" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px" readonly/>-
-                                <input type="text" name="issue_dt_month" value="{{ contract.student_document.issue_dt.month }}" style="background-color: #3b5998; border-width: 0; width: 16px" readonly/>-
-                                <input type="text" name="issue_dt_year" value="{{ contract.student_document.issue_dt.year }}" style="background-color: #3b5998; border-width: 0; width: 33px" readonly/>
-                                <input type="text" name="document_series" value="{{ contract.student_document.document_series }}" style="background-color: #3b5998; border-width: 0; width: 33px; margin-left: 20px" readonly/>
-                                <input type="text" name="document_no" value="{{ contract.student_document.document_no }}" style="background-color: #3b5998; border-width: 0; width: 50px" readonly/>
+                                <input type="hidden" name="id" value="{{ contract.0.student_document.pk }}">
+                                <input type="text" name="person_surname_txt" value="{{ contract.0.student_document.person_surname_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="person_name_txt" value="{{ contract.0.student_document.person_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="person_father_name_txt" value="{{ contract.0.student_document.person_father_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="authority_txt" value="{{ contract.0.student_document.authority_txt }}" style="background-color: #3b5998; border-width: 0; width: 100%" readonly/>
+                                <input type="text" name="document_type_txt" value="{{ contract.0.student_document.document_type_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 314px)" readonly/>
+                                <input type="text" name="authority_no" value="{{ contract.0.student_document.authority_no }}" style="background-color: #3b5998; border-width: 0; width: 90px" readonly/>
+                                <input type="text" name="issue_dt_day" value="{{ contract.0.student_document.issue_dt.day }}" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px" readonly/>-
+                                <input type="text" name="issue_dt_month" value="{{ contract.0.student_document.issue_dt.month }}" style="background-color: #3b5998; border-width: 0; width: 16px" readonly/>-
+                                <input type="text" name="issue_dt_year" value="{{ contract.0.student_document.issue_dt.year }}" style="background-color: #3b5998; border-width: 0; width: 33px" readonly/>
+                                <input type="text" name="document_series" value="{{ contract.0.student_document.document_series }}" style="background-color: #3b5998; border-width: 0; width: 33px; margin-left: 20px" readonly/>
+                                <input type="text" name="document_no" value="{{ contract.0.student_document.document_no }}" style="background-color: #3b5998; border-width: 0; width: 50px" readonly/>
                             </form>
                         </div>
 
-                        <button style="background-color: #3b5998; height: 89px;" onclick="DocumentEditFunctions.enableEditDocumentMode({{ contract.student_document.pk }})" id="document_data_button_{{ contract.student_document.pk }}">
-                            <span class="glyphicon glyphicon-pencil" id="document_data_button_span_{{ contract.student_document.pk }}"/>
+                        <button style="background-color: #3b5998; height: 89px;" onclick="enableEditDocumentMode('document', {{ contract.0.student_document.pk }})" id="document_data_button_{{ contract.0.student_document.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="document_data_button_span_{{ contract.0.student_document.pk }}"/>
                         </button>
                     </div>
 
 
                     <div class="editing-field-container">
-                        <div class="address-data-box">
-                            <div style="display: inline-block; width: 98%;">
-                                лист регионов     {{ contract.student_address.city_txt }}
-                            </div>
-                            <div style="display: inline-block; width: 98%;">
-
-                            </div>
-                            <div style="display: inline-block; width: 98%;">
-                                {{ contract.student_address.street_txt }} - {{ contract.student_address.house_txt }} - {{ contract.student_address.building_no }} - {{ contract.student_address.structure_no }} - {{ contract.student_address.flat_nm }}
-                            </div>
+                        <div class="address-data-box" id="address_data_{{ contract.0.student_address.pk }}">
+                            <form action="" method="post" id="address_data_form_{{ contract.0.student_address.pk }}" name="address_data_form_{{ contract.0.student_address.pk }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ contract.0.student_document.pk }}">
+                                <select name="region_cd" style="background-color: #3b5998; border-width: 0; width: 150px; -webkit-appearance:none;" onclick="return false;" disabled>
+                                    {% for i, j in regions.items %}
+                                        <option value="{{ i }}" {% if i == contract.0.student_address.region_cd %}selected{% endif %}>{{ j }}</option>
+                                    {% endfor %}
+                                </select>
+{#                                <input type="text" name="region_cd" value="лист регионов" style="background-color: #3b5998; border-width: 0; width: 150px" readonly/>#}
+                                <input type="text" name="city_txt" value="{{ contract.0.student_address.city_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 160px)" readonly/>
+                                <input type="text" name="street_txt" value="{{ contract.0.student_address.street_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 194px)" readonly/>
+                                <input type="text" name="house_txt" value="{{ contract.0.student_address.house_txt }}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="building_no" value="{% if contract.0.student_address.building_no %} {{ contract.0.student_address.building_no }} {% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="structure_no" value="{% if contract.0.student_address.structure_no %} {{ contract.0.student_address.structure_no }} {% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="flat_nm" value="{% if contract.0.student_address.flat_nm %}{{ contract.0.student_address.flat_nm }}{% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>
+                            </form>
                         </div>
-                        <button style="background-color: #3b5998; height: 65px;">
-                            <span class="glyphicon glyphicon-pencil"/>
+                        <button style="background-color: #3b5998; height: 65px;" onclick="enableEditDocumentMode('address', {{ contract.0.student_address.pk }})" id="address_data_button_{{ contract.0.student_address.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="address_data_button_span_{{ contract.0.student_address.pk }}"/>
                         </button>
                     </div>
 
                     <div class="editing-field-container">
-                        <div class="one-field-data-box">
-                            <div>
-                                +{{ contract.student_phone_no }}
-                            </div>
+                        <div class="one-field-data-box" id="phone_data_{{ contract.0.pk }}">
+                            <form action="" method="post" id="phone_data_form_{{ contract.0.pk }}" name="phone_data_form_{{ contract.0.pk }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ contract.0.pk }}">
+                                +<input type="text" name="phone_no" value="{{ contract.0.student_phone_no }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)" readonly/>
+                            </form>
                         </div>
-                        <button style="background-color: #3b5998; height: 40px;">
-                            <span class="glyphicon glyphicon-pencil"/>
+                        <button style="background-color: #3b5998; height: 40px;" onclick="enableEditDocumentMode('phone', {{ contract.0.pk }})" id="phone_data_button_{{ contract.0.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="phone_data_button_span_{{ contract.0.pk }}"/>
                         </button>
                     </div>
                 </td>
-                <td>
+                <td colspan="3">
                     <div class="editing-field-container">
-                        <div class="passport-data-box" id="document_data_{{ contract.payer_document.pk }}">
-                            {% csrf_token %}
-                            <input type="hidden" name="id" value="{{ contract.payer_document.pk }}">
-                            <input type="text" name="person_surname_txt" value="{{ contract.payer_document.person_surname_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
-                            <input type="text" name="person_name_txt" value="{{ contract.payer_document.person_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
-                            <input type="text" name="person_father_name_txt" value="{{ contract.payer_document.person_father_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
-                            <input type="text" name="authority_txt" value="{{ contract.payer_document.authority_txt }}" style="background-color: #3b5998; border-width: 0; width: 100%" readonly/>
-                            <input type="text" name="document_type_txt" value="{{ contract.payer_document.document_type_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 314px)" readonly/>
-                            <input type="text" name="authority_no" value="{{ contract.payer_document.authority_no }}" style="background-color: #3b5998; border-width: 0; width: 90px" readonly/>
-                            <input type="text" name="issue_dt_day" value="{{ contract.payer_document.issue_dt.day }}" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px" readonly/>-
-                            <input type="text" name="issue_dt_month" value="{{ contract.payer_document.issue_dt.month }}" style="background-color: #3b5998; border-width: 0; width: 16px" readonly/>-
-                            <input type="text" name="issue_dt_year" value="{{ contract.payer_document.issue_dt.year }}" style="background-color: #3b5998; border-width: 0; width: 33px" readonly/>
-                            <input type="text" name="document_series" value="{{ contract.payer_document.document_series }}" style="background-color: #3b5998; border-width: 0; width: 33px; margin-left: 20px" readonly/>
-                            <input type="text" name="document_no" value="{{ contract.payer_document.document_no }}" style="background-color: #3b5998; border-width: 0; width: 50px" readonly/>
+                        <div class="passport-data-box" id="document_data_{{ contract.0.payer_document.pk }}">
+                            <form action="" method="post" id="document_data_form_{{ contract.0.payer_document.pk }}" name="document_data_form_{{ contract.0.payer_document.pk }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ contract.0.payer_document.pk }}">
+                                <input type="text" name="person_surname_txt" value="{{ contract.0.payer_document.person_surname_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="person_name_txt" value="{{ contract.0.payer_document.person_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="person_father_name_txt" value="{{ contract.0.payer_document.person_father_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="authority_txt" value="{{ contract.0.payer_document.authority_txt }}" style="background-color: #3b5998; border-width: 0; width: 100%" readonly/>
+                                <input type="text" name="document_type_txt" value="{{ contract.0.payer_document.document_type_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 314px)" readonly/>
+                                <input type="text" name="authority_no" value="{{ contract.0.payer_document.authority_no }}" style="background-color: #3b5998; border-width: 0; width: 90px" readonly/>
+                                <input type="text" name="issue_dt_day" value="{{ contract.0.payer_document.issue_dt.day }}" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px" readonly/>-
+                                <input type="text" name="issue_dt_month" value="{{ contract.0.payer_document.issue_dt.month }}" style="background-color: #3b5998; border-width: 0; width: 16px" readonly/>-
+                                <input type="text" name="issue_dt_year" value="{{ contract.0.payer_document.issue_dt.year }}" style="background-color: #3b5998; border-width: 0; width: 33px" readonly/>
+                                <input type="text" name="document_series" value="{{ contract.0.payer_document.document_series }}" style="background-color: #3b5998; border-width: 0; width: 33px; margin-left: 20px" readonly/>
+                                <input type="text" name="document_no" value="{{ contract.0.payer_document.document_no }}" style="background-color: #3b5998; border-width: 0; width: 50px" readonly/>
+                            </form>
                         </div>
 
-                        <button style="background-color: #3b5998; height: 89px;">
-                            <span class="glyphicon glyphicon-pencil"/>
+                        <button style="background-color: #3b5998; height: 89px;" onclick="enableEditDocumentMode('document', {{ contract.0.payer_document.pk }})" id="document_data_button_{{ contract.0.payer_document.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="document_data_button_span_{{ contract.0.payer_document.pk }}"/>
                         </button>
                     </div>
 
                     <div class="editing-field-container">
-                        <div class="address-data-box">
-                            <div style="display: inline-block; width: 98%;">
-                                лист регионов       {{ contract.payer_address.city_txt }}
-                            </div>
-                            <div style="display: inline-block; width: 98%;">
-                                {{ contract.payer_address.street_txt }} - {{ contract.payer_address.house_txt }} - {{ contract.payer_address.building_no }} - {{ contract.payer_address.structure_no }} - {{ contract.payer_address.flat_nm }}
-                            </div>
+                        <div class="address-data-box" id="address_data_{{ contract.0.payer_address.pk }}">
+                            <form action="" method="post" id="address_data_form_{{ contract.0.payer_address.pk }}" name="address_data_form_{{ contract.0.payer_address.pk }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ contract.0.student_document.pk }}">
+                                <select name="region_cd" style="background-color: #3b5998; border-width: 0; width: 150px; -webkit-appearance:none;" onclick="return false;">
+                                    {% for i, j in regions.items %}
+                                        <option value="{{ i }}" {% if i == contract.0.payer_address.region_cd %}selected{% endif %}>{{ j }}</option>
+                                    {% endfor %}
+                                </select>
+                                <input type="text" name="city_txt" value="{{ contract.0.payer_address.city_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 160px)" readonly/>
+                                <input type="text" name="street_txt" value="{{ contract.0.payer_address.street_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 194px)" readonly/>
+                                <input type="text" name="house_txt" value="{{ contract.0.payer_address.house_txt }}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="building_no" value="{% if contract.0.payer_address.building_no %} {{ contract.0.payer_address.building_no }} {% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="structure_no" value="{% if contract.0.payer_address.structure_no %} {{ contract.0.payer_address.structure_no }} {% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="flat_nm" value="{% if contract.0.payer_address.flat_nm %}{{ contract.0.payer_address.flat_nm }}{% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>
+                            </form>
                         </div>
-                        <button style="background-color: #3b5998; height: 65px;">
-                            <span class="glyphicon glyphicon-pencil"/>
+                        <button style="background-color: #3b5998; height: 65px;" onclick="enableEditDocumentMode('address', {{ contract.0.payer_address.pk }})" id="address_data_button_{{ contract.0.payer_address.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="address_data_button_span_{{ contract.0.payer_address.pk }}"/>
                         </button>
                     </div>
 
                     <div class="editing-field-container" style="width: calc(50% - 3px); float: left; margin-right: 6px;">
-                        <div class="one-field-data-box">
-                            <div>
-                                +{{ contract.payer_phone_no }}
-                            </div>
+                        <div class="one-field-data-box" id="payer_phone_data_{{ contract.0.pk }}">
+                            <form action="" method="post" id="payer_phone_data_form_{{ contract.0.pk }}" name="payer_phone_data_form_{{ contract.0.pk }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ contract.0.pk }}">
+                                +<input type="text" name="payer_phone_no" value="{{ contract.0.payer_phone_no }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)" readonly/>
+                            </form>
                         </div>
-                        <button style="background-color: #3b5998; height: 40px;">
-                            <span class="glyphicon glyphicon-pencil"/>
+                        <button style="background-color: #3b5998; height: 40px;" onclick="enableEditDocumentMode('payer_phone', {{ contract.0.pk }})" id="payer_phone_data_button_{{ contract.0.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="payer_phone_data_button_span_{{ contract.0.pk }}"/>
                         </button>
                     </div>
 
                     <div class="editing-field-container" style="width: calc(50% - 3px)">
-                        <div class="one-field-data-box">
-                            <div>
-                                {{ contract.payer_inn_no }}
-                            </div>
+                        <div class="one-field-data-box" id="payer_inn_data_{{ contract.0.pk }}">
+                            <form action="" method="post" id="payer_inn_data_form_{{ contract.0.pk }}" name="payer_inn_data_form_{{ contract.0.pk }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ contract.0.pk }}">
+                                <input type="text" name="payer_inn_no" value="{{ contract.0.payer_inn_no }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)" readonly/>
+                            </form>
                         </div>
-                        <button style="background-color: #3b5998; height: 40px;">
-                            <span class="glyphicon glyphicon-pencil"/>
+                        <button style="background-color: #3b5998; height: 40px;" onclick="enableEditDocumentMode('payer_inn', {{ contract.0.pk }})" id="payer_inn_data_button_{{ contract.0.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="payer_inn_data_button_span_{{ contract.0.pk }}"/>
                         </button>
                     </div>
                 </td>
             </tr>
+            <tr id="payments_{{ contract.0.pk }}" hidden="true">
+{#                <div id="payments_{{ contract.pk }}" style="display: none; padding: 5px;">#}
+                    <td colspan="8">
+                        <table class="table main-table" style="width: 100%" id="payments_table_{{ contract.0.pk }}">
+                            <thead>
+                                <tr>
+                                    <td>Дата оплаты</td>
+                                    <td>Размер оплаты</td>
+                                    <td>Тип оплаты</td>
+                                    <td>Номер квитанции</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+
+                            {% for payment in contract.1 %}
+                                <tr>
+                                    <form action="" method="post" id="payment_data_form_{{ payment.pk }}" name="payment_data_form_{{ payment.pk }}">
+                                        <td>
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id" value="{{ payment.pk }}">
+                                            <input type="text" name="issue_dt_day" value="{{ payment.payment_dt.day }}" style="border-width: 0; width: 18px;" readonly/>-
+                                            <input type="text" name="issue_dt_month" value="{{ payment.payment_dt.month }}" style="border-width: 0; width: 18px" readonly/>-
+                                            <input type="text" name="issue_dt_year" value="{{ payment.payment_dt.year }}" style="border-width: 0; width: 33px" readonly/>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="payment_amt" value="{{ payment.payment_amt }}" style="border-width: 0; width: 100%;" readonly/>
+                                        </td>
+                                        <td>
+                                            <select name="payment_type" style="border-width: 0; width: 100%; -webkit-appearance:none;" disabled>
+                                                {% for i, j in payment_types.items %}
+                                                    <option value="{{ i }}" {% if i == payment.payment_type %}selected{% endif %}>{{ j }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td><input type="text" name="voucher_no" value="{{ payment.voucher_no }}" style="border-width: 0; width: 100%;" readonly/></td>
+                                    </form>
+                                        <td>
+                                            <button id="payment_data_button_{{ payment.pk }}" onclick="enableEditDocumentMode('payment', {{ payment.pk }})">
+                                                <span class="glyphicon glyphicon-pencil" id="payment_data_button_span_{{ payment.pk }}"></span>
+                                            </button>
+                                            <button type="submit"><span class="glyphicon glyphicon-time"></span></button>
+                                            <button><span class="glyphicon glyphicon-remove"></span></button>
+                                        </td>
+
+
+
+                                </tr>
+                            {% endfor %}
+                            <tfoot>
+                                <tr>
+                                    <form action="" method="post" id="payment_add_form_{{ contract.0.pk }}" name="payment_add_form_{{ contract.0.pk }}">
+                                        <td>
+                                            <div id="payment_add_div_csrf_token_{{ contract.0.pk }}" hidden="true">
+                                                {% csrf_token %}
+                                            </div>
+                                            <input type="hidden" name="contract_id" value="{{ contract.0.pk }}">
+                                            <input type="text" name="issue_dt_day" id="new_payment_issue_dt_day" style="border-width: 0; width: 18px;"/>-
+                                            <input type="text" name="issue_dt_month" id="new_payment_issue_dt_month" style="border-width: 0; width: 18px"/>-
+                                            <input type="text" name="issue_dt_year" id="new_payment_issue_dt_year" style="border-width: 0; width: 33px"/>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="payment_amt" id="new_payment_payment_amt" style="border-width: 0; width: 100%;"/>
+                                        </td>
+                                        <td>
+                                            <select name="payment_type" id="new_payment_payment_type" style="border-width: 0; width: 100%; -webkit-appearance:none;">
+                                                {% for i, j in payment_types.items %}
+                                                    <option value="{{ i }}">{{ j }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td><input type="text" name="voucher_no" id="new_payment_voucher_no" style="border-width: 0; width: 100%;"/></td>
+                                    </form>
+                                        <td>
+                                            <button type="submit" id="payment_add_button_{{ contract.0.pk }}" onclick="add_new_payment({{ contract.0.pk }})">
+                                                <span class="glyphicon glyphicon-plus" id="payment_add_button_span_{{ contract.0.pk }}"></span>
+                                            </button>
+                                        </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </td>
+{#                </div>#}
+            </tr>
         {% endfor %}
-    </table>
-{% endblock %}
+        <tfoot>
+            <tr>
+                <td colspan="2">
+                    <div>
+                        <div class="non-editing-field-container">
+                            <div class="main-contract-data-box" style="">
+                                <div style="display: inline-block; width: 98%;">
+                                    {{ contract.0.course_element.course.sphere_txt }}
+                                </div>
+                                <div style="display: inline-block; width: 98%;">
+                                    {{ contract.0.course_element.course.name_txt }}
+                                </div>
+                                <div style="display: inline-block; width: 98%;">
+                                    {{ contract.0.course_element.course.short_nm }}
+                                </div>
+                                <div style="display: inline-block; width: 98%;">
+                                     {{ contract.0.course_element.course.price_per_hour }} руб - {{ contract.0.course_element.course.number_of_hours }} ч - in develop
+                                </div>
+                            </div>
+                        </div>
 
-{#{% block headercenter %}#}
-{#    <li><a href="{% url 'CSPCApp_student_list' %}">Ученики</a></li>#}
-{#    <li><a href="{% url 'CSPCApp_student_list' %}">Ученики</a></li>#}
-{#    <li>{{ object.studentPerson.initials }}</li>#}
-{#{% endblock %}#}
 
-{% block cautions %}
-    <div style="z-index: 7;margin-left: 130px; display: inline-block">
-        <div class="breadcrumb" style="background-color: rgba(0, 0, 0, 0.2); font-size:12pt; margin: 0px;">
-                <li>
-                    <div style="height: 23px;">
-
-                        <a href="{{ object.get_update_url }}"  name="typing" value="save" class="buttonstyle" style="background-color: rgba(255, 0, 0, 0.0); width: 200px">Редактировать</a>
                     </div>
-                </li>
-        </div>
-   </div>
+
+                    <div class="editing-field-container" style="width: 200px">
+                        <div class="main-contract-data-box" >
+                        <div style="display: inline-block; width: 98%;">
+                            {{ contract.0.course_element.teacher_person.surname_txt }}Демфамилия<br>
+                            пн вт ср чт
+                        </div>
+                    </div>
+                        <button style="background-color: #3b5998; height: 60px;" onclick="demo();">
+                            <span class="glyphicon glyphicon-pencil"/>
+                        </button>
+                    </div>
+
+                    <button class="long-button" style="margin-left: 0">
+                            <span class="glyphicon glyphicon-print"/>
+                        </button>
+
+                    <button class="long-button">
+                            <span class="glyphicon glyphicon-remove"/>
+                        </button>
+
+                    <button class="long-button">
+                            <span class="glyphicon glyphicon-credit-card"/>
+                        </button>
+
+                    <button class="long-button" onclick="paymentsToggle({{ contract.0.pk }})">
+                            <span class="glyphicon glyphicon-arrow-down"/>
+                        </button>
+                </td>
+                <td colspan="3">
+
+                    <div class="passport-data-box" id="document_data_{{ contract.0.student_document.pk }}">
+                        <form action="" method="post" id="document_data_form_{{ contract.0.student_document.pk }}" name="document_data_form_{{ contract.0.student_document.pk }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ contract.0.student_document.pk }}">
+                                <input type="text" name="person_surname_txt" value="{{ contract.0.student_document.person_surname_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="person_name_txt" value="{{ contract.0.student_document.person_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="person_father_name_txt" value="{{ contract.0.student_document.person_father_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="authority_txt" value="{{ contract.0.student_document.authority_txt }}" style="background-color: #3b5998; border-width: 0; width: 100%" readonly/>
+                                <input type="text" name="document_type_txt" value="{{ contract.0.student_document.document_type_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 314px)" readonly/>
+                                <input type="text" name="authority_no" value="{{ contract.0.student_document.authority_no }}" style="background-color: #3b5998; border-width: 0; width: 90px" readonly/>
+                                <input type="text" name="issue_dt_day" value="{{ contract.0.student_document.issue_dt.day }}" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px" readonly/>-
+                                <input type="text" name="issue_dt_month" value="{{ contract.0.student_document.issue_dt.month }}" style="background-color: #3b5998; border-width: 0; width: 16px" readonly/>-
+                                <input type="text" name="issue_dt_year" value="{{ contract.0.student_document.issue_dt.year }}" style="background-color: #3b5998; border-width: 0; width: 33px" readonly/>
+                                <input type="text" name="document_series" value="{{ contract.0.student_document.document_series }}" style="background-color: #3b5998; border-width: 0; width: 33px; margin-left: 20px" readonly/>
+                                <input type="text" name="document_no" value="{{ contract.0.student_document.document_no }}" style="background-color: #3b5998; border-width: 0; width: 50px" readonly/>
+                        </form>
+                    </div>
+
+
+                    <div class="address-data-box" id="address_data_{{ contract.0.student_address.pk }}">
+                            <form action="" method="post" id="address_data_form_{{ contract.0.student_address.pk }}" name="address_data_form_{{ contract.0.student_address.pk }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ contract.0.student_document.pk }}">
+                                <select name="region_cd" style="background-color: #3b5998; border-width: 0; width: 150px; -webkit-appearance:none;" onclick="return false;" disabled>
+                                    {% for i, j in regions.items %}
+                                        <option value="{{ i }}" {% if i == contract.0.student_address.region_cd %}selected{% endif %}>{{ j }}</option>
+                                    {% endfor %}
+                                </select>
+{#                                <input type="text" name="region_cd" value="лист регионов" style="background-color: #3b5998; border-width: 0; width: 150px" readonly/>#}
+                                <input type="text" name="city_txt" value="{{ contract.0.student_address.city_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 160px)" readonly/>
+                                <input type="text" name="street_txt" value="{{ contract.0.student_address.street_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 194px)" readonly/>
+                                <input type="text" name="house_txt" value="{{ contract.0.student_address.house_txt }}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="building_no" value="{% if contract.0.student_address.building_no %} {{ contract.0.student_address.building_no }} {% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="structure_no" value="{% if contract.0.student_address.structure_no %} {{ contract.0.student_address.structure_no }} {% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="flat_nm" value="{% if contract.0.student_address.flat_nm %}{{ contract.0.student_address.flat_nm }}{% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>
+                            </form>
+                    </div>
+
+                    <div class="editing-field-container">
+                        <div class="one-field-data-box" id="phone_data_{{ contract.0.pk }}">
+                            <form action="" method="post" id="phone_data_form_{{ contract.0.pk }}" name="phone_data_form_{{ contract.0.pk }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ contract.0.pk }}">
+                                +<input type="text" name="phone_no" value="{{ contract.0.student_phone_no }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)" readonly/>
+                            </form>
+                        </div>
+                        <button style="background-color: #3b5998; height: 40px;" onclick="enableEditDocumentMode('phone', {{ contract.0.pk }})" id="phone_data_button_{{ contract.0.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="phone_data_button_span_{{ contract.0.pk }}"/>
+                        </button>
+                    </div>
+                </td>
+                <td colspan="3">
+                    <div class="editing-field-container">
+                        <div class="passport-data-box" id="document_data_{{ contract.0.payer_document.pk }}">
+                            <form action="" method="post" id="document_data_form_{{ contract.0.payer_document.pk }}" name="document_data_form_{{ contract.0.payer_document.pk }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ contract.0.payer_document.pk }}">
+                                <input type="text" name="person_surname_txt" value="{{ contract.0.payer_document.person_surname_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="person_name_txt" value="{{ contract.0.payer_document.person_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="person_father_name_txt" value="{{ contract.0.payer_document.person_father_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="authority_txt" value="{{ contract.0.payer_document.authority_txt }}" style="background-color: #3b5998; border-width: 0; width: 100%" readonly/>
+                                <input type="text" name="document_type_txt" value="{{ contract.0.payer_document.document_type_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 314px)" readonly/>
+                                <input type="text" name="authority_no" value="{{ contract.0.payer_document.authority_no }}" style="background-color: #3b5998; border-width: 0; width: 90px" readonly/>
+                                <input type="text" name="issue_dt_day" value="{{ contract.0.payer_document.issue_dt.day }}" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px" readonly/>-
+                                <input type="text" name="issue_dt_month" value="{{ contract.0.payer_document.issue_dt.month }}" style="background-color: #3b5998; border-width: 0; width: 16px" readonly/>-
+                                <input type="text" name="issue_dt_year" value="{{ contract.0.payer_document.issue_dt.year }}" style="background-color: #3b5998; border-width: 0; width: 33px" readonly/>
+                                <input type="text" name="document_series" value="{{ contract.0.payer_document.document_series }}" style="background-color: #3b5998; border-width: 0; width: 33px; margin-left: 20px" readonly/>
+                                <input type="text" name="document_no" value="{{ contract.0.payer_document.document_no }}" style="background-color: #3b5998; border-width: 0; width: 50px" readonly/>
+                            </form>
+                        </div>
+
+                        <button style="background-color: #3b5998; height: 89px;" onclick="enableEditDocumentMode('document', {{ contract.0.payer_document.pk }})" id="document_data_button_{{ contract.0.payer_document.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="document_data_button_span_{{ contract.0.payer_document.pk }}"/>
+                        </button>
+                    </div>
+
+                    <div class="editing-field-container">
+                        <div class="address-data-box" id="address_data_{{ contract.0.payer_address.pk }}">
+                            <form action="" method="post" id="address_data_form_{{ contract.0.payer_address.pk }}" name="address_data_form_{{ contract.0.payer_address.pk }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ contract.0.student_document.pk }}">
+                                <select name="region_cd" style="background-color: #3b5998; border-width: 0; width: 150px; -webkit-appearance:none;" onclick="return false;">
+                                    {% for i, j in regions.items %}
+                                        <option value="{{ i }}" {% if i == contract.0.payer_address.region_cd %}selected{% endif %}>{{ j }}</option>
+                                    {% endfor %}
+                                </select>
+                                <input type="text" name="city_txt" value="{{ contract.0.payer_address.city_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 160px)" readonly/>
+                                <input type="text" name="street_txt" value="{{ contract.0.payer_address.street_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 194px)" readonly/>
+                                <input type="text" name="house_txt" value="{{ contract.0.payer_address.house_txt }}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="building_no" value="{% if contract.0.payer_address.building_no %} {{ contract.0.payer_address.building_no }} {% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="structure_no" value="{% if contract.0.payer_address.structure_no %} {{ contract.0.payer_address.structure_no }} {% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="flat_nm" value="{% if contract.0.payer_address.flat_nm %}{{ contract.0.payer_address.flat_nm }}{% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>
+                            </form>
+                        </div>
+                        <button style="background-color: #3b5998; height: 65px;" onclick="enableEditDocumentMode('address', {{ contract.0.payer_address.pk }})" id="address_data_button_{{ contract.0.payer_address.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="address_data_button_span_{{ contract.0.payer_address.pk }}"/>
+                        </button>
+                    </div>
+
+                    <div class="editing-field-container" style="width: calc(50% - 3px); float: left; margin-right: 6px;">
+                        <div class="one-field-data-box" id="payer_phone_data_{{ contract.0.pk }}">
+                            <form action="" method="post" id="payer_phone_data_form_{{ contract.0.pk }}" name="payer_phone_data_form_{{ contract.0.pk }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ contract.0.pk }}">
+                                +<input type="text" name="payer_phone_no" value="{{ contract.0.payer_phone_no }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)" readonly/>
+                            </form>
+                        </div>
+                        <button style="background-color: #3b5998; height: 40px;" onclick="enableEditDocumentMode('payer_phone', {{ contract.0.pk }})" id="payer_phone_data_button_{{ contract.0.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="payer_phone_data_button_span_{{ contract.0.pk }}"/>
+                        </button>
+                    </div>
+
+                    <div class="editing-field-container" style="width: calc(50% - 3px)">
+                        <div class="one-field-data-box" id="payer_inn_data_{{ contract.0.pk }}">
+                            <form action="" method="post" id="payer_inn_data_form_{{ contract.0.pk }}" name="payer_inn_data_form_{{ contract.0.pk }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ contract.0.pk }}">
+                                <input type="text" name="payer_inn_no" value="{{ contract.0.payer_inn_no }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)" readonly/>
+                            </form>
+                        </div>
+                        <button style="background-color: #3b5998; height: 40px;" onclick="enableEditDocumentMode('payer_inn', {{ contract.0.pk }})" id="payer_inn_data_button_{{ contract.0.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="payer_inn_data_button_span_{{ contract.0.pk }}"/>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
 {% endblock %}
 
 {% block common_list_sublevel %}

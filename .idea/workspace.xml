@@ -2,13 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8ef8cf9b-66d3-4eb1-ac2d-aee5389709be" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/cspcapp/static/css/base_full.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/full_base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cspcapp/constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/cspc.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cspc.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cspcapp/static/css/base.css" beforeDir="false" afterPath="$PROJECT_DIR$/cspcapp/static/css/base.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cspcapp/api_requests.py" beforeDir="false" afterPath="$PROJECT_DIR$/cspcapp/api_requests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cspcapp/static/css/student_detail_view.css" beforeDir="false" afterPath="$PROJECT_DIR$/cspcapp/static/css/student_detail_view.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cspcapp/static/javascript/student_detail_view.js" beforeDir="false" afterPath="$PROJECT_DIR$/cspcapp/static/javascript/student_detail_view.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cspcapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/cspcapp/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cspcapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/cspcapp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/student_detail_view.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/student_detail_view.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -33,13 +36,40 @@
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/cspcapp/static/javascript/student_detail_view.js">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="732">
+                    <caret line="121" column="8" lean-forward="true" selection-start-line="121" selection-start-column="8" selection-end-line="121" selection-end-column="8" />
+                    <folding>
+                      <element signature="n#style#0;n#input#2;n#td#0;n#form#0;n#!!top" expanded="true" />
+                      <element signature="n#style#0;n#input#3;n#td#0;n#form#0;n#!!top" expanded="true" />
+                      <element signature="n#style#0;n#input#4;n#td#0;n#form#0;n#!!top" expanded="true" />
+                      <element signature="n#style#0;n#input#0;n#td#1;n#form#0;n#!!top" expanded="true" />
+                      <element signature="n#style#0;n#select#0;n#td#2;n#form#0;n#!!top" expanded="true" />
+                      <element signature="n#style#0;n#input#0;n#td#0;n#!!top" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cspcapp/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="616">
-              <caret line="28" column="53" selection-start-line="28" selection-start-column="53" selection-end-line="28" selection-end-column="53" />
+            <state relative-caret-position="298">
+              <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -48,85 +78,175 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/student_detail_view.html">
+        <entry file="file://$PROJECT_DIR$/templates/courses_info_view.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="614">
-              <caret line="124" column="99" selection-start-line="124" selection-start-column="99" selection-end-line="124" selection-end-column="99" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/students_overview.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="74" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cspcapp/static/css/student_detail_view.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="614">
-              <caret line="61" selection-start-line="61" selection-end-line="61" />
+            <state relative-caret-position="-59">
+              <caret line="13" column="17" lean-forward="true" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/student_detail_view.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1588">
+              <caret line="442" column="20" selection-start-line="442" selection-start-column="20" selection-end-line="442" selection-end-column="20" />
+              <folding>
+                <element signature="e#434#455#0#HTML" expanded="true" />
+                <element signature="e#1703#1722#0#HTML" expanded="true" />
+                <element signature="e#1741#1760#0#HTML" expanded="true" />
+                <element signature="e#5405#5479#0#HTML" expanded="true" />
+                <element signature="e#5623#5697#0#HTML" expanded="true" />
+                <element signature="e#5855#5929#0#HTML" expanded="true" />
+                <element signature="e#6069#6132#0#HTML" expanded="true" />
+                <element signature="e#6280#6357#0#HTML" expanded="true" />
+                <element signature="e#6495#6558#0#HTML" expanded="true" />
+                <element signature="e#6696#6778#0#HTML" expanded="true" />
+                <element signature="e#6921#6984#0#HTML" expanded="true" />
+                <element signature="e#7125#7188#0#HTML" expanded="true" />
+                <element signature="e#7332#7414#0#HTML" expanded="true" />
+                <element signature="e#7550#7613#0#HTML" expanded="true" />
+                <element signature="e#7725#7773#0#HTML" expanded="true" />
+                <element signature="e#8684#8774#0#HTML" expanded="true" />
+                <element signature="e#9406#9483#0#HTML" expanded="true" />
+                <element signature="e#9616#9693#0#HTML" expanded="true" />
+                <element signature="e#9824#9887#0#HTML" expanded="true" />
+                <element signature="e#10083#10146#0#HTML" expanded="true" />
+                <element signature="e#10345#10408#0#HTML" expanded="true" />
+                <element signature="e#10590#10653#0#HTML" expanded="true" />
+                <element signature="e#10764#10812#0#HTML" expanded="true" />
+                <element signature="e#11700#11775#0#HTML" expanded="true" />
+                <element signature="e#11886#11934#0#HTML" expanded="true" />
+                <element signature="e#12916#12990#0#HTML" expanded="true" />
+                <element signature="e#13132#13206#0#HTML" expanded="true" />
+                <element signature="e#13362#13436#0#HTML" expanded="true" />
+                <element signature="e#13574#13637#0#HTML" expanded="true" />
+                <element signature="e#13783#13860#0#HTML" expanded="true" />
+                <element signature="e#13996#14059#0#HTML" expanded="true" />
+                <element signature="e#14195#14277#0#HTML" expanded="true" />
+                <element signature="e#14418#14481#0#HTML" expanded="true" />
+                <element signature="e#14620#14683#0#HTML" expanded="true" />
+                <element signature="e#14825#14907#0#HTML" expanded="true" />
+                <element signature="e#15041#15104#0#HTML" expanded="true" />
+                <element signature="e#15216#15264#0#HTML" expanded="true" />
+                <element signature="e#16162#16252#0#HTML" expanded="true" />
+                <element signature="e#16701#16778#0#HTML" expanded="true" />
+                <element signature="e#16909#16986#0#HTML" expanded="true" />
+                <element signature="e#17115#17178#0#HTML" expanded="true" />
+                <element signature="e#17370#17433#0#HTML" expanded="true" />
+                <element signature="e#17628#17691#0#HTML" expanded="true" />
+                <element signature="e#17869#17932#0#HTML" expanded="true" />
+                <element signature="e#18043#18091#0#HTML" expanded="true" />
+                <element signature="e#18485#18548#0#HTML" expanded="true" />
+                <element signature="e#19059#19134#0#HTML" expanded="true" />
+                <element signature="e#19245#19293#0#HTML" expanded="true" />
+                <element signature="e#19657#19687#0#HTML" expanded="true" />
+                <element signature="e#20187#20262#0#HTML" expanded="true" />
+                <element signature="e#20373#20421#0#HTML" expanded="true" />
+                <element signature="e#21014#21033#0#HTML" expanded="true" />
+                <element signature="e#22094#22149#0#HTML" expanded="true" />
+                <element signature="e#22286#22322#0#HTML" expanded="true" />
+                <element signature="e#22457#22493#0#HTML" expanded="true" />
+                <element signature="e#22712#22767#0#HTML" expanded="true" />
+                <element signature="e#22942#23004#0#HTML" expanded="true" />
+                <element signature="e#23523#23578#0#HTML" expanded="true" />
+                <element signature="e#25128#25183#0#HTML" expanded="true" />
+                <element signature="e#25304#25340#0#HTML" expanded="true" />
+                <element signature="e#25459#25495#0#HTML" expanded="true" />
+                <element signature="e#25700#25737#0#HTML" expanded="true" />
+                <element signature="e#25933#25995#0#HTML" expanded="true" />
+                <element signature="e#26446#26483#0#HTML" expanded="true" />
+                <element signature="e#28410#28430#0#HTML" expanded="true" />
+                <element signature="e#28523#28565#0#HTML" expanded="true" />
+                <element signature="e#30338#30412#0#HTML" expanded="true" />
+                <element signature="e#30556#30630#0#HTML" expanded="true" />
+                <element signature="e#30788#30862#0#HTML" expanded="true" />
+                <element signature="e#31002#31065#0#HTML" expanded="true" />
+                <element signature="e#31213#31290#0#HTML" expanded="true" />
+                <element signature="e#31428#31491#0#HTML" expanded="true" />
+                <element signature="e#31629#31711#0#HTML" expanded="true" />
+                <element signature="e#31854#31917#0#HTML" expanded="true" />
+                <element signature="e#32058#32121#0#HTML" expanded="true" />
+                <element signature="e#32265#32347#0#HTML" expanded="true" />
+                <element signature="e#32483#32546#0#HTML" expanded="true" />
+                <element signature="e#33114#33204#0#HTML" expanded="true" />
+                <element signature="e#33836#33913#0#HTML" expanded="true" />
+                <element signature="e#34046#34123#0#HTML" expanded="true" />
+                <element signature="e#34254#34317#0#HTML" expanded="true" />
+                <element signature="e#34513#34576#0#HTML" expanded="true" />
+                <element signature="e#34775#34838#0#HTML" expanded="true" />
+                <element signature="e#35020#35083#0#HTML" expanded="true" />
+                <element signature="e#36695#36770#0#HTML" expanded="true" />
+                <element signature="e#36881#36929#0#HTML" expanded="true" />
+                <element signature="e#37911#37985#0#HTML" expanded="true" />
+                <element signature="e#38127#38201#0#HTML" expanded="true" />
+                <element signature="e#38357#38431#0#HTML" expanded="true" />
+                <element signature="e#38569#38632#0#HTML" expanded="true" />
+                <element signature="e#38778#38855#0#HTML" expanded="true" />
+                <element signature="e#38991#39054#0#HTML" expanded="true" />
+                <element signature="e#39190#39272#0#HTML" expanded="true" />
+                <element signature="e#39413#39476#0#HTML" expanded="true" />
+                <element signature="e#39615#39678#0#HTML" expanded="true" />
+                <element signature="e#39820#39902#0#HTML" expanded="true" />
+                <element signature="e#40036#40099#0#HTML" expanded="true" />
+                <element signature="e#40211#40259#0#HTML" expanded="true" />
+                <element signature="e#41157#41247#0#HTML" expanded="true" />
+                <element signature="e#41696#41773#0#HTML" expanded="true" />
+                <element signature="e#41904#41981#0#HTML" expanded="true" />
+                <element signature="e#42110#42173#0#HTML" expanded="true" />
+                <element signature="e#42365#42428#0#HTML" expanded="true" />
+                <element signature="e#42623#42686#0#HTML" expanded="true" />
+                <element signature="e#42864#42927#0#HTML" expanded="true" />
+                <element signature="e#43038#43086#0#HTML" expanded="true" />
+                <element signature="e#43480#43543#0#HTML" expanded="true" />
+                <element signature="e#44054#44129#0#HTML" expanded="true" />
+                <element signature="e#44240#44288#0#HTML" expanded="true" />
+                <element signature="e#44652#44682#0#HTML" expanded="true" />
+                <element signature="e#45182#45257#0#HTML" expanded="true" />
+                <element signature="e#45368#45416#0#HTML" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cspcapp/constants.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret selection-end-line="86" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cspcapp/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="322">
+              <caret line="14" column="73" selection-start-line="14" selection-start-column="73" selection-end-line="14" selection-end-column="73" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cspcapp/api_requests.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1150">
+              <caret line="50" column="17" lean-forward="true" selection-start-line="50" selection-start-column="17" selection-end-line="50" selection-end-column="17" />
+              <folding>
+                <element signature="e#0#61#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="25" column="31" selection-start-line="25" selection-start-column="31" selection-end-line="25" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cspcapp/static/css/base.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="41" column="1" lean-forward="true" selection-start-line="41" selection-start-column="1" selection-end-line="41" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cspcapp/static/css/base_full.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="614">
-              <caret line="62" selection-start-line="62" selection-end-line="62" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/full_base.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="637">
-              <caret line="50" column="7" selection-start-line="50" selection-start-column="7" selection-end-line="50" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/courses_info_view.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="616">
-              <caret line="40" column="76" lean-forward="true" selection-start-line="40" selection-start-column="24" selection-end-line="40" selection-end-column="76" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cspc/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="20" column="37" lean-forward="true" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
-              <folding>
-                <element signature="e#628#660#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="368">
+              <caret line="16" column="91" lean-forward="true" selection-start-line="16" selection-start-column="91" selection-end-line="16" selection-end-column="91" />
             </state>
           </provider>
         </entry>
@@ -136,10 +256,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
-        <option value="JavaScript File" />
-        <option value="HTML File" />
         <option value="CSS File" />
+        <option value="HTML File" />
+        <option value="JavaScript File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -151,6 +271,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -172,33 +297,31 @@
         <option value="$PROJECT_DIR$/cspcapp/static/registration.css" />
         <option value="$PROJECT_DIR$/templates/registration/login.html" />
         <option value="$PROJECT_DIR$/cspcapp/static/base.css" />
-        <option value="$PROJECT_DIR$/cspcapp/utilities.py" />
         <option value="$PROJECT_DIR$/cspcapp/models.py" />
         <option value="$PROJECT_DIR$/templates/teachers_info_view.html" />
-        <option value="$PROJECT_DIR$/cspcapp/views.py" />
         <option value="$PROJECT_DIR$/templates/courses_info_view.html" />
         <option value="$PROJECT_DIR$/templates/students_overview.html" />
         <option value="$PROJECT_DIR$/cspcapp/static/students_overview.css" />
         <option value="$PROJECT_DIR$/cspcapp/static/student_detail_view.css" />
         <option value="$PROJECT_DIR$/cspcapp/static/javascript/student_detail.js" />
         <option value="$PROJECT_DIR$/cspcapp/api_requests.md" />
-        <option value="$PROJECT_DIR$/templates/student_detail_view.html" />
+        <option value="$PROJECT_DIR$/cspcapp/utilities.py" />
+        <option value="$PROJECT_DIR$/templates/base.html" />
+        <option value="$PROJECT_DIR$/cspcapp/constants.py" />
+        <option value="$PROJECT_DIR$/cspcapp/views.py" />
+        <option value="$PROJECT_DIR$/cspcapp/static/css/student_detail_view.css" />
         <option value="$PROJECT_DIR$/cspcapp/urls.py" />
         <option value="$PROJECT_DIR$/cspcapp/api_requests.py" />
+        <option value="$PROJECT_DIR$/templates/student_detail_view.html" />
         <option value="$PROJECT_DIR$/cspcapp/static/javascript/student_detail_view.js" />
-        <option value="$PROJECT_DIR$/templates/side_panel.html" />
-        <option value="$PROJECT_DIR$/templates/full_base.html" />
-        <option value="$PROJECT_DIR$/cspcapp/static/css/base_full.css" />
-        <option value="$PROJECT_DIR$/cspcapp/static/css/base.css" />
-        <option value="$PROJECT_DIR$/templates/base.html" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-68" />
-    <option name="y" value="83" />
-    <option name="width" value="1943" />
-    <option name="height" value="1103" />
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="x" value="-162" />
+    <option name="y" value="-1080" />
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -206,46 +329,53 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="syte" type="b2602c69:ProjectViewProjectNode" />
-              <item name="syte" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="syte" type="b2602c69:ProjectViewProjectNode" />
-              <item name="syte" type="462c0819:PsiDirectoryNode" />
+              <item name="cspc" type="b2602c69:ProjectViewProjectNode" />
               <item name="cspc" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="syte" type="b2602c69:ProjectViewProjectNode" />
-              <item name="syte" type="462c0819:PsiDirectoryNode" />
+              <item name="cspc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cspc" type="462c0819:PsiDirectoryNode" />
+              <item name="cspc" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cspc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cspc" type="462c0819:PsiDirectoryNode" />
               <item name="cspcapp" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="syte" type="b2602c69:ProjectViewProjectNode" />
-              <item name="syte" type="462c0819:PsiDirectoryNode" />
+              <item name="cspc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cspc" type="462c0819:PsiDirectoryNode" />
               <item name="cspcapp" type="462c0819:PsiDirectoryNode" />
               <item name="static" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="syte" type="b2602c69:ProjectViewProjectNode" />
-              <item name="syte" type="462c0819:PsiDirectoryNode" />
+              <item name="cspc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cspc" type="462c0819:PsiDirectoryNode" />
               <item name="cspcapp" type="462c0819:PsiDirectoryNode" />
               <item name="static" type="462c0819:PsiDirectoryNode" />
               <item name="css" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="syte" type="b2602c69:ProjectViewProjectNode" />
-              <item name="syte" type="462c0819:PsiDirectoryNode" />
+              <item name="cspc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cspc" type="462c0819:PsiDirectoryNode" />
+              <item name="cspcapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="javascript" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cspc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cspc" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -254,6 +384,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="database.console.LAST_STATE" value="false" />
+    <property name="jsx.switch.disabled" value="true" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -276,7 +407,29 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.constants">
+    <configuration name="constants" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="cspc" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/cspcapp" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/cspcapp/constants.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="cspc" type="Python.DjangoServer" factoryName="Django server">
       <module name="cspc" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -285,22 +438,27 @@
         <env name="PYTHONUNBUFFERED" value="1" />
         <env name="DJANGO_SETTINGS_MODULE" value="cspc.settings" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\untmu\AppData\Local\Programs\Python\Python37\python.exe" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="launchJavascriptDebuger" value="false" />
       <option name="port" value="8000" />
-      <option name="host" value="127.0.0.1" />
+      <option name="host" value="" />
       <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="http://127.0.0.1:8000/" />
+      <option name="browserUrl" value="" />
       <option name="runTestServer" value="false" />
       <option name="runNoReload" value="false" />
       <option name="useCustomRunCommand" value="false" />
       <option name="customRunCommand" value="" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.constants" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -326,9 +484,8 @@
       <workItem from="1562359445366" duration="37687000" />
       <workItem from="1562782293364" duration="14151000" />
       <workItem from="1562935391606" duration="485000" />
-      <workItem from="1562961966063" duration="16390000" />
-      <workItem from="1563025349625" duration="69000" />
-      <workItem from="1563025495102" duration="6180000" />
+      <workItem from="1562961966063" duration="20499000" />
+      <workItem from="1563048060999" duration="36848000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1562359492261</created>
@@ -421,11 +578,32 @@
       <option name="project" value="LOCAL" />
       <updated>1563012157527</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="delete files">
+      <created>1563024783541</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1563024783541</updated>
+    </task>
+    <task id="LOCAL-00015" summary="micro">
+      <created>1563025181702</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1563025181702</updated>
+    </task>
+    <task id="LOCAL-00016" summary="micro">
+      <created>1563027779499</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1563027779499</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="147161000" />
+    <option name="totallyTimeSpent" value="181869000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -437,23 +615,23 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-162" y="-1080" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.17651007" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.09850905" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="manage.py@cspc" order="0" weight="0.32891566" />
       <window_info anchor="bottom" id="Database Changes" order="1" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Console" order="2" weight="0.24216868" />
       <window_info anchor="bottom" id="Terminal" order="3" sideWeight="0.49840257" weight="0.14059407" />
       <window_info anchor="bottom" id="Version Control" order="4" sideWeight="0.49893504" weight="0.3279678" />
-      <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.50106496" side_tool="true" weight="0.14447592" />
+      <window_info active="true" anchor="bottom" id="Event Log" order="5" sideWeight="0.5042598" side_tool="true" visible="true" weight="0.13179074" />
       <window_info anchor="bottom" x="0" y="229" width="1437" height="472" id="Python Console" internal_type="SLIDING" order="6" sideWeight="0.49840257" weight="0.23762377" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="8" />
       <window_info anchor="bottom" id="Find" order="9" weight="0.32891566" />
-      <window_info anchor="bottom" id="Run" order="10" sideWeight="0.49574015" weight="0.51983005" />
+      <window_info anchor="bottom" id="Run" order="10" sideWeight="0.49574015" visible="true" weight="0.13179074" />
       <window_info anchor="bottom" id="Debug" order="11" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="12" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="13" weight="0.4" />
@@ -481,9 +659,18 @@
     <MESSAGE value="add course and teachrs pages" />
     <MESSAGE value="student detail view design update" />
     <MESSAGE value="ajax and other javscript start work" />
-    <option name="LAST_COMMIT_MESSAGE" value="ajax and other javscript start work" />
+    <MESSAGE value="delete files" />
+    <MESSAGE value="micro" />
+    <option name="LAST_COMMIT_MESSAGE" value="micro" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/cspc$constants.coverage" NAME="constants Coverage Results" MODIFIED="1563092346690" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cspcapp" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/94108181-3faf-40cb-aff0-d5fcb9e0c087/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db.sqlite3" />
     <entry file="das://360b21ef-b736-4742-a324-6eb380f32b70/schema/main/table/cspcapp_personaddressdata" />
     <entry file="das://360b21ef-b736-4742-a324-6eb380f32b70/schema/main/table/cspcapp_courseelement" />
     <entry file="das://360b21ef-b736-4742-a324-6eb380f32b70/schema/main/table/cspcapp_personpassportdata" />
@@ -492,7 +679,13 @@
     <entry file="das://360b21ef-b736-4742-a324-6eb380f32b70/schema/main/table/cspcapp_school" />
     <entry file="das://360b21ef-b736-4742-a324-6eb380f32b70/schema/main/table/cspcapp_student" />
     <entry file="das://360b21ef-b736-4742-a324-6eb380f32b70/schema/main/table/cspcapp_person" />
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/360b21ef-b736-4742-a324-6eb380f32b70/console.sql" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/360b21ef-b736-4742-a324-6eb380f32b70/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="439">
+          <caret line="44" column="23" lean-forward="true" selection-start-line="44" selection-start-column="23" selection-end-line="44" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/cspcapp/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -506,14 +699,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/524610fa-38de-404a-aa4b-040fe3d83a0e/console.sql" />
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/76c4bcac-2255-47df-8c8d-27e514067953/console.sql" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/524610fa-38de-404a-aa4b-040fe3d83a0e/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/76c4bcac-2255-47df-8c8d-27e514067953/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="das://ef3292b6-1120-4c74-9e8a-19adf2b2dd90/database/cspc/schema/public/table/contract" />
     <entry file="das://ef3292b6-1120-4c74-9e8a-19adf2b2dd90/database/cspc/schema/public/table/course" />
     <entry file="file://$PROJECT_DIR$/cspcapp/migrations/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/ef3292b6-1120-4c74-9e8a-19adf2b2dd90/console.sql" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/ef3292b6-1120-4c74-9e8a-19adf2b2dd90/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/manage.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -538,10 +737,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/apps.py">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/4f67cfdc-9a96-4cbc-9a4f-a995b83907c5/console.sql">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/4f67cfdc-9a96-4cbc-9a4f-a995b83907c5/console.sql" />
     <entry file="file://$PROJECT_DIR$/venv/lib/python3.7/site-packages/django/core/checks/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="333">
@@ -556,43 +754,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="1" column="61" selection-start-line="1" selection-start-column="61" selection-end-line="1" selection-end-column="61" />
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/database_editing.py" />
-    <entry file="file://$PROJECT_DIR$/cspcapp/sql_raws.py" />
-    <entry file="file://$PROJECT_DIR$/cspcapp/tests.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/utilities.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="179" lean-forward="true" selection-start-line="179" selection-end-line="179" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/view_models.py" />
     <entry file="file://$PROJECT_DIR$/cspcapp/static/css/registration.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="46">
           <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cspcapp/static/css/base.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="20" column="18" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
         </state>
       </provider>
     </entry>
@@ -603,64 +775,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/teachers_info_view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/student_edit_view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3358">
-          <caret line="146" column="14" selection-start-line="146" selection-start-column="14" selection-end-line="146" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/api_requests.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="545">
-            <caret line="26" column="21" selection-start-line="26" selection-start-column="3" selection-end-line="26" selection-end-column="21" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cspcapp/static/css/students_overview.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="8" column="68" selection-start-line="8" selection-start-column="50" selection-end-line="8" selection-end-column="68" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/api_requests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="25" column="29" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/static/javascript/student_detail_view.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="2" column="1" lean-forward="true" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+        <state relative-caret-position="115">
+          <caret line="5" column="13" lean-forward="true" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cspc/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
+        <state relative-caret-position="460">
           <caret line="20" column="37" lean-forward="true" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
           <folding>
             <element signature="e#628#660#0" expanded="true" />
@@ -668,72 +792,264 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cspcapp/sql_raws.py" />
+    <entry file="file://$PROJECT_DIR$/cspcapp/database_editing.py" />
+    <entry file="file://$PROJECT_DIR$/cspcapp/view_models.py" />
+    <entry file="file://$PROJECT_DIR$/cspcapp/api_requests.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="598">
+            <caret line="26" column="21" selection-start-line="26" selection-start-column="3" selection-end-line="26" selection-end-column="21" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cspcapp/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="1" column="61" selection-start-line="1" selection-start-column="61" selection-end-line="1" selection-end-column="61" />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cspcapp/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="483">
+          <caret line="21" column="15" lean-forward="true" selection-start-line="21" selection-start-column="15" selection-end-line="21" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cspcapp/tests.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cspcapp/utilities.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/teachers_info_view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cspcapp/apps.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/student_edit_view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="962">
+          <caret line="146" column="14" selection-start-line="146" selection-start-column="14" selection-end-line="146" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="16" column="91" lean-forward="true" selection-start-line="16" selection-start-column="91" selection-end-line="16" selection-end-column="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cspcapp/static/css/student_detail_view.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-917">
+          <caret line="100" column="1" lean-forward="true" selection-start-line="100" selection-start-column="1" selection-end-line="100" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/students_overview.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1165">
+          <caret line="62" column="92" lean-forward="true" selection-start-line="60" selection-start-column="20" selection-end-line="62" selection-end-column="92" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cspcapp/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="14" column="73" selection-start-line="14" selection-start-column="73" selection-end-line="14" selection-end-column="73" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/cspcapp/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="28" column="53" selection-start-line="28" selection-start-column="53" selection-end-line="28" selection-end-column="53" />
+        <state relative-caret-position="298">
+          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/side_panel.html">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/templates/courses_info_view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-59">
+          <caret line="13" column="17" lean-forward="true" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cspcapp/api_requests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1150">
+          <caret line="50" column="17" lean-forward="true" selection-start-line="50" selection-start-column="17" selection-end-line="50" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#61#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cspcapp/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="86" selection-end-column="1" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/student_detail_view.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="614">
-          <caret line="124" column="99" selection-start-line="124" selection-start-column="99" selection-end-line="124" selection-end-column="99" />
+        <state relative-caret-position="-1588">
+          <caret line="442" column="20" selection-start-line="442" selection-start-column="20" selection-end-line="442" selection-end-column="20" />
+          <folding>
+            <element signature="e#434#455#0#HTML" expanded="true" />
+            <element signature="e#1703#1722#0#HTML" expanded="true" />
+            <element signature="e#1741#1760#0#HTML" expanded="true" />
+            <element signature="e#5405#5479#0#HTML" expanded="true" />
+            <element signature="e#5623#5697#0#HTML" expanded="true" />
+            <element signature="e#5855#5929#0#HTML" expanded="true" />
+            <element signature="e#6069#6132#0#HTML" expanded="true" />
+            <element signature="e#6280#6357#0#HTML" expanded="true" />
+            <element signature="e#6495#6558#0#HTML" expanded="true" />
+            <element signature="e#6696#6778#0#HTML" expanded="true" />
+            <element signature="e#6921#6984#0#HTML" expanded="true" />
+            <element signature="e#7125#7188#0#HTML" expanded="true" />
+            <element signature="e#7332#7414#0#HTML" expanded="true" />
+            <element signature="e#7550#7613#0#HTML" expanded="true" />
+            <element signature="e#7725#7773#0#HTML" expanded="true" />
+            <element signature="e#8684#8774#0#HTML" expanded="true" />
+            <element signature="e#9406#9483#0#HTML" expanded="true" />
+            <element signature="e#9616#9693#0#HTML" expanded="true" />
+            <element signature="e#9824#9887#0#HTML" expanded="true" />
+            <element signature="e#10083#10146#0#HTML" expanded="true" />
+            <element signature="e#10345#10408#0#HTML" expanded="true" />
+            <element signature="e#10590#10653#0#HTML" expanded="true" />
+            <element signature="e#10764#10812#0#HTML" expanded="true" />
+            <element signature="e#11700#11775#0#HTML" expanded="true" />
+            <element signature="e#11886#11934#0#HTML" expanded="true" />
+            <element signature="e#12916#12990#0#HTML" expanded="true" />
+            <element signature="e#13132#13206#0#HTML" expanded="true" />
+            <element signature="e#13362#13436#0#HTML" expanded="true" />
+            <element signature="e#13574#13637#0#HTML" expanded="true" />
+            <element signature="e#13783#13860#0#HTML" expanded="true" />
+            <element signature="e#13996#14059#0#HTML" expanded="true" />
+            <element signature="e#14195#14277#0#HTML" expanded="true" />
+            <element signature="e#14418#14481#0#HTML" expanded="true" />
+            <element signature="e#14620#14683#0#HTML" expanded="true" />
+            <element signature="e#14825#14907#0#HTML" expanded="true" />
+            <element signature="e#15041#15104#0#HTML" expanded="true" />
+            <element signature="e#15216#15264#0#HTML" expanded="true" />
+            <element signature="e#16162#16252#0#HTML" expanded="true" />
+            <element signature="e#16701#16778#0#HTML" expanded="true" />
+            <element signature="e#16909#16986#0#HTML" expanded="true" />
+            <element signature="e#17115#17178#0#HTML" expanded="true" />
+            <element signature="e#17370#17433#0#HTML" expanded="true" />
+            <element signature="e#17628#17691#0#HTML" expanded="true" />
+            <element signature="e#17869#17932#0#HTML" expanded="true" />
+            <element signature="e#18043#18091#0#HTML" expanded="true" />
+            <element signature="e#18485#18548#0#HTML" expanded="true" />
+            <element signature="e#19059#19134#0#HTML" expanded="true" />
+            <element signature="e#19245#19293#0#HTML" expanded="true" />
+            <element signature="e#19657#19687#0#HTML" expanded="true" />
+            <element signature="e#20187#20262#0#HTML" expanded="true" />
+            <element signature="e#20373#20421#0#HTML" expanded="true" />
+            <element signature="e#21014#21033#0#HTML" expanded="true" />
+            <element signature="e#22094#22149#0#HTML" expanded="true" />
+            <element signature="e#22286#22322#0#HTML" expanded="true" />
+            <element signature="e#22457#22493#0#HTML" expanded="true" />
+            <element signature="e#22712#22767#0#HTML" expanded="true" />
+            <element signature="e#22942#23004#0#HTML" expanded="true" />
+            <element signature="e#23523#23578#0#HTML" expanded="true" />
+            <element signature="e#25128#25183#0#HTML" expanded="true" />
+            <element signature="e#25304#25340#0#HTML" expanded="true" />
+            <element signature="e#25459#25495#0#HTML" expanded="true" />
+            <element signature="e#25700#25737#0#HTML" expanded="true" />
+            <element signature="e#25933#25995#0#HTML" expanded="true" />
+            <element signature="e#26446#26483#0#HTML" expanded="true" />
+            <element signature="e#28410#28430#0#HTML" expanded="true" />
+            <element signature="e#28523#28565#0#HTML" expanded="true" />
+            <element signature="e#30338#30412#0#HTML" expanded="true" />
+            <element signature="e#30556#30630#0#HTML" expanded="true" />
+            <element signature="e#30788#30862#0#HTML" expanded="true" />
+            <element signature="e#31002#31065#0#HTML" expanded="true" />
+            <element signature="e#31213#31290#0#HTML" expanded="true" />
+            <element signature="e#31428#31491#0#HTML" expanded="true" />
+            <element signature="e#31629#31711#0#HTML" expanded="true" />
+            <element signature="e#31854#31917#0#HTML" expanded="true" />
+            <element signature="e#32058#32121#0#HTML" expanded="true" />
+            <element signature="e#32265#32347#0#HTML" expanded="true" />
+            <element signature="e#32483#32546#0#HTML" expanded="true" />
+            <element signature="e#33114#33204#0#HTML" expanded="true" />
+            <element signature="e#33836#33913#0#HTML" expanded="true" />
+            <element signature="e#34046#34123#0#HTML" expanded="true" />
+            <element signature="e#34254#34317#0#HTML" expanded="true" />
+            <element signature="e#34513#34576#0#HTML" expanded="true" />
+            <element signature="e#34775#34838#0#HTML" expanded="true" />
+            <element signature="e#35020#35083#0#HTML" expanded="true" />
+            <element signature="e#36695#36770#0#HTML" expanded="true" />
+            <element signature="e#36881#36929#0#HTML" expanded="true" />
+            <element signature="e#37911#37985#0#HTML" expanded="true" />
+            <element signature="e#38127#38201#0#HTML" expanded="true" />
+            <element signature="e#38357#38431#0#HTML" expanded="true" />
+            <element signature="e#38569#38632#0#HTML" expanded="true" />
+            <element signature="e#38778#38855#0#HTML" expanded="true" />
+            <element signature="e#38991#39054#0#HTML" expanded="true" />
+            <element signature="e#39190#39272#0#HTML" expanded="true" />
+            <element signature="e#39413#39476#0#HTML" expanded="true" />
+            <element signature="e#39615#39678#0#HTML" expanded="true" />
+            <element signature="e#39820#39902#0#HTML" expanded="true" />
+            <element signature="e#40036#40099#0#HTML" expanded="true" />
+            <element signature="e#40211#40259#0#HTML" expanded="true" />
+            <element signature="e#41157#41247#0#HTML" expanded="true" />
+            <element signature="e#41696#41773#0#HTML" expanded="true" />
+            <element signature="e#41904#41981#0#HTML" expanded="true" />
+            <element signature="e#42110#42173#0#HTML" expanded="true" />
+            <element signature="e#42365#42428#0#HTML" expanded="true" />
+            <element signature="e#42623#42686#0#HTML" expanded="true" />
+            <element signature="e#42864#42927#0#HTML" expanded="true" />
+            <element signature="e#43038#43086#0#HTML" expanded="true" />
+            <element signature="e#43480#43543#0#HTML" expanded="true" />
+            <element signature="e#44054#44129#0#HTML" expanded="true" />
+            <element signature="e#44240#44288#0#HTML" expanded="true" />
+            <element signature="e#44652#44682#0#HTML" expanded="true" />
+            <element signature="e#45182#45257#0#HTML" expanded="true" />
+            <element signature="e#45368#45416#0#HTML" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/courses_info_view.html">
+    <entry file="file://$PROJECT_DIR$/cspcapp/static/javascript/student_detail_view.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="40" column="76" lean-forward="true" selection-start-line="40" selection-start-column="24" selection-end-line="40" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/static/css/student_detail_view.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="614">
-          <caret line="61" selection-start-line="61" selection-end-line="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/students_overview.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/full_base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="637">
-          <caret line="50" column="7" selection-start-line="50" selection-start-column="7" selection-end-line="50" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/static/css/base_full.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="614">
-          <caret line="62" selection-start-line="62" selection-end-line="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cspcapp/static/css/base.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="41" column="1" lean-forward="true" selection-start-line="41" selection-start-column="1" selection-end-line="41" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="25" column="31" selection-start-line="25" selection-start-column="31" selection-end-line="25" selection-end-column="31" />
+        <state relative-caret-position="732">
+          <caret line="121" column="8" lean-forward="true" selection-start-line="121" selection-start-column="8" selection-end-line="121" selection-end-column="8" />
+          <folding>
+            <element signature="n#style#0;n#input#2;n#td#0;n#form#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#3;n#td#0;n#form#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#4;n#td#0;n#form#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#td#1;n#form#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#select#0;n#td#2;n#form#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#td#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
