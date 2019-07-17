@@ -51,6 +51,11 @@ def payment_add(request: WSGIRequest) -> HttpResponse:
     # do db logic
     new_element_id = 9999
     return JsonResponse({'result': True, 'new_element_id': new_element_id})
+
+
+def add_new_contract(request: WSGIRequest) -> HttpResponse:
+    print(request.POST)
+    return JsonResponse({'result': True})
 #
 #
 # def edit_inn(request: WSGIRequest) -> JsonResponse:

@@ -1,6 +1,7 @@
 from django.db import models
 from django.db import connection
 from django.contrib.auth.models import User
+from .constants import DAYS_OF_WEEK
 
 
 class Contract(models.Model):
@@ -82,6 +83,11 @@ class CourseElement(models.Model):
         managed = False
         db_table = 'course_element'
 
+    @property
+    def get_week_days_str(self) -> str:
+        return " ".join([DAYS_OF_WEEK[int(i.week_day_txt)]
+                         for i in CourseClass.objects.filter(course_element=self).order_by('week_day_txt')])
+
 
 class Person(models.Model):
     person_id = models.AutoField(primary_key=True)
@@ -93,6 +99,14 @@ class Person(models.Model):
     class Meta:
         managed = False
         db_table = 'person'
+
+    @property
+    def get_surname_and_initials(self) -> str:
+        res = str(self.person_surname_txt) + " " + str(self.person_name_txt)[0] + "."
+        if self.person_father_name_txt is not None:
+            res += " " + str(self.person_father_name_txt)[0] + "."
+        return res
+
 
 
 class PersonDocument(models.Model):

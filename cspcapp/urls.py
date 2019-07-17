@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^api/payer_phone_data_edit/', api_requests.payer_phone_data_edit, name='payer_phone_data_edit'),
     url(r'^api/payment_data_edit/', api_requests.payment_data_edit, name='payment_data_edit'),
     url(r'^api/payment_add/', api_requests.payment_add, name='payment_add'),
+    url(r'^api/add_new_contract/', api_requests.add_new_contract, name='add_new_contract'),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^courses/$', views.courses_view, name='cspcapp_courses_view'),
     url(r'^teachers/$', views.teachers_view, name='cspcapp_teachers_view'),

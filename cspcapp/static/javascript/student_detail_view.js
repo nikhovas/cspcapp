@@ -104,28 +104,12 @@ PAYMENT_TYPES = {
 // }
 
 
-class PersonPassportData {
-    id = 0;
-    person_surname = "";
-    person_name = "";
-    person_father_name = "";
-    issued_by = "";
-    type = "";
-    authority_no = "";
-    issue_day = 0;
-    issue_month = 0;
-    issue_year = 0;
-    document_series = "";
-    document_no = 0;
-
-    constructor(dict) {
-        for (const i in dict) {
-            this.i = dict.i;
-        }
-    }
 
 
-}
+
+
+
+
 
 
 function get_scrf_token() {
