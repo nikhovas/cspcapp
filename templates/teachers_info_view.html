@@ -2,37 +2,30 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-    <title>Список студентов</title>
+    <title>Список Учителей</title>
 {% endblock %}
 
 
 
 
+
 {% block content %}
-
-    <h1>
-    Список курсов
-    </h1>
-
-    <table class="table main-table" style="width: calc(100% - 280px);">
+    <table class="table main-table" style="width: calc(100% - 280px); float: left">
         <colgroup>
             <col>
-            <col width="70px">
             <col>
             <col width="80px">
         </colgroup>
         <thead>
             <tr>
-                <td>Школа</td>
-                <td>Класс</td>
-                <td>Ученик</td>
+                <td>Место работы</td>
+                <td>Учитель</td>
                 <td></td>
             </tr>
         </thead>
         {% for student in students_list %}
             <tr>
                 <td>{{ student.school_name_txt }}</td>
-                <td>{{ student.grade }} {{ student.liter }}</td>
                 <td>
                     {{ student.person_surname_txt }} {{ student.person_name_txt }}
                     {{ student.person_father_name_txt }}
@@ -56,11 +49,9 @@
             <input type="text" name="name" value="{{ request_get.name }}" placeholder="Имя"/>
             <input type="text" name="father_name" value="{{ request_get.father_name }}" placeholder="Отчество"/>
             <input type="text" name="school" value="{{ request_get.school }}" placeholder="Школа"/>
-            <input type="number" name="grade" value="{{ request_get.grade }}" min="1" max="11" style="width: 40px; float: left; margin-right: 10px;" placeholder="11">
-            <input type="text" name="liter" value="{{ request_get.liter }}" style="width: 25px; float: left; margin-right: 10px;" placeholder="Б">
+            <p>Паспорт:</p>
             <input type="text" name="document_series" value="{{ request_get.document_series }}" style="width: 60px; float: left; margin-right: 10px;" placeholder="Серия">
             <input type="text" name="document_no" value="{{ request_get.document_no }}" style="width: 93px;" placeholder="Номер">
-            <input type="checkbox" name="dept" style="margin-right: 10px;">Только с неоплатой
             <table style="">
                 <tr>
                     <td><button type="submit"><span class="glyphicon glyphicon-search"></span></button></td>

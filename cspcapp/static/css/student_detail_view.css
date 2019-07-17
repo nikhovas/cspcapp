@@ -160,3 +160,13 @@
 input[type="text"]:disabled {
   color: white;
 }
+
+.left-element {
+    display: inline-block;
+    float: left;
+}
+
+.right-element {
+    display: inline-block;
+    float: left;
+}
