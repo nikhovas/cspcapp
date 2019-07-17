@@ -2,9 +2,18 @@ body {
   background-color: whitesmoke;
 }
 
+.circle {
+    width: 40px;
+    height: 40px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    background: red;
+}
+
 .sidebar {
     height: 100%;
-    width: 40px;
+    width: 60px;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -16,10 +25,11 @@ body {
 
 /* The navigation menu links */
 .sidebar a {
-  text-decoration: none;
-  font-size: 20px;
-  color: whitesmoke;
-  display: block;
+    padding-left: 6%;
+    text-decoration: none;
+    font-size: 30px;
+    color: whitesmoke;
+    display: block;
 }
 
 /* When you mouse over the navigation links, change their color */
@@ -28,29 +38,39 @@ body {
 }
 
 .window-content {
-  margin-left: 40px; /* Same as the width of the sidebar */
+  margin-left: 60px; /* Same as the width of the sidebar */
   padding: 0px 10px;
 }
 
 .login-info {
     padding: 8px 10px;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 30px;
     color: whitesmoke;
     display: block;
     border-bottom: 3px solid wheat;
 }
 
 .login-info div {
-    margin-top: 4px;
-    font-size: 14px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 30px;
+}
+
+.portfolio_element {
+    margin-top: 10px;
+    padding: 8px 5px 8px 14px;
+    text-decoration: none;
+    font-size: 22px;
+    color: whitesmoke;
+    display: block;
 }
 
 .sidebar-element {
     margin-top: 10px;
     padding: 6px 10px 8px;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 22px;
     color: whitesmoke;
     display: block;
     /*background-color: black;*/

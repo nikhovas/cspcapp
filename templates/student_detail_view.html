@@ -45,40 +45,44 @@
     </h2>
 
     <div style="display: inline-block">
-        <table class="table main-table" style="width: 350px;">
-            <tr>
-                <td> Фамилия </td>
-                <td> {{ person.person_surname_txt }} </td>
-            </tr>
-            <tr>
-                <td> Имя </td>
-                <td> {{ person.person_name_txt }} </td>
-            </tr>
-            <tr>
-                <td> Отчество </td>
-                <td> {{ person.person_father_name_txt }} </td>
-            </tr>
-            <tr>
-                <td> Дата рождения </td>
-                <td> {{ person.birth_dt }} </td>
-            </tr>
-        </table>
-    </div>
-
-    <div style="display: inline-block">
-        <table class="table main-table" style="width: 350px">
-            <tr>
-                <td> Дата начала учебы </td>
-                <td> {{ student_person.education_start_year }} </td>
-            </tr>
-            <tr>
-                <td> Школа </td>
-                <td> {{ student_person.school_name_txt }} </td>
-            </tr>
-            <tr>
-                <td> Литер класса </td>
-                <td> {{ student_person.liter }} </td>
-            </tr>
+        <table>
+            <td>
+                <table class="table main-table" style="width: 350px;" border="2" cellpadding="5">
+                <tr>
+                    <td> Фамилия </td>
+                    <td> {{ person.person_surname_txt }} </td>
+                </tr>
+                <tr>
+                    <td> Имя </td>
+                    <td> {{ person.person_name_txt }} </td>
+                </tr>
+                <tr>
+                    <td> Отчество </td>
+                    <td> {{ person.person_father_name_txt }} </td>
+                </tr>
+                <tr>
+                    <td> Дата рождения </td>
+                    <td> {{ person.birth_dt }} </td>
+                </tr>
+                <tr>
+                    <td> Дата начала учебы </td>
+                    <td> {{ student_person.education_start_year }} </td>
+                </tr>
+                <tr>
+                    <td> Школа </td>
+                    <td> {{ student_person.school_name_txt }} </td>
+                </tr>
+                <tr>
+                    <td> Литер класса </td>
+                    <td> {{ student_person.liter }} </td>
+                </tr>
+                </table>
+            </td>
+            <td>
+                    <button style="background-color: grey; margin-left: 20%; margin-bottom: 38%; height: 260px";  onclick="demo();">
+                    <span class="glyphicon glyphicon-pencil"/>
+                    </button>
+            </td>
         </table>
     </div>
 
@@ -473,7 +477,7 @@
 {% endblock %}
 
 {% block common_list_sublevel %}
-    <div class="sidebar-element" style="background-color: #8b9dc3">
-        Просмотр персоны
+    <div class="portfolio_element" style="background-color: #8b9dc3">
+        <span class="far fa-address-card"></span>
     </div>
 {% endblock %}

@@ -52,7 +52,7 @@ def courses_view(request: WSGIRequest) -> HttpResponse:
 @login_required
 def teachers_view(request: WSGIRequest) -> HttpResponse:
     courses_info = [(i, CourseElement.objects.filter(course=i)) for i in Course.objects.all()]
-    return render(request, 'teachers_info_view.html', {courses_info})
+    return render(request, 'teachers_info_view.html', {})
 
 
 def meta_base_view(request):
