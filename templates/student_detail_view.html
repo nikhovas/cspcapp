@@ -121,12 +121,24 @@
                     <div class="editing-field-container" style="width: 200px">
                         <div class="main-contract-data-box" >
                         <div style="display: inline-block; width: 98%;">
-                            {{ contract.0.course_element.teacher_person.surname_txt }}Демфамилия<br>
-                            пн вт ср чт
+                            <form action="" method="post" id="course_element_data_form_{{ contract.0.pk }}" name="course_element_data_form_{{ contract.0.pk }}">
+                                {% csrf_token %}
+                                <select name="course_element" style="width: 100%; border-width: 0; -webkit-appearance:none; background-color: #3b5998" disabled>
+                                    {% for i in courses %}
+                                        {% if i.0 == contract.0.course_element.course %}
+                                            {% for j in i.1 %}
+                                                <option value="{{ j.pk }}" {% if j == contract.course_element %}selected{% endif %}>
+                                                    {{ j.teacher_person.get_surname_and_initials }} {{ j.get_week_days_str }}
+                                                </option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </form>
                         </div>
                     </div>
-                        <button style="background-color: #3b5998; height: 60px;" onclick="demo();">
-                            <span class="glyphicon glyphicon-pencil"/>
+                        <button style="background-color: #3b5998; height: 40px;" onclick="enableEditDocumentMode('course_element', {{ contract.0.pk }})" id="course_element_data_button_{{ contract.0.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="course_element_data_button_span_{{ contract.0.pk }}"/>
                         </button>
                     </div>
 
@@ -143,7 +155,7 @@
                         </button>
 
                     <button class="long-button" onclick="paymentsToggle({{ contract.0.pk }})">
-                            <span class="glyphicon glyphicon-arrow-down"/>
+                            <span class="glyphicon glyphicon-arrow-down" />
                         </button>
                 </td>
                 <td colspan="3">

@@ -2,6 +2,7 @@ from django.db import models
 from django.db import connection
 from django.contrib.auth.models import User
 from .constants import DAYS_OF_WEEK
+from django.forms.models import model_to_dict
 
 
 class Contract(models.Model):
@@ -121,6 +122,15 @@ class PersonDocument(models.Model):
     authority_no = models.CharField(max_length=20)
     authority_txt = models.CharField(max_length=150)
     issue_dt = models.DateField()
+
+    def dict_equal(self, args: dict) -> bool:
+        for i, j in model_to_dict(self).items():
+            if i == 'person':
+                if args['person_id'] != self.person_id:
+                    return False
+            elif args[i] != j:
+                return False
+        return True
 
     class Meta:
         managed = False
