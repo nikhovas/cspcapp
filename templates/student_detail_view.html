@@ -4,7 +4,7 @@
 
 
 {% block title %}
-    <title>{{ object.studentPerson.initials }}</title>
+    <title xmlns:cellpadding="http://www.w3.org/1999/xhtml">{{ object.studentPerson.initials }}</title>
 {% endblock %}
 
 {% block content %}
@@ -44,65 +44,38 @@
         {{ person.person_surname_txt }} {{ person.person_name_txt }} {{ person.person_father_name_txt }} ID: {{ person.pk }}
     </h2>
 
-    <table class="table main-table">
-    <thead>
-        <tr>
-            <td>name1</td>
-            <td>name2</td>
-            <td>name3</td>
-        </tr>
-    </thead>
-    <tr>
-            <td>fdsfa</td>
-            <td>fdsfa</td>
-            <td>fdsfa</td>
-        </tr>
-    </table>
-
-    <div style="display: inline-block">
-        <table>
-            <td>
-                <table class="table main-table" style="width: 350px;" border="2" cellpadding="5">
+    <div style="display: inline-block; float: left;" >
+    <font color="white">
+                <table class="table main-table" id="first-table" style="width: 350px; background: #3b5998;" border="2">
                 <tr>
                     <td> Фамилия </td>
-                    <td> {{ person.person_surname_txt }} </td>
-                </tr>
-                <tr>
                     <td> Имя </td>
-                    <td> {{ person.person_name_txt }} </td>
-                </tr>
-                <tr>
                     <td> Отчество </td>
-                    <td> {{ person.person_father_name_txt }} </td>
-                </tr>
-                <tr>
                     <td> Дата рождения </td>
-                    <td> {{ person.birth_dt }} </td>
-                </tr>
-                <tr>
                     <td> Дата начала учебы </td>
-                    <td> {{ student_person.education_start_year }} </td>
-                </tr>
-                <tr>
                     <td> Школа </td>
-                    <td> {{ student_person.school_name_txt }} </td>
-                </tr>
-                <tr>
                     <td> Литер класса </td>
-                    <td> {{ student_person.liter }} </td>
+                </tr><tr>
+                        <td> {{ person.person_surname_txt }} </td>
+                        <td> {{ person.person_name_txt }} </td>
+                        <td> {{ person.person_father_name_txt }} </td>
+                        <td> {{ person.birth_dt }} </td>
+                        <td> {{ student_person.education_start_year }} </td>
+                        <td> {{ student_person.school_name_txt }} </td>
+                        <td> {{ student_person.liter }} </td>
                 </tr>
                 </table>
-            </td>
-            <td>
-                    <button style="background-color: grey; margin-left: 20%; margin-bottom: 38%; height: 260px";  onclick="demo();">
-                    <span class="glyphicon glyphicon-pencil"/>
-                    </button>
-            </td>
-        </table>
+    </font>
     </div>
 
-    <h3 style="color: black; width: 100%">Договоры</h3>
-
+    <div style="padding-top: 10px; margin-left: 40%;">
+                    <button style="background-color: #3b5998; height: 155px "  onclick="demo();">
+                        <span class="glyphicon glyphicon-pencil"/>
+                    </button>
+    </div>
+    <div style="margin-top: 3%">
+        <h3 style="color: black; width: 100%">Договоры</h3>
+    </div>
     <table class="table main-table contracts-table" style="width: 100%">
         <colgroup>
             <col style="width: 45px">
