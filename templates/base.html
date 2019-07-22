@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% block title %}{% endblock %}
-    <!— Bootstrap —>
+    <!--Bootstrap -->
 {#    <link href="css/bootstrap.min.css" rel="stylesheet">#}
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap-theme.min.css">
@@ -29,35 +29,27 @@
 <div class="sidebar">
     <div class="login-info">
         <div class="circle" style="padding: 0px 0px 10px 8px; padding-bottom: 45px"><font size="4">AA</font></div>
-        <div>
-            <span class="fas fa-door-open"></span>
-        </div>
+    </div>
+    <div class="exit-button">
+        <a href="/login/"><span class="fas fa-door-open"></span></a>
     </div>
     <div class="sidebar-element">
-        <a href="#"><span class="glyphicon glyphicon-option-horizontal"></span></a>
+        <a href="#" target="_self"><span class="glyphicon glyphicon-option-horizontal"></span></a>
     </div>
     <div class="sidebar-element">
-        <a href="/"><span class="glyphicon glyphicon-list-alt"></span></a>
+        <a href="/" target="_self"><span class="glyphicon glyphicon-list-alt"></span></a>
     </div>
     {% block common_list_sublevel %}
     {% endblock %}
     <div class="sidebar-element">
-        <a href="/courses/"><span class="glyphicon glyphicon-tasks"></span></a>
+        <a href="/courses/" target="_self"><span class="glyphicon glyphicon-tasks"></span></a>
     </div>
     <div class="sidebar-element">
-        <a href="/teachers/"><span class="glyphicon glyphicon-briefcase"></span></a>
+        <a href="/teachers/" target="_self"><span class="glyphicon glyphicon-briefcase"></span></a>
     </div>
     <div class="sidebar-element">
-        <a href="#"><span class="glyphicon glyphicon-folder-open"></span></a>
+        <a href="#" target="_self"><span class="glyphicon glyphicon-folder-open"></span></a>
     </div>
-    <!--<div class="dropdown">
-      <button class="dropbtn">Dropdown</button>
-      <div class="dropdown-content">
-        <a href="#">Link 1</a>
-        <a href="#">Link 2</a>
-        <a href="#">Link 3</a>
-      </div>
-    </div>-->
 
 </div>
 
