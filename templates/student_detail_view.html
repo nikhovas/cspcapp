@@ -95,7 +95,7 @@
             </tr>
         </thead>
         {% for contract in contracts %}
-            <tr>
+            <tr id="contract_tr_main_{{ contract.0.pk }}">
                 <td colspan="2">
                     <div>
                         <div class="non-editing-field-container">
@@ -146,7 +146,7 @@
                             <span class="glyphicon glyphicon-print"/>
                         </button>
 
-                    <button class="long-button">
+                    <button class="long-button" onclick="delete_object('contract', {{ contract.0.pk }})">
                             <span class="glyphicon glyphicon-remove"/>
                         </button>
 
@@ -161,9 +161,10 @@
                 <td colspan="3">
 
                     <div class="editing-field-container">
-                        <div class="passport-data-box" id="document_data_{{ contract.0.student_document.pk }}">
-                            <form action="" method="post" id="document_data_form_{{ contract.0.student_document.pk }}" name="document_data_form_{{ contract.0.student_document.pk }}">
+                        <div class="passport-data-box" id="person_document_data_{{ contract.0.student_document.pk }}">
+                            <form action="" method="post" id="person_document_data_form_{{ contract.0.student_document.pk }}" name="person_document_data_form_{{ contract.0.student_document.pk }}">
                                 {% csrf_token %}
+
                                 <input type="hidden" name="id" value="{{ contract.0.student_document.pk }}">
                                 <input type="text" name="person_surname_txt" value="{{ contract.0.student_document.person_surname_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
                                 <input type="text" name="person_name_txt" value="{{ contract.0.student_document.person_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
@@ -171,6 +172,7 @@
                                 <input type="text" name="authority_txt" value="{{ contract.0.student_document.authority_txt }}" style="background-color: #3b5998; border-width: 0; width: 100%" readonly/>
                                 <input type="text" name="document_type_txt" value="{{ contract.0.student_document.document_type_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 314px)" readonly/>
                                 <input type="text" name="authority_no" value="{{ contract.0.student_document.authority_no }}" style="background-color: #3b5998; border-width: 0; width: 90px" readonly/>
+{#                                <input type="date" name="fsdfd" style="color: black">#}
                                 <input type="text" name="issue_dt_day" value="{{ contract.0.student_document.issue_dt.day }}" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px" readonly/>-
                                 <input type="text" name="issue_dt_month" value="{{ contract.0.student_document.issue_dt.month }}" style="background-color: #3b5998; border-width: 0; width: 16px" readonly/>-
                                 <input type="text" name="issue_dt_year" value="{{ contract.0.student_document.issue_dt.year }}" style="background-color: #3b5998; border-width: 0; width: 33px" readonly/>
@@ -179,18 +181,18 @@
                             </form>
                         </div>
 
-                        <button style="background-color: #3b5998; height: 89px;" onclick="enableEditDocumentMode('document', {{ contract.0.student_document.pk }})" id="document_data_button_{{ contract.0.student_document.pk }}">
-                            <span class="glyphicon glyphicon-pencil" id="document_data_button_span_{{ contract.0.student_document.pk }}"/>
+                        <button style="background-color: #3b5998; height: 89px;" onclick="enableEditDocumentMode('person_document', {{ contract.0.student_document.pk }})" id="person_document_data_button_{{ contract.0.student_document.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="person_document_data_button_span_{{ contract.0.student_document.pk }}"/>
                         </button>
                     </div>
 
 
                     <div class="editing-field-container">
-                        <div class="address-data-box" id="address_data_{{ contract.0.student_address.pk }}">
-                            <form action="" method="post" id="address_data_form_{{ contract.0.student_address.pk }}" name="address_data_form_{{ contract.0.student_address.pk }}">
+                        <div class="address-data-box" id="person_home_address_data_{{ contract.0.student_address.pk }}">
+                            <form action="" method="post" id="person_home_address_data_form_{{ contract.0.student_address.pk }}" name="person_home_address_data_form_{{ contract.0.student_address.pk }}">
                                 {% csrf_token %}
-                                <input type="hidden" name="id" value="{{ contract.0.student_document.pk }}">
-                                <select name="region_cd" style="background-color: #3b5998; border-width: 0; width: 150px; -webkit-appearance:none;" onclick="return false;" disabled>
+                                <input type="hidden" name="id" value="{{ contract.0.student_address.pk }}">
+                                <select name="region_cd" style="background-color: #3b5998; border-width: 0; width: 150px; -webkit-appearance:none;">
                                     {% for i, j in regions.items %}
                                         <option value="{{ i }}" {% if i == contract.0.student_address.region_cd %}selected{% endif %}>{{ j }}</option>
                                     {% endfor %}
@@ -204,28 +206,28 @@
                                 <input type="text" name="flat_nm" value="{% if contract.0.student_address.flat_nm %}{{ contract.0.student_address.flat_nm }}{% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>
                             </form>
                         </div>
-                        <button style="background-color: #3b5998; height: 65px;" onclick="enableEditDocumentMode('address', {{ contract.0.student_address.pk }})" id="address_data_button_{{ contract.0.student_address.pk }}">
-                            <span class="glyphicon glyphicon-pencil" id="address_data_button_span_{{ contract.0.student_address.pk }}"/>
+                        <button style="background-color: #3b5998; height: 65px;" onclick="enableEditDocumentMode('person_home_address', {{ contract.0.student_address.pk }})" id="person_home_address_data_button_{{ contract.0.student_address.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="person_home_address_data_button_span_{{ contract.0.student_address.pk }}"/>
                         </button>
                     </div>
 
                     <div class="editing-field-container">
-                        <div class="one-field-data-box" id="phone_data_{{ contract.0.pk }}">
-                            <form action="" method="post" id="phone_data_form_{{ contract.0.pk }}" name="phone_data_form_{{ contract.0.pk }}">
+                        <div class="one-field-data-box" id="contract_student_phone_data_{{ contract.0.pk }}">
+                            <form action="" method="post" id="contract_student_phone_data_form_{{ contract.0.pk }}" name="contract_student_phone_data_form_{{ contract.0.pk }}">
                                 {% csrf_token %}
                                 <input type="hidden" name="id" value="{{ contract.0.pk }}">
-                                +<input type="text" name="phone_no" value="{{ contract.0.student_phone_no }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)" readonly/>
+                                +<input type="text" name="student_phone_no" value="{{ contract.0.student_phone_no }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)" readonly/>
                             </form>
                         </div>
-                        <button style="background-color: #3b5998; height: 40px;" onclick="enableEditDocumentMode('phone', {{ contract.0.pk }})" id="phone_data_button_{{ contract.0.pk }}">
-                            <span class="glyphicon glyphicon-pencil" id="phone_data_button_span_{{ contract.0.pk }}"/>
+                        <button style="background-color: #3b5998; height: 40px;" onclick="enableEditDocumentMode('contract_student_phone', {{ contract.0.pk }})" id="contract_student_phone_data_button_{{ contract.0.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="contract_student_phone_data_button_span_{{ contract.0.pk }}"/>
                         </button>
                     </div>
                 </td>
                 <td colspan="3">
                     <div class="editing-field-container">
-                        <div class="passport-data-box" id="document_data_{{ contract.0.payer_document.pk }}">
-                            <form action="" method="post" id="document_data_form_{{ contract.0.payer_document.pk }}" name="document_data_form_{{ contract.0.payer_document.pk }}">
+                        <div class="passport-data-box" id="person_document_data_{{ contract.0.payer_document.pk }}">
+                            <form action="" method="post" id="person_document_data_form_{{ contract.0.payer_document.pk }}" name="person_document_data_form_{{ contract.0.payer_document.pk }}">
                                 {% csrf_token %}
                                 <input type="hidden" name="id" value="{{ contract.0.payer_document.pk }}">
                                 <input type="text" name="person_surname_txt" value="{{ contract.0.payer_document.person_surname_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
@@ -242,17 +244,17 @@
                             </form>
                         </div>
 
-                        <button style="background-color: #3b5998; height: 89px;" onclick="enableEditDocumentMode('document', {{ contract.0.payer_document.pk }})" id="document_data_button_{{ contract.0.payer_document.pk }}">
-                            <span class="glyphicon glyphicon-pencil" id="document_data_button_span_{{ contract.0.payer_document.pk }}"/>
+                        <button style="background-color: #3b5998; height: 89px;" onclick="enableEditDocumentMode('person_document', {{ contract.0.payer_document.pk }})" id="person_document_data_button_{{ contract.0.payer_document.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="person_document_data_button_span_{{ contract.0.payer_document.pk }}"/>
                         </button>
                     </div>
 
                     <div class="editing-field-container">
-                        <div class="address-data-box" id="address_data_{{ contract.0.payer_address.pk }}">
-                            <form action="" method="post" id="address_data_form_{{ contract.0.payer_address.pk }}" name="address_data_form_{{ contract.0.payer_address.pk }}">
+                        <div class="address-data-box" id="person_home_address_data_{{ contract.0.payer_address.pk }}">
+                            <form action="" method="post" id="person_home_address_data_form_{{ contract.0.payer_address.pk }}" name="person_home_address_data_form_{{ contract.0.payer_address.pk }}">
                                 {% csrf_token %}
-                                <input type="hidden" name="id" value="{{ contract.0.student_document.pk }}">
-                                <select name="region_cd" style="background-color: #3b5998; border-width: 0; width: 150px; -webkit-appearance:none;" onclick="return false;">
+                                <input type="hidden" name="id" value="{{ contract.0.payer_address.pk }}">
+                                <select name="region_cd" style="background-color: #3b5998; border-width: 0; width: 150px; -webkit-appearance:none;">
                                     {% for i, j in regions.items %}
                                         <option value="{{ i }}" {% if i == contract.0.payer_address.region_cd %}selected{% endif %}>{{ j }}</option>
                                     {% endfor %}
@@ -265,34 +267,34 @@
                                 <input type="text" name="flat_nm" value="{% if contract.0.payer_address.flat_nm %}{{ contract.0.payer_address.flat_nm }}{% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>
                             </form>
                         </div>
-                        <button style="background-color: #3b5998; height: 65px;" onclick="enableEditDocumentMode('address', {{ contract.0.payer_address.pk }})" id="address_data_button_{{ contract.0.payer_address.pk }}">
-                            <span class="glyphicon glyphicon-pencil" id="address_data_button_span_{{ contract.0.payer_address.pk }}"/>
+                        <button style="background-color: #3b5998; height: 65px;" onclick="enableEditDocumentMode('person_home_address', {{ contract.0.payer_address.pk }})" id="person_home_address_data_button_{{ contract.0.payer_address.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="person_home_address_data_button_span_{{ contract.0.payer_address.pk }}"/>
                         </button>
                     </div>
 
                     <div class="editing-field-container" style="width: calc(50% - 3px); float: left; margin-right: 6px;">
-                        <div class="one-field-data-box" id="payer_phone_data_{{ contract.0.pk }}">
-                            <form action="" method="post" id="payer_phone_data_form_{{ contract.0.pk }}" name="payer_phone_data_form_{{ contract.0.pk }}">
+                        <div class="one-field-data-box" id="contract_payer_phone_data_{{ contract.0.pk }}">
+                            <form action="" method="post" id="contract_payer_phone_data_form_{{ contract.0.pk }}" name="contract_payer_phone_data_form_{{ contract.0.pk }}">
                                 {% csrf_token %}
                                 <input type="hidden" name="id" value="{{ contract.0.pk }}">
                                 +<input type="text" name="payer_phone_no" value="{{ contract.0.payer_phone_no }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)" readonly/>
                             </form>
                         </div>
-                        <button style="background-color: #3b5998; height: 40px;" onclick="enableEditDocumentMode('payer_phone', {{ contract.0.pk }})" id="payer_phone_data_button_{{ contract.0.pk }}">
-                            <span class="glyphicon glyphicon-pencil" id="payer_phone_data_button_span_{{ contract.0.pk }}"/>
+                        <button style="background-color: #3b5998; height: 40px;" onclick="enableEditDocumentMode('contract_payer_phone', {{ contract.0.pk }})" id="contract_payer_phone_data_button_{{ contract.0.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="contract_payer_phone_data_button_span_{{ contract.0.pk }}"/>
                         </button>
                     </div>
 
                     <div class="editing-field-container" style="width: calc(50% - 3px)">
-                        <div class="one-field-data-box" id="payer_inn_data_{{ contract.0.pk }}">
-                            <form action="" method="post" id="payer_inn_data_form_{{ contract.0.pk }}" name="payer_inn_data_form_{{ contract.0.pk }}">
+                        <div class="one-field-data-box" id="contract_payer_inn_data_{{ contract.0.pk }}">
+                            <form action="" method="post" id="contract_payer_inn_data_form_{{ contract.0.pk }}" name="contract_payer_inn_data_form_{{ contract.0.pk }}">
                                 {% csrf_token %}
                                 <input type="hidden" name="id" value="{{ contract.0.pk }}">
                                 <input type="text" name="payer_inn_no" value="{{ contract.0.payer_inn_no }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)" readonly/>
                             </form>
                         </div>
-                        <button style="background-color: #3b5998; height: 40px;" onclick="enableEditDocumentMode('payer_inn', {{ contract.0.pk }})" id="payer_inn_data_button_{{ contract.0.pk }}">
-                            <span class="glyphicon glyphicon-pencil" id="payer_inn_data_button_span_{{ contract.0.pk }}"/>
+                        <button style="background-color: #3b5998; height: 40px;" onclick="enableEditDocumentMode('contract_payer_inn', {{ contract.0.pk }})" id="contract_payer_inn_data_button_{{ contract.0.pk }}">
+                            <span class="glyphicon glyphicon-pencil" id="contract_payer_inn_data_button_span_{{ contract.0.pk }}"/>
                         </button>
                     </div>
                 </td>
@@ -312,20 +314,21 @@
                             </thead>
 
                             {% for payment in contract.1 %}
-                                <tr>
+                                <tr id="payment_row_{{ payment.pk }}">
                                     <form action="" method="post" id="payment_data_form_{{ payment.pk }}" name="payment_data_form_{{ payment.pk }}">
                                         <td>
                                             {% csrf_token %}
                                             <input type="hidden" name="id" value="{{ payment.pk }}">
-                                            <input type="text" name="issue_dt_day" value="{{ payment.payment_dt.day }}" style="border-width: 0; width: 18px;" readonly/>-
-                                            <input type="text" name="issue_dt_month" value="{{ payment.payment_dt.month }}" style="border-width: 0; width: 18px" readonly/>-
-                                            <input type="text" name="issue_dt_year" value="{{ payment.payment_dt.year }}" style="border-width: 0; width: 33px" readonly/>
+                                            <input type="text" name="payment_dt_day" value="{{ payment.payment_dt.day }}" style="border-width: 0; width: 18px;" readonly/>-
+                                            <input type="text" name="payment_dt_month" value="{{ payment.payment_dt.month }}" style="border-width: 0; width: 18px" readonly/>-
+                                            <input type="text" name="payment_dt_year" value="{{ payment.payment_dt.year }}" style="border-width: 0; width: 33px" readonly/>
                                         </td>
                                         <td>
                                             <input type="text" name="payment_amt" value="{{ payment.payment_amt }}" style="border-width: 0; width: 100%;" readonly/>
                                         </td>
                                         <td>
-                                            <select name="payment_type" style="border-width: 0; width: 100%; -webkit-appearance:none;" disabled>
+                                            <select name="payment_type" style="border-width: 0; width: 100%;">
+{#                                            <select name="payment_type" style="border-width: 0; width: 100%; -webkit-appearance:none;">#}
                                                 {% for i, j in payment_types.items %}
                                                     <option value="{{ i }}" {% if i == payment.payment_type %}selected{% endif %}>{{ j }}</option>
                                                 {% endfor %}
@@ -338,7 +341,7 @@
                                                 <span class="glyphicon glyphicon-pencil" id="payment_data_button_span_{{ payment.pk }}"></span>
                                             </button>
                                             <button type="submit"><span class="glyphicon glyphicon-time"></span></button>
-                                            <button><span class="glyphicon glyphicon-remove"></span></button>
+                                            <button onclick="delete_object('payment', {{ payment.pk }})"><span class="glyphicon glyphicon-remove"></span></button>
                                         </td>
 
 
@@ -353,9 +356,9 @@
                                                 {% csrf_token %}
                                             </div>
                                             <input type="hidden" name="contract_id" value="{{ contract.0.pk }}">
-                                            <input type="text" name="issue_dt_day" id="new_payment_issue_dt_day" style="border-width: 0; width: 18px;"/>-
-                                            <input type="text" name="issue_dt_month" id="new_payment_issue_dt_month" style="border-width: 0; width: 18px"/>-
-                                            <input type="text" name="issue_dt_year" id="new_payment_issue_dt_year" style="border-width: 0; width: 33px"/>
+                                            <input type="text" name="payment_dt_day" id="new_payment_issue_dt_day" style="border-width: 0; width: 18px;"/>-
+                                            <input type="text" name="payment_dt_month" id="new_payment_issue_dt_month" style="border-width: 0; width: 18px"/>-
+                                            <input type="text" name="payment_dt_year" id="new_payment_issue_dt_year" style="border-width: 0; width: 33px"/>
                                         </td>
                                         <td>
                                             <input type="text" name="payment_amt" id="new_payment_payment_amt" style="border-width: 0; width: 100%;"/>
@@ -383,7 +386,7 @@
         {% endfor %}
         <tfoot>
             <tr>
-                <form action="/api/add_new_contract/" method="post" id="document_data_form_{{ contract.0.student_document.pk }}" name="document_data_form_{{ contract.0.student_document.pk }}">
+                <form action="/api/add_new_contract/" method="post">
                 <td colspan="2">
                     <div>
                         <div class="non-editing-field-container">
@@ -400,7 +403,7 @@
                                         {% endif %}
                                     {% endfor %}
                                 </select>
-                                <input type="hidden" name="student_id" value="{{ student_person.id }}">
+                                <input type="hidden" name="student_id" value="{{ student_person.person_id }}">
                                 +<input type="text" name="student_phone_no" placeholder="Телефон ученика" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)"/>
                                 +<input type="text" name="payer_phone_no" placeholder="Телефон плательщика" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)"/>
                                 <input type="text" name="payer_inn_no" placeholder="ИНН плательщика" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)"/>
