@@ -31,10 +31,10 @@
                     {{ student.person_father_name_txt }}
                 </td>
                 <td>
-                    <a href="/student/detail/{{ student.person_id }}/" class="smallsquarebutton" target="_blank">
+                    <a href="/student/detail/{{ student.person_id }}/" class="smallsquarebutton" target="_self">
                         <span class="glyphicon glyphicon-eye-open"></span>
                     </a>
-                    <a href="{{object.get_update_url}}" class="smallsquarebutton">
+                    <a href="{{object.get_update_url}}" class="smallsquarebutton" target="_self">
                             <span class="glyphicon glyphicon-remove"></span>
                     </a>
                 </td>

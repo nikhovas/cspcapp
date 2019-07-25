@@ -1,5 +1,5 @@
 body {
-    background-color: whitesmoke;
+    background-color: #9cd7ff;
 }
 
 .login-box {
@@ -11,6 +11,7 @@ body {
     background-color: #3b5998;
     color: white;
     padding: 10px;
+    border: 10px black;
 }
 
 .textbox {

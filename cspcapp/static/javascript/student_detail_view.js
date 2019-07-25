@@ -162,3 +162,44 @@ function success_end_adding_payment(contract_id, payment_id) {
     table.insertRow(table.rows.length - 1).innerHTML = template;
     form.trigger("reset");
 }
+
+
+function delete_object(type, id) {
+    $.ajax({
+        url : `/api/delete/${type}/`,
+        type : "POST",
+        data : {'csrfmiddlewaretoken': get_scrf_token(), 'id': id},
+        dataType : "json",
+        success : function(json) {
+            if (json.result) {
+                delete_object_success_end(type, id);
+                console.log(json.result);
+            } else {
+                console.log("Произошла ошибка: " + json.error);
+            }
+        },
+        error : function(xhr,errmsg,err) {
+            alert("Произошла ошибка: " + xhr.responseText);
+        }
+    });
+}
+
+
+function delete_object_success_end(type, id) {
+    switch (type) {
+        case 'contract':
+            $('#contract_tr_main_' + id.toString()).remove();
+            $('#payments_' + id.toString()).remove();
+            break;
+        case 'payment':
+            $('#payment_row_' + id.toString()).remove();
+            break;
+        default:
+            break;
+    }
+}
+
+
+function delete_object_failure_end(type, id) {
+
+}

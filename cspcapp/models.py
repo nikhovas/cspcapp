@@ -21,6 +21,15 @@ class Contract(models.Model):
     payer_inn_no = models.CharField(max_length=12)
     course_element = models.ForeignKey('CourseElement', models.DO_NOTHING, blank=True, null=True)
 
+    def uppend_dict(self, args: dict):
+        for i in ['contract_id', 'contract_dttm', 'student_document_id', 'student_address_id', 'student_phone_no',
+                  'payer_document_id', 'payer_address_id', 'payer_phone_no', 'payer_inn_no', 'course_element_id']:
+            if i not in args.keys():
+                args[i] = getattr(self, i)
+
+    def dict_equal(self, args: dict) -> bool:
+        return False
+
     class Meta:
         managed = False
         db_table = 'contract'
@@ -33,6 +42,27 @@ class ContractPayment(models.Model):
     contract = models.ForeignKey(Contract, models.DO_NOTHING, blank=True, null=True)
     payment_type = models.SmallIntegerField()
     voucher_no = models.CharField(max_length=50, blank=True, null=True)
+
+    def uppend_dict(self, args: dict):
+        if 'contract_id' not in args.keys():
+            args['contract_id'] = self.contract_id
+        if 'payment_type' not in args.keys():
+            args['payment_type'] = self.payment_type
+
+    def dict_equal(self, args: dict) -> bool:
+        print(model_to_dict(self).items())
+        print(args)
+        for i, j in model_to_dict(self).items():
+            print(1)
+            if i == 'contract':
+                print(2)
+                if args['contract_id'] != self.contract_id:
+                    return False
+            elif args[i] != j:
+                print(2)
+                print(i)
+                return False
+        return True
 
     class Meta:
         managed = False
@@ -123,6 +153,10 @@ class PersonDocument(models.Model):
     authority_txt = models.CharField(max_length=150)
     issue_dt = models.DateField()
 
+    def uppend_dict(self, args: dict):
+        if 'person_id' not in args.keys():
+            args['person_id'] = self.person_id
+
     def dict_equal(self, args: dict) -> bool:
         for i, j in model_to_dict(self).items():
             if i == 'person':
@@ -147,6 +181,20 @@ class PersonHomeAddress(models.Model):
     building_no = models.CharField(max_length=10, blank=True, null=True)
     structure_no = models.CharField(max_length=10, blank=True, null=True)
     flat_nm = models.SmallIntegerField(blank=True, null=True)
+
+    def uppend_dict(self, args: dict):
+        if 'person_id' not in args.keys():
+            args['person_id'] = self.person_id
+
+    def dict_equal(self, args: dict) -> bool:
+        for i, j in model_to_dict(self).items():
+            if i == 'person':
+                if args['person_id'] != self.person_id:
+                    return False
+            elif args[i] != j:
+                return False
+        return True
+
 
     class Meta:
         managed = False

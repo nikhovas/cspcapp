@@ -50,3 +50,13 @@ def post_request_to_dict_slicer(post) -> dict:
 
 def values_from_dict_by_keys(d: dict, keys: list):
     return [d[i] for i in keys]
+
+
+def smart_int(data: str):
+    # return '' if data == '' else int(data)
+    return None if data == '' else int(data)
+
+
+def null_check(data: str):
+    # return data
+    return None if data == '' else data

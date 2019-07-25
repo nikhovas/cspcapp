@@ -55,9 +55,6 @@ def teachers_view(request: WSGIRequest) -> HttpResponse:
     return render(request, 'teachers_info_view.html', {})
 
 
-def login(request: WSGIRequest) -> HttpResponse:
-    return render(request, 'login.html')
-
 
 def meta_base_view(request):
     return render(request, 'base.html')
