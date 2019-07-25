@@ -2,7 +2,7 @@ var in_editing_mode = false;
 
 
 function get_scrf_token() {
-    return document.getElementById('csrf_token_div').value;
+    return $('#csrf_token_div').children(0).val();
 }
 
 
@@ -37,8 +37,11 @@ function disableEditDocumentMode(edit_node_type, document_id) {
     document.getElementById(edit_node_type + "_data_button_span_" + document_id.toString()).className = "glyphicon glyphicon-hourglass";
     document.getElementById(edit_node_type + "_data_button_" + document_id.toString()).onclick = function() { };
 
+    alert($(form_name).serialize());
+
     $.ajax({
-        url : "/api/" + edit_node_type + "_data_edit/",
+        // url : "/api/" + edit_node_type + "_data_edit/",
+        url : `/api/edit/${edit_node_type}/`,
         type : "POST",
         data : $(form_name).serialize(),
         dataType : "json",
@@ -161,4 +164,45 @@ function success_end_adding_payment(contract_id, payment_id) {
     let table = document.getElementById("payments_table_" + contract_id.toString());
     table.insertRow(table.rows.length - 1).innerHTML = template;
     form.trigger("reset");
+}
+
+
+function delete_object(type, id) {
+    $.ajax({
+        url : `/api/delete/${type}/`,
+        type : "POST",
+        data : {'csrfmiddlewaretoken': get_scrf_token(), 'id': id},
+        dataType : "json",
+        success : function(json) {
+            if (json.result) {
+                delete_object_success_end(type, id);
+                console.log(json.result);
+            } else {
+                console.log("Произошла ошибка: " + json.error);
+            }
+        },
+        error : function(xhr,errmsg,err) {
+            alert("Произошла ошибка: " + xhr.responseText);
+        }
+    });
+}
+
+
+function delete_object_success_end(type, id) {
+    switch (type) {
+        case 'contract':
+            $('#contract_tr_main_' + id.toString()).remove();
+            $('#payments_' + id.toString()).remove();
+            break;
+        case 'payment':
+            $('#payment_row_' + id.toString()).remove();
+            break;
+        default:
+            break;
+    }
+}
+
+
+function delete_object_failure_end(type, id) {
+
 }
