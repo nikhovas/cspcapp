@@ -2,7 +2,7 @@ var in_editing_mode = false;
 
 
 function get_scrf_token() {
-    return document.getElementById('csrf_token_div').value;
+    return $('#csrf_token_div').children(0).val();
 }
 
 
@@ -37,8 +37,11 @@ function disableEditDocumentMode(edit_node_type, document_id) {
     document.getElementById(edit_node_type + "_data_button_span_" + document_id.toString()).className = "glyphicon glyphicon-hourglass";
     document.getElementById(edit_node_type + "_data_button_" + document_id.toString()).onclick = function() { };
 
+    alert($(form_name).serialize());
+
     $.ajax({
-        url : "/api/" + edit_node_type + "_data_edit/",
+        // url : "/api/" + edit_node_type + "_data_edit/",
+        url : `/api/edit/${edit_node_type}/`,
         type : "POST",
         data : $(form_name).serialize(),
         dataType : "json",
