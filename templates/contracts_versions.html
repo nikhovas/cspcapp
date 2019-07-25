@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    <title>Изменеия в договорах</title>
+{% endblock %}
+
+
+
+{% block content %}
+    <h1 align="center">Изменения в договорах</h1>
+
+    <div style="margin-top: 80px; margin-bottom: 60px">
+        <h2 style="color: darkblue; margin-bottom: 30px">Номера телефонов</h2>
+
+        <table class="table main-table" style="width: 100%; text-align: left;">
+            <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+            </colgroup>
+            <thead>
+                <tr>
+                    <td>Мобильный номер потребителя</td>
+                    <td>Мобильный номер платильщика</td>
+                    <td>INN номер</td>
+                    <td>Элемент курса</td>
+                    <td>Логин пользователя</td>
+                    <td>Время изменения</td>
+                </tr>
+            </thead>
+
+            <tr>
+                <td>+77777777777</td>
+                <td>+380231111123</td>
+                <td>3243-235-235</td>
+                <td>Какой-то</td>
+                <td>admin</td>
+                <td>23:12 29:02:2019</td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div style="margin-bottom: 60px">
+        <h2 style="color: darkblue; margin-bottom: 30px">Данные потребителя</h2>
+
+        <table class="table main-table" style="width: 100%; text-align: left;">
+            <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+            </colgroup>
+            <thead>
+                <tr>
+                    <td>Ф.И.О.</td>
+                    <td>Тип документа</td>
+                    <td>Кем выдан</td>
+                    <td>Код подразделения</td>
+                    <td>Дата выдачи</td>
+                    <td>Номер документа</td>
+                    <td>Серия документа</td>
+                    <td>Логин пользователя</td>
+                    <td>Время изменения</td>
+                </tr>
+            </thead>
+
+            <tr>
+                <td>Андреев А.А.</td>
+                <td>Пасспорт РФ</td>
+                <td>Кем-то</td>
+                <td>2342</td>
+                <td>29:02:2019</td>
+                <td>32423566</td>
+                <td>5469</td>
+                <td>admin</td>
+                <td>23:12 29:02:2019</td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div style="margin-bottom: 60px">
+        <h2 style="color: darkblue; margin-bottom: 30px">Место проживания потребителя</h2>
+
+        <table class="table main-table" style="width: 100%; text-align: left;">
+            <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+            </colgroup>
+            <thead>
+                <tr>
+                    <td>Регион</td>
+                    <td>Город</td>
+                    <td>Улица</td>
+                    <td>Номер дома</td>
+                    <td>Номер строения</td>
+                    <td>Номер корпуса</td>
+                    <td>Номер квартиры</td>
+                    <td>Логин пользователя</td>
+                    <td>Время изменения</td>
+                </tr>
+            </thead>
+
+            <tr>
+                <td>г. Москва</td>
+                <td>г. Москва</td>
+                <td>Патриаршие пруды</td>
+                <td>23</td>
+                <td>-</td>
+                <td>-</td>
+                <td>15</td>
+                <td>admin</td>
+                <td>23:12 29:02:2019</td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="margin-bottom: 60px">
+        <h2 style="color: darkblue; margin-bottom: 30px">Данные платильщика</h2>
+
+        <table class="table main-table" style="width: 100%; text-align: left;">
+            <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+            </colgroup>
+            <thead>
+                <tr>
+                    <td>Ф.И.О.</td>
+                    <td>Тип документа</td>
+                    <td>Кем выдан</td>
+                    <td>Код подразделения</td>
+                    <td>Дата выдачи</td>
+                    <td>Номер документа</td>
+                    <td>Серия документа</td>
+                    <td>Логин пользователя</td>
+                    <td>Время изменения</td>
+                </tr>
+            </thead>
+
+            <tr>
+                <td>Андреев А.А.</td>
+                <td>Пасспорт РФ</td>
+                <td>Кем-то</td>
+                <td>2342</td>
+                <td>29:02:2019</td>
+                <td>32423566</td>
+                <td>5469</td>
+                <td>admin</td>
+                <td>23:12 29:02:2019</td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div style="margin-bottom: 60px">
+        <h2 style="color: darkblue; margin-bottom: 30px">Место проживания платильщека</h2>
+
+        <table class="table main-table" style="width: 100%; text-align: left;">
+            <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+            </colgroup>
+            <thead>
+                <tr>
+                    <td>Регион</td>
+                    <td>Город</td>
+                    <td>Улица</td>
+                    <td>Номер дома</td>
+                    <td>Номер строения</td>
+                    <td>Номер корпуса</td>
+                    <td>Номер квартиры</td>
+                    <td>Логин пользователя</td>
+                    <td>Время изменения</td>
+                </tr>
+            </thead>
+
+            <tr>
+                <td>г. Москва</td>
+                <td>г. Москва</td>
+                <td>Патриаршие пруды</td>
+                <td>23</td>
+                <td>-</td>
+                <td>-</td>
+                <td>15</td>
+                <td>admin</td>
+                <td>23:12 29:02:2019</td>
+            </tr>
+        </table>
+    </div>
+
+
+{% endblock %}

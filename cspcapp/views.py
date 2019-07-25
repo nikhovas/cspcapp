@@ -52,8 +52,13 @@ def courses_view(request: WSGIRequest) -> HttpResponse:
 @login_required
 def teachers_view(request: WSGIRequest) -> HttpResponse:
     teachers_info = [(i, CourseElement.objects.filter(course=i)) for i in Course.objects.all()]
+    # Тут нужно изменить на учителей
     return render(request, 'teachers_info_view.html', {})
 
+
+@login_required
+def versions(request: WSGIRequest) -> HttpResponse:
+    return render(request, 'contracts_versions.html', {})
 
 
 def meta_base_view(request):
