@@ -14,9 +14,10 @@ urlpatterns = [
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^courses/$', views.courses_view, name='cspcapp_courses_view'),
     url(r'^teachers/$', views.teachers_view, name='cspcapp_teachers_view'),
-    url(r'^', views.students_overview, name='cspcapp_students_overview'),
-    url(r'^login/$', views.login, name='cspcapp_login')
+    url(r'^versions/$', views.versions, name='cspcapp_versions'),
+    url(r'^', views.students_overview, name='cspcapp_students_overview')
 ]
+
 
 
 # urlpatterns += (
