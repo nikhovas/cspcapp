@@ -13,22 +13,31 @@
         <colgroup>
             <col>
             <col>
+            <col>
+            <col>
+            <col>
             <col width="80px">
         </colgroup>
         <thead>
             <tr>
+                <td>Ф.И.О. учителя</td>
                 <td>Место работы</td>
-                <td>Учитель</td>
+                <td>Количество учеников</td>
+                <td>Количество курсов</td>
+                <td>Часов работы</td>
                 <td></td>
             </tr>
         </thead>
         {% for student in students_list %}
             <tr>
-                <td>{{ student.school_name_txt }}</td>
                 <td>
                     {{ student.person_surname_txt }} {{ student.person_name_txt }}
                     {{ student.person_father_name_txt }}
                 </td>
+                <td>{{ student.school_name_txt }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td>
                     <a href="/student/detail/{{ student.person_id }}/" class="smallsquarebutton" target="_self">
                         <span class="glyphicon glyphicon-eye-open"></span>

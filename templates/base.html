@@ -28,7 +28,8 @@
 <body>
 <div class="sidebar" id="mySidebar">
     <div class="login-info">
-        <div class="circle" style="padding: 0px 0px 10px 8px; padding-bottom: 45px"><font size="4">AA</font></div>
+        <div class="circle" style="padding: 7px 0px 0px 8px; font-size: 20px; float: left;" >AA</div>
+         <div class="hidden_panel">{{ user.username }}</div>
     </div>
 
     <div class="exit-button">
@@ -40,22 +41,28 @@
     </div>
     <div class="sidebar-element">
         <a href="/"><span class="glyphicon glyphicon-list-alt"></span></a>
+        <span class="hidden_panel">Общий список</span>
     </div>
     {% block common_list_sublevel %}
     {% endblock %}
     <div class="sidebar-element">
         <a href="/courses/"><span class="glyphicon glyphicon-tasks"></span></a>
+        <span class="hidden_panel">Список курсов</span>
     </div>
     <div class="sidebar-element">
         <a href="/teachers/"><span class="glyphicon glyphicon-briefcase"></span></a>
+        <span class="hidden_panel">Список учителей</span>
     </div>
 
     <div class="sidebar-element">
         <a href="/versions/"><span class="glyphicon glyphicon-book"></span></a>
+        <span class="hidden_panel">История изменения</span>
     </div>
 
     <div class="sidebar-element">
         <a href="#"><span class="glyphicon glyphicon-folder-open"></span></a>
+        <span class="hidden_panel">Утилиты</span>
+
     </div>
 
 
@@ -68,12 +75,22 @@
 
 <script>
 function openNav() {
-    if (document.getElementById("mySidebar").style.width === "250px") {
+    var i;
+    var x;
+    if (document.getElementById("mySidebar").style.width === "200px") {
         document.getElementById("mySidebar").style.width = "60px";
         document.getElementById("main").style.marginLeft = "60px";
+        x = document.getElementsByClassName("hidden_panel");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
     } else {
-        document.getElementById("mySidebar").style.width = "250px";
-        document.getElementById("main").style.marginLeft = "250px";
+        document.getElementById("mySidebar").style.width = "200px";
+        document.getElementById("main").style.marginLeft = "200px";
+        x = document.getElementsByClassName("hidden_panel");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "inline-block";
+        }
     }
 }
 </script>

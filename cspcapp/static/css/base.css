@@ -78,3 +78,14 @@ body {
 }
 
 
+.hidden_panel {
+    display: none;
+    font-size: 20px;
+    color: white;
+    padding-left: 10px;
+}
+
+
+.for_menu_location {
+    float: none;
+}
