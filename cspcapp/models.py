@@ -82,7 +82,6 @@ class ContractTermination(models.Model):
 class Course(models.Model):
     course_id = models.AutoField(primary_key=True)
     sphere_txt = models.CharField(max_length=100, blank=True, null=True)
-    direction = models.CharField(max_length=1, blank=True, null=True)
     name_txt = models.CharField(max_length=100)
     short_nm = models.CharField(max_length=20)
     price_per_hour = models.DecimalField(max_digits=65535, decimal_places=65535)
@@ -91,6 +90,26 @@ class Course(models.Model):
     class Meta:
         managed = False
         db_table = 'course'
+
+    def save(self, *args, **kwargs):
+        cur = connection.cursor()
+        if not self.pk:
+            cur.execute(f"insert into course(sphere_txt, name_txt, short_nm, price_per_hour, number_of_hours) "
+                        f"VALUES  ('{self.sphere_txt}', '{self.name_txt}', '{self.short_nm}', "
+                        f"{self.price_per_hour}, {self.number_of_hours});")
+        else:
+            cur.execute(f"update course "
+                        f"set sphere_txt = '{self.sphere_txt}', name_txt = '{self.name_txt}', "
+                        f"short_nm = '{self.short_nm}', price_per_hour = {self.price_per_hour}, "
+                        f"number_of_hours = {self.number_of_hours} where course_id = {self.course_id}")
+
+
+
+    def delete(self, *args, **kwargs):
+        course_elements = CourseElement.objects.filter(course=self)
+        CourseClass.objects.filter(course_element__in=course_elements).delete()
+        course_elements.delete()
+        super(Course, self).delete(*args, **kwargs)
 
 
 class CourseClass(models.Model):
@@ -119,6 +138,10 @@ class CourseElement(models.Model):
         return " ".join([DAYS_OF_WEEK[int(i.week_day_txt)]
                          for i in CourseClass.objects.filter(course_element=self).order_by('week_day_txt')])
 
+    def delete(self, *args, **kwargs):
+        CourseClass.objects.filter(course_element=self).delete()
+        super(CourseElement, self).delete(*args, **kwargs)
+
 
 class Person(models.Model):
     person_id = models.AutoField(primary_key=True)
@@ -138,6 +161,18 @@ class Person(models.Model):
             res += " " + str(self.person_father_name_txt)[0] + "."
         return res
 
+    def uppend_dict(self, args: dict):
+        if 'person_id' not in args.keys():
+            args['person_id'] = self.person_id
+
+    def dict_equal(self, args: dict) -> bool:
+        for i, j in model_to_dict(self).items():
+            if i == 'person':
+                if args['person_id'] != self.person_id:
+                    return False
+            elif args[i] != j:
+                return False
+        return True
 
 
 class PersonDocument(models.Model):
@@ -210,6 +245,19 @@ class StudentPerson(models.Model):
     class Meta:
         managed = False
         db_table = 'student_person'
+
+    def uppend_dict(self, args: dict):
+        if 'person_id' not in args.keys():
+            args['person_id'] = self.person_id
+
+    def dict_equal(self, args: dict) -> bool:
+        for i, j in model_to_dict(self).items():
+            if i == 'person':
+                if args['person_id'] != self.person_id:
+                    return False
+            elif args[i] != j:
+                return False
+        return True
 
 
 class AuthUserXPerson(models.Model):

@@ -45,19 +45,37 @@ def student_detail_view(request: WSGIRequest, pk: int) -> HttpResponse:
 
 @login_required
 def courses_view(request: WSGIRequest) -> HttpResponse:
-    courses_info = [(i, CourseElement.objects.filter(course=i)) for i in Course.objects.all()]
-    return render(request, 'courses_info_view.html', {'courses_info': courses_info})
+    courses_info = []
+    for i in Course.objects.all():
+        print(i.price_per_hour)
+        course_elements = []
+        for j in CourseElement.objects.filter(course=i):
+            filtered_classes = []
+            for k in range(0, 7):
+                on_current_day = CourseClass.objects.filter(course_element=j).filter(week_day_txt=str(k))
+                if len(on_current_day) == 0:
+                    filtered_classes.append(None)
+                else:
+                    filtered_classes.append(on_current_day[0])
+            course_elements.append((j, filtered_classes))
+
+        courses_info.append((i, course_elements))
+    # courses_info = [(i, CourseElement.objects.filter(course=i)) for i in Course.objects.all()]
+    teachers_list = AuthUserXPerson.objects.all()
+    return render(request, 'courses_info_view.html', {'courses_info': courses_info, 'teachers_list': teachers_list})
 
 
 @login_required
 def teachers_view(request: WSGIRequest) -> HttpResponse:
     teachers_info = [(i, CourseElement.objects.filter(course=i)) for i in Course.objects.all()]
     # Тут нужно изменить на учителей
-    return render(request, 'teachers_info_view.html', {})
+    return render(request, 'teachers_info_view.html', {'teachers': AuthUserXPerson.objects.all()})
 
 
 @login_required
-def versions(request: WSGIRequest) -> HttpResponse:
+def versions(request: WSGIRequest, pk: int) -> HttpResponse:
+    cursor = connection.cursor()
+    # common_info = cursor.execute(f"select * from ")
     return render(request, 'contracts_versions.html', {})
 
 

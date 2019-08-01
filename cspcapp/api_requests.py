@@ -1,25 +1,12 @@
-from .models import PersonHomeAddress, PersonDocument, Person, Contract, ContractPayment
+from .models import *
 from django.core.handlers.wsgi import WSGIRequest
-# from .forms import PersonHomeAddressForm, PersonDocumentForm, PersonInnForm, PersonBirthDateForm, PersonPhoneForm, \
-#     PersonEmailForm
 from django.http import JsonResponse, HttpResponse
 from django.db import connection
-from django.core import serializers
-import json
 from .utilities import reconstruct_params, post_request_to_dict_slicer, values_from_dict_by_keys, smart_int, null_check
 import datetime
 
 
-# def edit_address_info(request: WSGIRequest) -> JsonResponse:
-#     address = PersonHomeAddress.objects.get(pk=request.POST['person_home_address_id'])
-#     form = PersonHomeAddressForm(request.POST, instance=address)
-#     if form.is_valid():
-#         form.save()
-#         return JsonResponse({'result': True})
-#     else:
-#         return JsonResponse({'result': False})
-#
-#
+# Configuration Block
 
 
 class PostRequestInfo:
@@ -30,6 +17,7 @@ class PostRequestInfo:
         self.call_order = _call_order
         self.reformat_params = _reformat_params
         self.procedure_name = _procedure_name
+
 
 MODEL_TYPES_DICT = \
     {
@@ -81,16 +69,51 @@ MODEL_TYPES_DICT = \
                 'renaming': {'id': 'contract_payment_id'}
             },
             _procedure_name='contract_payment_update'
+        ),
+        'person': PostRequestInfo(
+            _type_name=Person,
+            _id_name='person_id',
+            _call_order=['person_id', 'person_surname_txt', 'person_name_txt', 'person_father_name_txt', 'birth_dt',
+                         'education_start_year', 'school_name_txt', 'liter', 'change_user_id'],
+            _reformat_params={
+                'to_int': ['person_id'],
+                'to_date': ['education_start_year', 'birth_dt'],
+                'renaming': {'id': 'person_id'}
+            },
+            _procedure_name='person_update'
         )
+        'teacher': PostRequestInfo
     }
 
 
-CONFIG_RELINK = {'contract_student_phone': 'contract', 'contract_payer_phone': 'contract', 'contract_payer_inn': 'contract'}
+CONFIG_RELINK = {'contract_student_phone': 'contract', 'contract_payer_phone': 'contract',
+                 'contract_payer_inn': 'contract', 'contract_course_element': 'contract'}
+VERSION_CONTROLLED = ('contract', 'person_document', 'person_home_address', 'payment', 'person')
+NEED_OWN_EDIT_SYSTEM = ['course_element']
+NAME_TO_OBJECT = {'course': Course, 'course_element': CourseElement, 'course_class': CourseClass,
+                  'person_document': PersonDocument, 'document': PersonDocument,
+                  'person_home_address': PersonHomeAddress, 'home_address': PersonHomeAddress,
+                  'address': PersonHomeAddress, 'contract': Contract, 'contract_payment': ContractPayment,
+                  'payment': ContractPayment, 'person': Person, 'teacher': Person}
+DELETE_RENAMING = {'payment': 'contract_payment'}
+
+
+# Edit Block
 
 
 def data_edit(request: WSGIRequest, object_type: str) -> HttpResponse:
     if object_type in CONFIG_RELINK.keys():
         object_type = CONFIG_RELINK[object_type]
+    if object_type in NEED_OWN_EDIT_SYSTEM:
+        return globals()[object_type + '_edit'](request)
+    elif object_type in VERSION_CONTROLLED:
+        return version_controlled_data_edit(request, object_type)
+    else:
+        return no_version_controlled_data_edit(request, object_type)
+
+
+def version_controlled_data_edit(request: WSGIRequest, object_type: str) -> HttpResponse:
+    print(request.POST)
     config = MODEL_TYPES_DICT[object_type]
     editing_object = config.type_name.objects.get(pk=int(request.POST['id']))
     params = post_request_to_dict_slicer(request.POST)
@@ -101,24 +124,69 @@ def data_edit(request: WSGIRequest, object_type: str) -> HttpResponse:
     if editing_object.dict_equal(params):
         return JsonResponse({'result': True, 'sent_request': False})
     else:
-        print(222)
-        cur = connection.cursor()
-        aaa = values_from_dict_by_keys(params, config.call_order)
-        print(111)
-        print(aaa)
-        cur.callproc(config.procedure_name, aaa)
-        # try:
-        #     print(222)
-        #     cur = connection.cursor()
-        #     aaa = values_from_dict_by_keys(params, config.call_order)
-        #     print(111)
-        #     print(aaa)
-        #     cur.callproc(config.procedure_name, aaa)
-        # except Exception as error:
-        #     print('error down')
-        #     print(error)
-        #     return JsonResponse({'result': False, 'sent_request': True})
+        try:
+            cur = connection.cursor()
+            aaa = values_from_dict_by_keys(params, config.call_order)
+            cur.callproc(config.procedure_name, aaa)
+        except Exception as error:
+            print('error down')
+            print(error)
+            return JsonResponse({'result': False, 'sent_request': True})
         return JsonResponse({'result': True, 'sent_request': True})
+
+
+def no_version_controlled_data_edit(request: WSGIRequest, object_type: str) -> JsonResponse:
+    obj = NAME_TO_OBJECT[object_type].objects.get(pk=request.POST['id'])
+    for key, value_dict in dict(request.POST).items():
+        setattr(obj, key, value_dict[0])
+    obj.save()
+    return JsonResponse({'result': True, 'sent_request': True})
+
+
+def course_element_edit(request: WSGIRequest) -> JsonResponse:
+    course_element_id = request.POST['course_element_id']
+    data = dict(request.POST)
+    course_class_objects = CourseClass.objects.filter(course_element_id=course_element_id)
+    for k in range(0, 7):
+        on_current_day = course_class_objects.filter(week_day_txt=str(k))
+        if data['course_class_start_hour'][k] == '' or data['course_class_start_minute'][k] == '' or \
+            data['course_class_end_hour'][k] == '' or data['course_class_end_minute'][k] == '':
+            if len(on_current_day) != 0:
+                on_current_day.delete()
+        else:
+            start_tm = datetime.time(int(data['course_class_start_hour'][k]),
+                                     int(data['course_class_start_minute'][k]))
+            end_tm = datetime.time(int(data['course_class_end_hour'][k]),
+                                   int(data['course_class_end_minute'][k]))
+            if len(on_current_day) == 0:
+                new_element = CourseClass(start_tm=start_tm, end_tm=end_tm, week_day_txt=str(k),
+                                          course_element_id=course_element_id)
+                new_element.save()
+            else:
+                on_current_day[0].start_tm = start_tm
+                on_current_day[0].end_tm = end_tm
+                on_current_day[0].save()
+    return JsonResponse({'result': True, 'sent_request': True})
+
+
+def course_element_add(request: WSGIRequest) -> JsonResponse:
+    data = dict(request.POST)
+    course_element = CourseElement.objects.create(course_id=int(request.POST['course_id']),
+                                                  teacher_person_id=int(data['teacher_id'][0]))
+    course_element.save()
+    course_element_id = course_element.pk
+    for k in range(0, 7):
+        if data['course_class_start_hour'][k] != '' and data['course_class_start_minute'][k] != '' and \
+                data['course_class_end_hour'][k] != '' and data['course_class_end_minute'][k] != '':
+            CourseClass(start_tm=datetime.time(int(data['course_class_start_hour'][k]),
+                                               int(data['course_class_start_minute'][k])),
+                        end_tm=datetime.time(int(data['course_class_end_hour'][k]),
+                                             int(data['course_class_end_minute'][k])),
+                        week_day_txt=str(k), course_element_id=course_element_id).save()
+    return JsonResponse({'result': True, 'sent_request': True, 'new_element_id': course_element_id})
+
+
+# Add Block
 
 
 def payment_add(request: WSGIRequest) -> HttpResponse:
@@ -178,28 +246,24 @@ def add_new_contract(request: WSGIRequest) -> HttpResponse:
     return JsonResponse({'result': True})
 
 
-def contract_delete(request: WSGIRequest) -> HttpResponse:
-    print(request.POST)
-    contract_id = request.POST['id']
-    try:
-        cur = connection.cursor()
-        cur.execute(f"CALL contract_delete({contract_id}, {request.user.pk})")
-    except Exception as error:
-        print(error)
+def course_add(request: WSGIRequest) -> JsonResponse:
+    Course(sphere_txt=request.POST['sphere_txt'], name_txt=request.POST['name_txt'], short_nm=request.POST['short_nm'],
+           price_per_hour=int(request.POST['price_per_hour']), number_of_hours=request.POST['number_of_hours']).save()
     return JsonResponse({'result': True})
 
 
-def payment_delete(request: WSGIRequest) -> HttpResponse:
-    print(request.POST)
-    contract_payment_id = request.POST['id']
-    try:
-        cur = connection.cursor()
-        cur.execute(f"CALL contract_payment_delete({contract_payment_id}, {request.user.pk})")
-    except Exception as error:
-        print(error)
-    return JsonResponse({'result': True})
+# Delete BLock
 
 
-def course_element_data_edit(request: WSGIRequest) -> HttpResponse:
-    print(request.POST)
+def object_delete(request: WSGIRequest, object_type: str) -> HttpResponse:
+    object_id = request.POST['id']
+    if object_type in VERSION_CONTROLLED:
+        object_type = DELETE_RENAMING[object_type] if object_type in DELETE_RENAMING else object_type
+        try:
+            cur = connection.cursor()
+            cur.execute(f"CALL {object_type}_delete({object_id}, {request.user.pk})")
+        except Exception as error:
+            print(error)
+    else:
+        NAME_TO_OBJECT[object_type].objects.get(pk=object_id).delete()
     return JsonResponse({'result': True})

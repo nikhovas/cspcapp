@@ -6,15 +6,16 @@ from . import api_requests
 urlpatterns = [
     url(r'^student/detail/(?P<pk>\S+)/$', views.student_detail_view, name='cspcapp_student_detail'),
     url(r'^base/$', views.meta_base_view, name='cspcapp_base'),
-    url(r'^api/payment_add/', api_requests.payment_add, name='payment_add'),
-    url(r'^api/add_new_contract/', api_requests.add_new_contract, name='add_new_contract'),
+    url(r'^api/add/payment/', api_requests.payment_add, name='payment_add'),
+    url(r'^api/add/course/', api_requests.course_add, name='course_add'),
+    url(r'^api/add/course_element/', api_requests.course_element_add, name='course_element_add'),
+    url(r'^api/add/contract/', api_requests.add_new_contract, name='add_new_contract'),
     url(r'^api/edit/(?P<object_type>\S+)/$', api_requests.data_edit, name='data_edit'),
-    url(r'^api/delete/contract/$', api_requests.contract_delete, name='contract_delete'),
-    url(r'^api/delete/payment/$', api_requests.payment_delete, name='payment_delete'),
+    url(r'^api/delete/(?P<object_type>\S+)/$', api_requests.object_delete, name='object_delete'),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^courses/$', views.courses_view, name='cspcapp_courses_view'),
     url(r'^teachers/$', views.teachers_view, name='cspcapp_teachers_view'),
-    url(r'^versions/$', views.versions, name='cspcapp_versions'),
+    url(r'^versions/(?P<pk>\S+)/$', views.versions, name='cspcapp_versions'),
     url(r'^', views.students_overview, name='cspcapp_students_overview')
 ]
 

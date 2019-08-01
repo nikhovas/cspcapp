@@ -20,6 +20,11 @@
     margin-bottom: 10px;
 }
 
+.search-box input[type="password"] {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
 .search-box table {
     margin-left: -5px;
     width: calc(100% + 10px);
