@@ -1,5 +1,5 @@
 from django.conf.urls import url, include
-from . import views
+from . import views, student_add_view
 from . import api_requests
 
 
@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^courses/$', views.courses_view, name='cspcapp_courses_view'),
     url(r'^teachers/$', views.teachers_view, name='cspcapp_teachers_view'),
     url(r'^versions/$', views.versions, name='cspcapp_versions'),
+    url(r'^student_add/$', student_add_view.student_add_function, name='cspcapp_student_add'),
     url(r'^', views.students_overview, name='cspcapp_students_overview')
 ]
 

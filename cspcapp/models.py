@@ -82,7 +82,6 @@ class ContractTermination(models.Model):
 class Course(models.Model):
     course_id = models.AutoField(primary_key=True)
     sphere_txt = models.CharField(max_length=100, blank=True, null=True)
-    direction = models.CharField(max_length=1, blank=True, null=True)
     name_txt = models.CharField(max_length=100)
     short_nm = models.CharField(max_length=20)
     price_per_hour = models.DecimalField(max_digits=65535, decimal_places=65535)
