@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="html5">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% block title %}{% endblock %}
+        <!— Bootstrap —>
+        {#    <link href="css/bootstrap.min.css" rel="stylesheet">#}
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <link rel="stylesheet" href="{% static 'css/students_overview.css' %}">
+        <link rel="stylesheet" href="{% static 'css/student_detail_view.css' %}">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+              integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
+              crossorigin="anonymous">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <title>
+            Добавление ученика
+        </title>
+    </head>
+    <body>
+        <div class="col-sm-7">
+            <form>
+                <table class="table main-table" style="width: 100%">
+                    <thead>
+                    <tr>
+                            <td></td>
+                            <td style="width: 33.33%"> Ученик </td>
+                            <td style="width: 33.33%"> Платильщик </td>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>Фамилия</td>
+                        <td>
+                            <input type="text" placeholder="Фамилия" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Фамилия" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Имя</td>
+                        <td>
+                            <input type="text" placeholder="Имя" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Имя" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Отчество</td>
+                        <td>
+                            <input type="text" placeholder="Отчество" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Отчество" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Дата рождения</td>
+                        <td>
+                            <input type="text" placeholder="ДД" style="border-width: 0; width: 26px;"/>-
+                            <input type="text" placeholder="ММ" style="border-width: 0; width: 26px"/>-
+                            <input type="text" placeholder="ГГГГ" style="border-width: 0; width: 40px"/>
+                        </td>
+                        <td>
+                            -
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Документ выдан кем</td>
+                        <td>
+                            <input type="text" placeholder="Документ выдан кем" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Документ выдан кем" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Код подразделения</td>
+                        <td>
+                            <input type="text" placeholder="Код" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Код" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Тип документа</td>
+                        <td>
+                            <input type="text" placeholder="Тип документа" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Тип документа" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Дата выдачи</td>
+                        <td>
+                            <input type="text" placeholder="ДД" style="border-width: 0; width: 26px;"/>-
+                            <input type="text" placeholder="ММ" style="border-width: 0; width: 26px"/>-
+                            <input type="text" placeholder="ГГГГ" style="border-width: 0; width: 40px"/>                        </td>
+                        <td>
+                            <input type="text" placeholder="ДД" style="border-width: 0; width: 26px;"/>-
+                            <input type="text" placeholder="ММ" style="border-width: 0; width: 26px"/>-
+                            <input type="text" placeholder="ГГГГ" style="border-width: 0; width: 40px"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Серия</td>
+                        <td>
+                            <input type="text" placeholder="Серия" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Серия" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Номер</td>
+                        <td>
+                            <input type="text" placeholder="Номер" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Номер" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Регион</td>
+                        <td>
+                            <input type="text" placeholder="Регион" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Регион" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Город</td>
+                        <td>
+                            <input type="text" placeholder="Город" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Город" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Улица</td>
+                        <td>
+                            <input type="text" placeholder="Улица" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Улица" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Дом</td>
+                        <td>
+                            <input type="text" placeholder="Дом" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Дом" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Строение</td>
+                        <td>
+                            <input type="text" placeholder="Строение" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Строение" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Корпус</td>
+                        <td>
+                            <input type="text" placeholder="Корпус" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Корпус" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Квартира</td>
+                        <td>
+                            <input type="text" placeholder="Квартира" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Квартира" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Телефон</td>
+                        <td>
+                            <input type="text" placeholder="+7*********" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="+7*********" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ИНН</td>
+                        <td>
+                            -
+                        </td>
+                        <td>
+                            <input type="text" placeholder="ИНН" style="border-width: 0;">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <div>
+            <button style=" width: 100px; margin-bottom: 20px">Добавить</button>
+        </div>
+        </div>
+        <div class="col-sm-5">
+                <table class="table main-table" style="width: 100%; margin-bottom: 30px">
+                    <thead>
+                        <tr>
+                            <td style="padding-left: 3%">Начало обучения</td>
+                            <td style="width: 33.33%"> Школа</td>
+                            <td style="width: 33.33%"> Литерал</td>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>
+                            <input type="text" placeholder="ДД" style="border-width: 0; width: 26px;"/>-
+                            <input type="text" placeholder="ММ" style="border-width: 0; width: 26px"/>-
+                            <input type="text" placeholder="ГГГГ" style="border-width: 0; width: 40px"/>
+                        </td>
+                        <td>
+                            <input type="text" placeholder="№" style="border-width: 0; width: 26px;"/>
+                        </td>
+                        <td>
+                            <input type="text" placeholder="А" style="border-width: 0; width: 26px;">
+                        </td>
+                    </tr>
+                </table>
+
+
+                <table class="table main-table" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <td align="center">Элемент курса</td>
+                            <td style="width: 10%"></td>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td><select style="width: 100%">
+
+                        </select></td>
+                        <td>
+                            <button style="width: 100%">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><select style="width: 100%">
+
+                        </select></td>
+                        <td>
+                            <button style="width: 100%">
+                                <span class="glyphicon glyphicon-erase"></span>
+                            </button>
+                        </td>
+                    </tr>
+
+                </table>
+        </div>
+    </body>
+</html>

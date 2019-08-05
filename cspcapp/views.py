@@ -70,7 +70,7 @@ def courses_view(request: WSGIRequest) -> HttpResponse:
 
 @login_required
 def teachers_view(request: WSGIRequest) -> HttpResponse:
-    teachers_info = [(i, CourseElement.objects.filter(course=i)) for i in Course.objects.all()]
+    # teachers_info = [(i, CourseElement.objects.filter(course=i)) for i in Course.objects.all()]
     # Тут нужно изменить на учителей
     return render(request, 'teachers_info_view.html', {'teachers': [
         (i, [

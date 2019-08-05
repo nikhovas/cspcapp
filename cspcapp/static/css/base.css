@@ -38,6 +38,7 @@ body {
 
 .login-info {
     padding-left: 6px;
+
     text-decoration: none;
     font-size: 30px;
     color: whitesmoke;
@@ -81,3 +82,14 @@ input[type="checkbox"][readonly] {
 }
 
 
+.hidden_panel {
+    display: none;
+    font-size: 20px;
+    color: white;
+    padding-left: 10px;
+}
+
+
+.for_menu_location {
+    float: none;
+}
