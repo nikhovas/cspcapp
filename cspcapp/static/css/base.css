@@ -3,12 +3,12 @@ body {
 }
 
 .circle {
-    width: 40px;
-    height: 40px;
-    -webkit-border-radius: 25px;
-    -moz-border-radius: 25px;
-    border-radius: 25px;
-    background: red;
+    width: 46px;
+    height: 46px;
+    /*-webkit-border-radius: 20px;*/
+    /*-moz-border-radius: 20px;*/
+    border-radius: 50%;
+    background: #596E98;
 }
 
 
@@ -37,7 +37,7 @@ body {
 }
 
 .login-info {
-    padding-left: 10px;
+    padding-left: 6px;
     text-decoration: none;
     font-size: 30px;
     color: whitesmoke;
@@ -74,7 +74,10 @@ body {
     color: whitesmoke;
     display: block;
     z-index: 5;
+}
 
+input[type="checkbox"][readonly] {
+  pointer-events: none;
 }
 
 

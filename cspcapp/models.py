@@ -3,9 +3,55 @@ from django.db import connection
 from django.contrib.auth.models import User
 from .constants import DAYS_OF_WEEK
 from django.forms.models import model_to_dict
+from .utilities import rsetattr, rgetattr
+import datetime
 
 
-class Contract(models.Model):
+class VersionControlEditModel(models.Model):
+    function_call_args = []
+    is_edited = False
+
+    def save(self, *args, **kwargs):
+        print('heeeeere')
+        if not self.pk:
+            self.create_save(self, *args, **kwargs)
+        else:
+            print('wtf??')
+            self.update_save(self, *args, **kwargs)
+
+    def create_save(self, *args, **kwargs):
+        return 0
+
+    def update_save(self, *args, **kwargs):
+        print('i am here')
+        if self.is_edited:
+            print('here')
+            args = [j for (i, j) in model_to_dict(self).items()]
+            args.append(int(kwargs['user_id']))
+            connection.cursor().callproc(self._meta.db_table + '_update', args)
+            self.is_edited = False
+
+    def custom_delete(self, user_id: int):
+        connection.cursor().execute(f"CALL {self._meta.db_table}_delete({self.pk}, {user_id})")
+
+    class Meta:
+        abstract = True
+
+
+class NotVersionControlledEditModel(models.Model):
+    def save(self, *args, **kwargs):
+        if 'user_id' in kwargs:
+            del kwargs['user_id']
+        super(NotVersionControlledEditModel, self).save(*args, **kwargs)
+
+    def custom_delete(self, user_id: int):
+        super(NotVersionControlledEditModel, self).delete()
+
+    class Meta:
+        abstract = True
+
+
+class Contract(VersionControlEditModel):
     contract_id = models.AutoField(primary_key=True)
     contract_dttm = models.DateTimeField()
     student_document = models.ForeignKey('PersonDocument', models.DO_NOTHING, blank=True, null=True,
@@ -21,48 +67,18 @@ class Contract(models.Model):
     payer_inn_no = models.CharField(max_length=12)
     course_element = models.ForeignKey('CourseElement', models.DO_NOTHING, blank=True, null=True)
 
-    def uppend_dict(self, args: dict):
-        for i in ['contract_id', 'contract_dttm', 'student_document_id', 'student_address_id', 'student_phone_no',
-                  'payer_document_id', 'payer_address_id', 'payer_phone_no', 'payer_inn_no', 'course_element_id']:
-            if i not in args.keys():
-                args[i] = getattr(self, i)
-
-    def dict_equal(self, args: dict) -> bool:
-        return False
-
     class Meta:
         managed = False
         db_table = 'contract'
 
 
-class ContractPayment(models.Model):
+class ContractPayment(VersionControlEditModel):
     contract_payment_id = models.AutoField(primary_key=True)
     payment_dt = models.DateField()
     payment_amt = models.IntegerField()
     contract = models.ForeignKey(Contract, models.DO_NOTHING, blank=True, null=True)
     payment_type = models.SmallIntegerField()
     voucher_no = models.CharField(max_length=50, blank=True, null=True)
-
-    def uppend_dict(self, args: dict):
-        if 'contract_id' not in args.keys():
-            args['contract_id'] = self.contract_id
-        if 'payment_type' not in args.keys():
-            args['payment_type'] = self.payment_type
-
-    def dict_equal(self, args: dict) -> bool:
-        print(model_to_dict(self).items())
-        print(args)
-        for i, j in model_to_dict(self).items():
-            print(1)
-            if i == 'contract':
-                print(2)
-                if args['contract_id'] != self.contract_id:
-                    return False
-            elif args[i] != j:
-                print(2)
-                print(i)
-                return False
-        return True
 
     class Meta:
         managed = False
@@ -79,7 +95,7 @@ class ContractTermination(models.Model):
         db_table = 'contract_termination'
 
 
-class Course(models.Model):
+class Course(NotVersionControlledEditModel):
     course_id = models.AutoField(primary_key=True)
     sphere_txt = models.CharField(max_length=100, blank=True, null=True)
     name_txt = models.CharField(max_length=100)
@@ -103,13 +119,15 @@ class Course(models.Model):
                         f"short_nm = '{self.short_nm}', price_per_hour = {self.price_per_hour}, "
                         f"number_of_hours = {self.number_of_hours} where course_id = {self.course_id}")
 
-
-
-    def delete(self, *args, **kwargs):
+    def custom_delete(self, user_id: int):
         course_elements = CourseElement.objects.filter(course=self)
         CourseClass.objects.filter(course_element__in=course_elements).delete()
         course_elements.delete()
-        super(Course, self).delete(*args, **kwargs)
+        super(Course, self).custom_delete(user_id)
+
+    @property
+    def total_price(self):
+        return self.price_per_hour * self.number_of_hours
 
 
 class CourseClass(models.Model):
@@ -124,7 +142,7 @@ class CourseClass(models.Model):
         db_table = 'course_class'
 
 
-class CourseElement(models.Model):
+class CourseElement(NotVersionControlledEditModel):
     course_element_id = models.AutoField(primary_key=True)
     course = models.ForeignKey(Course, models.DO_NOTHING, blank=True, null=True)
     teacher_person = models.ForeignKey('Person', models.DO_NOTHING, blank=True, null=True)
@@ -138,12 +156,43 @@ class CourseElement(models.Model):
         return " ".join([DAYS_OF_WEEK[int(i.week_day_txt)]
                          for i in CourseClass.objects.filter(course_element=self).order_by('week_day_txt')])
 
-    def delete(self, *args, **kwargs):
+    def custom_delete(self, user_id: int):
         CourseClass.objects.filter(course_element=self).delete()
-        super(CourseElement, self).delete(*args, **kwargs)
+        super(CourseElement, self).custom_delete(user_id)
+
+    def get_course_class(self):
+        return None
+
+    def set_course_class(self, value):
+        if getattr(self, 'classElems', None) is None:
+            self.classElems = CourseClass.objects.filter(course_element=self)
+        course_class_objects = CourseClass.objects.filter(course_element=self)
+        for k in range(0, 7):
+            on_current_day = course_class_objects.filter(week_day_txt=str(k))
+
+            if value[4 * k] == '' or value[4 * k + 1] == '' or value[4 * k + 2] == '' or value[4 * k + 3] == '':
+                if len(on_current_day) != 0:
+                    on_current_day.delete()
+            else:
+                srt_tm_h = int(value[4 * k + 0])
+                srt_tm_m = int(value[4 * k + 1])
+                end_tm_h = int(value[4 * k + 2])
+                end_tm_m = int(value[4 * k + 3])
+                start_tm = datetime.time(srt_tm_h, srt_tm_m)
+                end_tm = datetime.time(end_tm_h, end_tm_m)
+                if len(on_current_day) == 0:
+                    new_element = CourseClass(start_tm=start_tm, end_tm=end_tm, week_day_txt=str(k),
+                                              course_element=self)
+                    new_element.save()
+                else:
+                    on_current_day[0].start_tm = start_tm
+                    on_current_day[0].end_tm = end_tm
+                    on_current_day[0].save()
+
+    course_class = property(get_course_class, set_course_class)
 
 
-class Person(models.Model):
+class Person(VersionControlEditModel):
     person_id = models.AutoField(primary_key=True)
     person_surname_txt = models.CharField(max_length=50)
     person_name_txt = models.CharField(max_length=50)
@@ -161,21 +210,17 @@ class Person(models.Model):
             res += " " + str(self.person_father_name_txt)[0] + "."
         return res
 
-    def uppend_dict(self, args: dict):
-        if 'person_id' not in args.keys():
-            args['person_id'] = self.person_id
-
-    def dict_equal(self, args: dict) -> bool:
-        for i, j in model_to_dict(self).items():
-            if i == 'person':
-                if args['person_id'] != self.person_id:
-                    return False
-            elif args[i] != j:
-                return False
-        return True
+    def create_save(self, *args, **kwargs):
+        cur = connection.cursor()
+        cur.callproc('person_insert', (self.person_surname_txt, self.person_name_txt, self.person_father_name_txt,
+                                       self.birth_dt, kwargs['user_id']))
+        new_id = None
+        for line in cur:
+            new_id = line[0]
+        self.person_id = new_id
 
 
-class PersonDocument(models.Model):
+class PersonDocument(VersionControlEditModel):
     person_document_id = models.AutoField(primary_key=True)
     document_no = models.IntegerField()
     document_series = models.CharField(max_length=10, blank=True, null=True)
@@ -188,25 +233,12 @@ class PersonDocument(models.Model):
     authority_txt = models.CharField(max_length=150)
     issue_dt = models.DateField()
 
-    def uppend_dict(self, args: dict):
-        if 'person_id' not in args.keys():
-            args['person_id'] = self.person_id
-
-    def dict_equal(self, args: dict) -> bool:
-        for i, j in model_to_dict(self).items():
-            if i == 'person':
-                if args['person_id'] != self.person_id:
-                    return False
-            elif args[i] != j:
-                return False
-        return True
-
     class Meta:
         managed = False
         db_table = 'person_document'
 
 
-class PersonHomeAddress(models.Model):
+class PersonHomeAddress(VersionControlEditModel):
     person_home_address_id = models.AutoField(primary_key=True)
     person = models.ForeignKey(Person, models.DO_NOTHING, blank=True, null=True)
     region_cd = models.SmallIntegerField()
@@ -217,26 +249,12 @@ class PersonHomeAddress(models.Model):
     structure_no = models.CharField(max_length=10, blank=True, null=True)
     flat_nm = models.SmallIntegerField(blank=True, null=True)
 
-    def uppend_dict(self, args: dict):
-        if 'person_id' not in args.keys():
-            args['person_id'] = self.person_id
-
-    def dict_equal(self, args: dict) -> bool:
-        for i, j in model_to_dict(self).items():
-            if i == 'person':
-                if args['person_id'] != self.person_id:
-                    return False
-            elif args[i] != j:
-                return False
-        return True
-
-
     class Meta:
         managed = False
         db_table = 'person_home_address'
 
 
-class StudentPerson(models.Model):
+class StudentPerson(VersionControlEditModel):
     person = models.ForeignKey(Person, models.DO_NOTHING, primary_key=True)
     education_start_year = models.DateField(blank=True, null=True)
     school_name_txt = models.CharField(max_length=50, blank=True, null=True)
@@ -246,28 +264,50 @@ class StudentPerson(models.Model):
         managed = False
         db_table = 'student_person'
 
-    def uppend_dict(self, args: dict):
-        if 'person_id' not in args.keys():
-            args['person_id'] = self.person_id
-
-    def dict_equal(self, args: dict) -> bool:
-        for i, j in model_to_dict(self).items():
-            if i == 'person':
-                if args['person_id'] != self.person_id:
-                    return False
-            elif args[i] != j:
-                return False
-        return True
+    def update_save(self, *args, **kwargs):
+        if self.is_edited:
+            connection.cursor().callproc('person_update', [self.person_id, self.person.person_surname_txt,
+                                                           self.person.person_name_txt,
+                                                           self.person.person_father_name_txt,
+                                                           self.person.birth_dt, self.education_start_year,
+                                                           self.school_name_txt, self.liter, int(kwargs['user_id'])])
+            self.is_edited = False
 
 
-class AuthUserXPerson(models.Model):
-    auth_user = models.ForeignKey(User, models.DO_NOTHING, primary_key=True)
-    person = models.ForeignKey('Person', models.DO_NOTHING)
+class AuthUserXPerson(NotVersionControlledEditModel):
+    auth_user = models.ForeignKey(User, models.DO_NOTHING)
+    person = models.ForeignKey('Person', models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = False
         db_table = 'auth_user_x_person'
         unique_together = (('auth_user', 'person'),)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            super(AuthUserXPerson, self).save(*args, **kwargs)
+        else:
+            print('here!!!')
+            print(self.person.birth_dt)
+            self.person.save(*args, **kwargs)
+            del kwargs['user_id']
+            self.auth_user.save(*args, **kwargs)
+
+    def custom_delete(self, user_id: int):
+        self.auth_user.delete()
+        self.person.custom_delete(user_id)
+
+
+class CourseElementDefiniteClass(NotVersionControlledEditModel):
+    course_element_definite_class_id = models.AutoField(primary_key=True)
+    course_element = models.ForeignKey('CourseElement', models.DO_NOTHING, blank=True)
+    class_dt = models.DateField()
+    start_tm = models.TimeField()
+    end_tm = models.TimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'course_element_definite_class'
 
 
 # view models
@@ -310,31 +350,3 @@ class StudentsOverviewFunction(models.Model):
 
     class Meta:
         managed = False
-
-
-# class ContractOverviewByPerson(models.Model):
-#     contract_id = models.IntegerField()
-#     contract_dt = models.DateField()
-#     person_id = models.IntegerField()
-#     document_series = models.CharField(max_length=10, blank=True, null=True)
-#     document_no = models.IntegerField()
-#     person_surname_txt = models.CharField(max_length=50)
-#     person_name_txt = models.CharField(max_length=50)
-#     person_father_name_txt = models.CharField(max_length=50, blank=True, null=True)
-#     connection_type_txt = models.CharField(max_length=50)
-#     course_id = models.IntegerField()
-#     sphere_txt = models.CharField(max_length=100, blank=True, null=True)
-#     name_txt = models.CharField(max_length=100)
-#     number_of_payments = models.BigIntegerField()
-#
-#     @staticmethod
-#     def execute(person_id: int):
-#         cur = connection.cursor()
-#         cur.callproc('contract_overview_by_person', [person_id])
-#         columns = [column[0] for column in cur.description]
-#         print(columns)
-#         for row in cur:
-#             yield ContractOverviewByPerson(**dict(zip(columns, row)))
-#
-#     class Meta:
-#         managed = False

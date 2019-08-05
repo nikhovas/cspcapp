@@ -21,10 +21,10 @@
                 <td>Школа</td>
                 <td>Класс</td>
                 <td>Ученик</td>
-                <td></td>
+                <td style="width: 110px;"></td>
             </tr>
         </thead>
-        {% for student in students_list %}
+        {% for student, contracts_set in students_list %}
             <tr>
                 <td>{{ student.school_name_txt }}</td>
                 <td>{{ student.grade }} {{ student.liter }}</td>
@@ -33,12 +33,48 @@
                     {{ student.person_father_name_txt }}
                 </td>
                 <td>
+                    <button onclick="toggleInfoTab('student', {{ student.pk }})">
+                        <span id="student_row_more_info_button_span_{{ student.pk }}" class="glyphicon glyphicon-arrow-down"></span>
+                    </button>
                     <a href="/student/detail/{{ student.person_id }}/" class="smallsquarebutton" target="_self">
                         <span class="glyphicon glyphicon-eye-open"></span>
                     </a>
                     <a href="{{object.get_update_url}}" class="smallsquarebutton" target="_self">
                             <span class="glyphicon glyphicon-remove"></span>
                     </a>
+                </td>
+            </tr>
+            <tr id="student_row_more_info_{{ student.pk }}" hidden="true">
+            <td colspan="4">
+            {% for elem in student.courseelement_set %}
+                {{ elem }}
+                            {% endfor %}
+                    <table class="table main-table" style="width: 100%" id="course_element_table_{{ course.pk }}">
+                        <thead>
+                            <tr>
+                                <td>Курс</td>
+                                <td>Учитель</td>
+                                <td>Дни</td>
+                                <td>Оплачено</td>
+                                <td>Необходимо</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for contract, contract_sum in contracts_set %}
+                                <tr>
+                                    <td>{{ contract.course_element.course.sphere_txt }} {{ contract.course_element.course.name_txt }}</td>
+                                    <td>{{ contract.course_element.teacher_person.person_surname_txt }}
+                                        {{ contract.course_element.teacher_person.person_name_txt }}
+                                        {% if not contract.course_element.teacher_person.person_father_name_txt is None %}{{ contract.course_element.teacher_person.person_father_name_txt }} {% endif %}</td>
+                                    <td>{{ contract.course_element.get_week_days_str }}</td>
+                                    <td>{{ contract_sum }}</td>
+                                    <td>{{ contract.course_element.course.total_price }}</td>
+                                    <td style="background-color: {% if contract_sum < contract.course_element.course.total_price %} red {% else %} green {% endif %}"></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </td>
             </tr>
         {% endfor %}

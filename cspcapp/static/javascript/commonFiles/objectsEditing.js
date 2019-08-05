@@ -38,18 +38,8 @@ function disableEditObjectMode(edit_node_type, document_id) {
         type : "POST",
         data : serializeObject($(`#${edit_node_type}_row_${document_id}`)),
         dataType : "json",
-        success : function(json) {
-            if (json.result) {
-                console.log(json.result);
-            } else {
-                console.log("Произошла ошибка: " + json.error);
-            }
-            finishEditObjectMode(edit_node_type, document_id);
-        },
-        error : function(xhr,errmsg,err) {
-            alert("Произошла ошибка: " + xhr.responseText);
-            finishEditObjectMode(edit_node_type, document_id);
-        }
+        success : function(json) { finishEditObjectMode(edit_node_type, document_id); },
+        error : function(xhr,errmsg,err) { alert("Err: " + xhr.responseText); finishEditObjectMode(edit_node_type, document_id); }
     });
 }
 

@@ -8,18 +8,8 @@ function deleteItem(type, id) {
         type : "POST",
         data : {'csrfmiddlewaretoken': get_scrf_token(), 'id': id},
         dataType : "json",
-        success : function(json) {
-            if (json.result) {
-                delete_object_success_end(type, id);
-                console.log(json.result);
-            } else {
-                console.log("Произошла ошибка: " + json.error);
-            }
-        },
-        error : function(xhr,errmsg,err) {
-            alert("Произошла ошибка: " + xhr.responseText);
-            delete_object_failure_end(type, id);
-        }
+        success : function(json) { delete_object_success_end(type, id); },
+        error : function(xhr,errmsg,err) { alert("Err: " + xhr.responseText); delete_object_failure_end(type, id); }
     });
 }
 

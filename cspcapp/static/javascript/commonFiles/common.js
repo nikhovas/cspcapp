@@ -28,8 +28,18 @@ function scrfTokenInput() {
 function serializeObject(object) {
     let result = "";
     object.find("input,select").each(function(item) {
-        result += `${this.name}=${this.value}&`;
+        if (this.type === 'checkbox') {
+            if ($(this).is(':checked')) {
+                result += `${this.name}=True&`;
+            } else {
+                result += `${this.name}=False&`;
+            }
+        } else {
+            result += `${this.name}=${this.value}&`;
+        }
+
     });
+
     return result;
 }
 
@@ -48,4 +58,9 @@ function pair_array_to_map(array) {
         }
     }
     return dict;
+}
+
+
+function aaa() {
+    $("#dialog").dialog();
 }

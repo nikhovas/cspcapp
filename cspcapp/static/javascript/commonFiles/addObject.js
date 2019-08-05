@@ -5,21 +5,10 @@ function addNewObject(type, parent_id) {
     $.ajax({
         url : `/api/add/${type}/`,
         type : "POST",
-        data : $(`#${type}_add_form_${parent_id}`).serialize(),
+        data : serializeObject( $(`#${type}_add_row_${parent_id}`) ),
         dataType : "json",
-        success : function(json) {
-            if (json.result) {
-                addObjectSuccess(type, json["new_element_id"], parent_id);
-                console.log(json.result);
-            } else {
-                console.log("Произошла ошибка: " + json.error);
-                addObjectFailure(type, parent_id);
-            }
-        },
-        error : function(xhr,errmsg,err) {
-            alert("Произошла ошибка: " + xhr.responseText);
-            addObjectFailure(type, parent_id);
-        }
+        success : function(json) { addObjectSuccess(type, json["new_element_id"], parent_id); },
+        error : function(xhr,errmsg,err) { alert("Err: " + xhr.responseText); addObjectFailure(type, parent_id); },
     });
 }
 

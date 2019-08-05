@@ -56,34 +56,36 @@
                         <td> Начало учебы </td>
                         <td> Школа </td>
                         <td style="width: 50px;">Литер</td>
-                        <td style="width: 30px;"></td>
+                        <td style="width: 80px;"></td>
                     </tr>
                     </thead>
-                    <tr style="" id="person_row_{{ person.pk }}">
+                    <tr style="" id="student_row_{{ person.pk }}">
                         {% csrf_token %}
                         <input type="hidden" name="id" value="{{ person.pk }}" readonly>
-                        <td><input type="text" name="person_surname_txt" value="{{ person.person_surname_txt }}" style="width: 100%; border-width: 0;" readonly/></td>
-                        <td><input type="text" name="person_name_txt" value="{{ person.person_name_txt }}" style="width: 100%; border-width: 0;" readonly/></td>
-                        <td><input type="text" name="person_father_name_txt" value="{{ person.person_father_name_txt }}" style="width: 100%; border-width: 0;" readonly/></td>
-                        <td><input type="text" name="birth_dt_day" value="{{ person.birth_dt.day }}" style="border-width: 0; width: 18px; border-width: 0;" readonly/>-
-                        <input type="text" name="birth_dt_month" value="{{ person.birth_dt.month }}" style="border-width: 0; width: 18px; border-width: 0;" readonly/>-
-                        <input type="text" name="birth_dt_year" value="{{ person.birth_dt.year }}" style="border-width: 0; width: 33px; border-width: 0;" readonly/></td>
+                        <td><input type="text" name="person.person_surname_txt" value="{{ person.person_surname_txt }}" style="width: 100%; border-width: 0;" readonly/></td>
+                        <td><input type="text" name="person.person_name_txt" value="{{ person.person_name_txt }}" style="width: 100%; border-width: 0;" readonly/></td>
+                        <td><input type="text" name="person.person_father_name_txt" value="{{ person.person_father_name_txt }}" style="width: 100%; border-width: 0;" readonly/></td>
+                        <td><input type="text" name="person.birth_dt_day" value="{{ person.birth_dt.day }}" style="border-width: 0; width: 18px; border-width: 0;" readonly/>-
+                        <input type="text" name="person.birth_dt_month" value="{{ person.birth_dt.month }}" style="border-width: 0; width: 18px; border-width: 0;" readonly/>-
+                        <input type="text" name="person.birth_dt_year" value="{{ person.birth_dt.year }}" style="border-width: 0; width: 33px; border-width: 0;" readonly/></td>
                         <td><input type="text" name="education_start_year_day" value="{{ student_person.education_start_year.day }}" style="border-width: 0; width: 18px; border-width: 0;" readonly/>-
                         <input type="text" name="education_start_year_month" value="{{ student_person.education_start_year.month }}" style="border-width: 0; width: 18px; border-width: 0;" readonly/>-
                         <input type="text" name="education_start_year_year" value="{{ student_person.education_start_year.year }}" style="border-width: 0; width: 33px; border-width: 0;" readonly/></td>
                         <td><input type="text" name="school_name_txt" value="{{ student_person.school_name_txt }}" style="width: 100%; border-width: 0;" readonly/></td>
                         <td><input type="text" name="liter" value="{{ student_person.liter }}" style="width: 18px; border-width: 0;" readonly/></td>
                         <td>
-                            <button type="submit" onclick="enableEditObjectMode('person', {{ person.pk }})" id="person_data_button_{{ person.pk }}">
-                                                <span class="glyphicon glyphicon-pencil" id="person_data_button_span_{{ person.pk }}"></span>
+                            <button type="submit" onclick="enableEditObjectMode('student', {{ person.pk }})" id="student_data_button_{{ person.pk }}">
+                                                <span class="glyphicon glyphicon-pencil" id="student_data_button_span_{{ person.pk }}"></span>
                                             </button>
+                            <button type="submit"><span class="glyphicon glyphicon-time"></span></button>
                         </td>
                     </tr>
                 </table>
     </div>
-    <div style="margin-top: 3%">
-        <h3 style="color: black; width: 100%">Договоры</h3>
+    <div style="margin-top: 3%; width: 100%; float: left;">
+        <h3 style="color: black; ">Договоры</h3>
     </div>
+    <button type="submit" style="display: inline-block"> <span class="glyphicon glyphicon-time"></span></button>
     <table class="table main-table contracts-table" style="width: 100%">
         <colgroup>
             <col style="width: 45px">
@@ -160,7 +162,9 @@
                         </button>
 
                     <button class="long-button">
+                        <a href="/contract/5/">
                             <span class="glyphicon glyphicon-time"/>
+                            </a>
                         </button>
 
                     <button class="long-button" onclick="toggleInfoTab('contract', {{ contract.pk }})">
@@ -180,11 +184,12 @@
                                 <input type="text" name="person_father_name_txt" value="{{ contract.student_document.person_father_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
                                 <input type="text" name="authority_txt" value="{{ contract.student_document.authority_txt }}" style="background-color: #3b5998; border-width: 0; width: 100%" readonly/>
                                 <input type="text" name="document_type_txt" value="{{ contract.student_document.document_type_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 314px)" readonly/>
-                                <input type="text" name="authority_no" value="{{ contract.student_document.authority_no }}" style="background-color: #3b5998; border-width: 0; width: 90px" readonly/>
+                                <input type="text" name="authority_no" value="{{ contract.student_document.authority_no }}" style="background-color: #3b5998; border-width: 0; width: 60px" readonly/>
 {#                                <input type="date" name="fsdfd" style="color: black">#}
                                 <input type="text" name="issue_dt_day" value="{{ contract.student_document.issue_dt.day }}" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px" readonly/>-
                                 <input type="text" name="issue_dt_month" value="{{ contract.student_document.issue_dt.month }}" style="background-color: #3b5998; border-width: 0; width: 16px" readonly/>-
                                 <input type="text" name="issue_dt_year" value="{{ contract.student_document.issue_dt.year }}" style="background-color: #3b5998; border-width: 0; width: 33px" readonly/>
+
                                 <input type="text" name="document_series" value="{{ contract.student_document.document_series }}" style="background-color: #3b5998; border-width: 0; width: 33px; margin-left: 20px" readonly/>
                                 <input type="text" name="document_no" value="{{ contract.student_document.document_no }}" style="background-color: #3b5998; border-width: 0; width: 50px" readonly/>
                             </form>
@@ -318,7 +323,8 @@
                                     <td>Размер оплаты</td>
                                     <td>Тип оплаты</td>
                                     <td>Номер квитанции</td>
-                                    <td style="width: 110px;"></td>
+                                    <td style="width: 110px;">
+                                    <button style="background-color: white; color: #3b5998"> <span class="glyphicon glyphicon-time"></span> </button></td>
                                 </tr>
                             </thead>
 

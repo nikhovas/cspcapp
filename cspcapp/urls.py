@@ -12,14 +12,15 @@ urlpatterns = [
     url(r'^api/add/contract/', api_requests.add_new_contract, name='add_new_contract'),
     url(r'^api/edit/(?P<object_type>\S+)/$', api_requests.data_edit, name='data_edit'),
     url(r'^api/delete/(?P<object_type>\S+)/$', api_requests.object_delete, name='object_delete'),
+    url(r'^api/new_user/', api_requests.new_user, name='new_user'),
+    url(r'^accounts/', include('django_registration.backends.one_step.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^courses/$', views.courses_view, name='cspcapp_courses_view'),
     url(r'^teachers/$', views.teachers_view, name='cspcapp_teachers_view'),
     url(r'^versions/(?P<pk>\S+)/$', views.versions, name='cspcapp_versions'),
+    url(r'^contract/(?P<pk>\S+)/$', views.contract_version, name='contract_version'),
     url(r'^', views.students_overview, name='cspcapp_students_overview')
 ]
-
-
 
 # urlpatterns += (
 #     # urls for Student

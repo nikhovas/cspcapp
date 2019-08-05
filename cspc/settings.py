@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cspcapp.apps.CspcappConfig',
+    'cspcapp.apps.CspcappConfig'
     # 'cspcapp'
 ]
 
