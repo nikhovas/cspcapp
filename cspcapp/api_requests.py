@@ -1,124 +1,94 @@
-from .models import PersonHomeAddress, PersonDocument, Person, Contract, ContractPayment
+from .models import *
 from django.core.handlers.wsgi import WSGIRequest
-# from .forms import PersonHomeAddressForm, PersonDocumentForm, PersonInnForm, PersonBirthDateForm, PersonPhoneForm, \
-#     PersonEmailForm
 from django.http import JsonResponse, HttpResponse
 from django.db import connection
-from django.core import serializers
-import json
-from .utilities import reconstruct_params, post_request_to_dict_slicer, values_from_dict_by_keys, smart_int, null_check
+from .utilities import reconstruct_params, post_request_to_dict_slicer, values_from_dict_by_keys, smart_int, \
+    null_check, reconstruct_args
 import datetime
+from .forms import UserForm
 
 
-# def edit_address_info(request: WSGIRequest) -> JsonResponse:
-#     address = PersonHomeAddress.objects.get(pk=request.POST['person_home_address_id'])
-#     form = PersonHomeAddressForm(request.POST, instance=address)
-#     if form.is_valid():
-#         form.save()
-#         return JsonResponse({'result': True})
-#     else:
-#         return JsonResponse({'result': False})
-#
-#
+# Configuration Block
 
 
 class PostRequestInfo:
-    def __init__(self, _type_name, _id_name: str, _call_order: list,
-                 _reformat_params: dict, _procedure_name: str):
+    def __init__(self, _type_name, _to_date: list = (), _date_to_timestamp: list = ()):
         self.type_name = _type_name
-        self.id_name = _id_name
-        self.call_order = _call_order
-        self.reformat_params = _reformat_params
-        self.procedure_name = _procedure_name
+        self.to_date = _to_date
+        self.date_to_timestamp = _date_to_timestamp
+
 
 MODEL_TYPES_DICT = \
     {
-        'person_document': PostRequestInfo(
-            _type_name=PersonDocument,
-            _id_name='person_document_id',
-            _call_order=['person_document_id', 'document_no', 'document_series', 'document_type_txt', 'person_id',
-                           'person_surname_txt', 'person_name_txt', 'person_father_name_txt', 'authority_no',
-                           'authority_txt', 'issue_dt', 'change_user_id'],
-            _reformat_params={
-                'to_int': ['id', 'document_no'],
-                'to_date': ['issue_dt'],
-                'renaming': {'id': 'person_document_id'}
-            },
-            _procedure_name='person_document_update'
-        ),
-        'person_home_address': PostRequestInfo(
-            _type_name=PersonHomeAddress,
-            _id_name='person_home_address_id',
-            _call_order=['person_home_address_id', 'person_id', 'region_cd', 'city_txt', 'street_txt', 'house_txt',
-                         'building_no', 'structure_no', 'flat_nm', 'change_user_id'],
-            _reformat_params={
-                'to_int': ['id', 'region_cd', 'flat_nm'],
-                'renaming': {'id': 'person_home_address_id'}
-            },
-            _procedure_name='person_home_address_update'
-        ),
-        'contract': PostRequestInfo(
-            _type_name=Contract,
-            _id_name='',
-            _call_order=['contract_id', 'contract_dttm', 'student_document_id', 'student_address_id',
-                         'student_phone_no', 'payer_document_id', 'payer_address_id', 'payer_phone_no', 'payer_inn_no',
-                         'course_element_id', 'change_user_id'],
-            _reformat_params={
-                'to_int': ['id', 'student_document_id', 'student_address_id', 'payer_document_id', 'payer_address_id',
-                           'course_element_id'],
-                'renaming': {'id': 'contract_id'}
-            },
-            _procedure_name='contract_update'
-        ),
-        'payment': PostRequestInfo(
-            _type_name=ContractPayment,
-            _id_name='contract_payment_id',
-            _call_order=['contract_payment_id', 'payment_dt', 'payment_amt', 'contract_id', 'payment_type',
-                         'voucher_no', 'change_user_id'],
-            _reformat_params={
-                'to_int': ['id', 'payment_amt'],
-                'date_to_timestamp': ['payment_dt'],
-                'renaming': {'id': 'contract_payment_id'}
-            },
-            _procedure_name='contract_payment_update'
-        )
+        'person_document': PostRequestInfo(_type_name=PersonDocument, _to_date=['issue_dt']),
+        'person_home_address': PostRequestInfo(_type_name=PersonHomeAddress),
+        'contract': PostRequestInfo(_type_name=Contract),
+        'payment': PostRequestInfo(_type_name=ContractPayment, _date_to_timestamp=['payment_dt']),
+        'person': PostRequestInfo(_type_name=Person, _to_date=['education_start_year', 'birth_dt']),
+        'contract_student_phone': PostRequestInfo(_type_name=Contract),
+        'student': PostRequestInfo(_type_name=StudentPerson, _to_date=['education_start_year', 'person.birth_dt']),
+        'course': PostRequestInfo(_type_name=Course),
+        'course_element': PostRequestInfo(_type_name=CourseElement),
+        'course_class': PostRequestInfo(_type_name=CourseClass),
+        'teacher': PostRequestInfo(_type_name=AuthUserXPerson, _to_date=['person.birth_dt'])
     }
 
 
-CONFIG_RELINK = {'contract_student_phone': 'contract', 'contract_payer_phone': 'contract', 'contract_payer_inn': 'contract'}
+CONFIG_RELINK = {'contract_student_phone': 'contract', 'contract_payer_phone': 'contract',
+                 'contract_payer_inn': 'contract', 'contract_course_element': 'contract'}
+# NEED_OWN_EDIT_SYSTEM = ['course_element']
+DELETE_RENAMING = {'payment': 'contract_payment'}
+
+
+# Edit Block
 
 
 def data_edit(request: WSGIRequest, object_type: str) -> HttpResponse:
+    print('in edit!')
     if object_type in CONFIG_RELINK.keys():
         object_type = CONFIG_RELINK[object_type]
+    print('in edit2!')
     config = MODEL_TYPES_DICT[object_type]
-    editing_object = config.type_name.objects.get(pk=int(request.POST['id']))
+    editing_object = config.type_name.objects.get(pk=request.POST['id'])
+
     params = post_request_to_dict_slicer(request.POST)
-    adding_dict = {'change_user_id': request.user.pk}
-    editing_object.uppend_dict(params)
-    reconstruct_params(params=params, **config.reformat_params, add=adding_dict, deleting=['csrfmiddlewaretoken'],
-                       value_edit={"": None, 'None': None})
-    if editing_object.dict_equal(params):
-        return JsonResponse({'result': True, 'sent_request': False})
-    else:
-        print(222)
-        cur = connection.cursor()
-        aaa = values_from_dict_by_keys(params, config.call_order)
-        print(111)
-        print(aaa)
-        cur.callproc(config.procedure_name, aaa)
-        # try:
-        #     print(222)
-        #     cur = connection.cursor()
-        #     aaa = values_from_dict_by_keys(params, config.call_order)
-        #     print(111)
-        #     print(aaa)
-        #     cur.callproc(config.procedure_name, aaa)
-        # except Exception as error:
-        #     print('error down')
-        #     print(error)
-        #     return JsonResponse({'result': False, 'sent_request': True})
-        return JsonResponse({'result': True, 'sent_request': True})
+    del params['csrfmiddlewaretoken']
+    del params['id']
+    reconstruct_args(params=params, to_date=config.to_date, date_to_timestamp=config.date_to_timestamp)
+    print(params)
+    for i, j in params.items():
+        if rgetattr(editing_object, i, None) != j:
+            arr = i.split('.')
+            editing_object.is_edited = True
+            if len(arr) > 1:
+                rgetattr(editing_object, '.'.join(arr[:-1])).is_edited = True
+            print(f"not equal: {i}")
+            rsetattr(editing_object, i, j)
+
+    # editing_object.update(**params)
+    editing_object.save(user_id=request.user.pk)
+    return JsonResponse({})
+
+
+def course_element_add(request: WSGIRequest) -> JsonResponse:
+    data = dict(request.POST)
+    print(data)
+    course_element = CourseElement.objects.create(course_id=int(request.POST['course_id']),
+                                                  teacher_person_id=int(data['teacher_id'][0]))
+    course_element.save()
+    course_element_id = course_element.pk
+    for k in range(0, 7):
+        if data['course_class_start_hour'][k] != '' and data['course_class_start_minute'][k] != '' and \
+                data['course_class_end_hour'][k] != '' and data['course_class_end_minute'][k] != '':
+            CourseClass(start_tm=datetime.time(int(data['course_class_start_hour'][k]),
+                                               int(data['course_class_start_minute'][k])),
+                        end_tm=datetime.time(int(data['course_class_end_hour'][k]),
+                                             int(data['course_class_end_minute'][k])),
+                        week_day_txt=str(k), course_element_id=course_element_id).save()
+    return JsonResponse({'new_element_id': course_element_id})
+
+
+# Add Block
 
 
 def payment_add(request: WSGIRequest) -> HttpResponse:
@@ -139,7 +109,7 @@ def payment_add(request: WSGIRequest) -> HttpResponse:
     for row in cur:
         new_element_id = row[0]
 
-    return JsonResponse({'result': True, 'new_element_id': new_element_id})
+    return JsonResponse({'new_element_id': new_element_id})
 
 
 def add_new_contract(request: WSGIRequest) -> HttpResponse:
@@ -175,31 +145,44 @@ def add_new_contract(request: WSGIRequest) -> HttpResponse:
     except Exception as err:
         print(err)
 
-    return JsonResponse({'result': True})
+    return JsonResponse({})
 
 
-def contract_delete(request: WSGIRequest) -> HttpResponse:
+def course_add(request: WSGIRequest) -> JsonResponse:
+    Course(sphere_txt=request.POST['sphere_txt'], name_txt=request.POST['name_txt'], short_nm=request.POST['short_nm'],
+           price_per_hour=int(request.POST['price_per_hour']), number_of_hours=request.POST['number_of_hours']).save()
+    return JsonResponse({})
+
+
+# Delete BLock
+
+
+def object_delete(request: WSGIRequest, object_type: str) -> HttpResponse:
+    MODEL_TYPES_DICT[object_type].type_name.objects.get(pk=request.POST['id']).custom_delete(request.user.pk)
+    return JsonResponse({})
+
+
+def new_user(request: WSGIRequest) -> JsonResponse:
+    # form = UserForm(request.POST)
+    # print(form.is_valid())
+    # print(form.cleaned_data)
     print(request.POST)
-    contract_id = request.POST['id']
-    try:
-        cur = connection.cursor()
-        cur.execute(f"CALL contract_delete({contract_id}, {request.user.pk})")
-    except Exception as error:
-        print(error)
-    return JsonResponse({'result': True})
+    _new_user = User.objects.create_user(username=request.POST['username'], password=request.POST['password'])
+    new_person = Person(person_surname_txt=request.POST['surname'],
+                        person_name_txt=request.POST['name'],
+                        person_father_name_txt=request.POST['father_name'],
+                        birth_dt=datetime.date(int(request.POST['birth_dt_year']), int(request.POST['birth_dt_month']),
+                                               int(request.POST['birth_dt_day'])))
+    new_person.save(user_id=request.user.pk)
+    AuthUserXPerson.objects.create(auth_user=_new_user, person=new_person)
+    return JsonResponse({})
 
 
-def payment_delete(request: WSGIRequest) -> HttpResponse:
-    print(request.POST)
-    contract_payment_id = request.POST['id']
-    try:
-        cur = connection.cursor()
-        cur.execute(f"CALL contract_payment_delete({contract_payment_id}, {request.user.pk})")
-    except Exception as error:
-        print(error)
-    return JsonResponse({'result': True})
-
-
-def course_element_data_edit(request: WSGIRequest) -> HttpResponse:
-    print(request.POST)
-    return JsonResponse({'result': True})
+def get_teacher_users(request: WSGIRequest) -> JsonResponse:
+    return JsonResponse([{
+        'surname': i.person.person_surname_txt,
+        'name': i.person.person_name_txt,
+        'father_name': i.person.person_father_name_txt,
+        'username': i.auth_user.username,
+        'id': i.person.id
+    } for i in AuthUserXPerson.objects.all()])

@@ -17,19 +17,24 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
           crossorigin="anonymous">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="{% static 'javascript/student_detail_view.js' %}" type="text/javascript"></script>
-    <script src="{% static 'javascript/constants.js' %}" type="text/javascript"></script>
-    <script src="{% static 'javascript/CourseElementWithDaysInfo.js' %}" type="text/javascript"></script>
-    <script src="{% static 'javascript/PersonDocument.js' %}" type="text/javascript"></script>
-    <script src="{% static 'javascript/PersonHomeAddress.js' %}" type="text/javascript"></script>
+    <script src="{% static 'javascript/commonFiles/jquery.js' %}" type="text/javascript"></script>
+    <script src="{% static 'javascript/commonFiles/constants.js' %}" type="text/javascript"></script>
+    <script src="{% static 'javascript/commonFiles/objectsEditing.js' %}" type="text/javascript"></script>
+    <script src="{% static 'javascript/commonFiles/addObject.js' %}" type="text/javascript"></script>
+    <script src="{% static 'javascript/commonFiles/deleteObject.js' %}" type="text/javascript"></script>
+    <script src="{% static 'javascript/commonFiles/animations.js' %}" type="text/javascript"></script>
+    <script src="{% static 'javascript/commonFiles/templates.js' %}" type="text/javascript"></script>
+    <script src="{% static 'javascript/commonFiles/common.js' %}" type="text/javascript"></script>
+    {% block scriptconnect %}
+    {% endblock %}
 </head>
 
 <body>
 <div class="sidebar" id="mySidebar">
     <div class="login-info">
-        <div class="circle" style="padding: 7px 0px 0px 8px; font-size: 20px; float: left;" >AA</div>
-         <div class="hidden_panel">{{ user.username }}</div>
+{#        <div class="circle" style="padding: 0px 0px 10px 8px; padding-bottom: 45px"><font size="4">AA</font></div>#}
+                <div class="circle" style="font-size: 20px; text-align: center; padding-top: 8px;">{{ user.first_name|first }}{{ user.last_name|first }}</div>
+
     </div>
 
     <div class="exit-button">
@@ -52,11 +57,6 @@
     <div class="sidebar-element">
         <a href="/teachers/"><span class="glyphicon glyphicon-briefcase"></span></a>
         <span class="hidden_panel">Список учителей</span>
-    </div>
-
-    <div class="sidebar-element">
-        <a href="/versions/"><span class="glyphicon glyphicon-book"></span></a>
-        <span class="hidden_panel">История изменения</span>
     </div>
 
     <div class="sidebar-element">

@@ -6,68 +6,196 @@
 {% endblock %}
 
 
-
-
 {% block content %}
 
     <h1>
     Список курсов
     </h1>
 
-    <table class="table main-table" style="width: 100%;">
+    <table class="table main-table" style="width: 100%;" id="course_table_0">
         <thead>
             <tr>
-                <td>№</td>
                 <td>Сфера</td>
                 <td>Имя</td>
                 <td>Краткое имя</td>
-                <td>Цена за час</td>
-                <td>Кол-во часов</td>
-                <td>Цена за полугодие</td>
-                <td></td>
+                <td style="width: 40px;">ЦЗЧ</td>
+                <td style="width: 40px;">Часы</td>
+                <td style="width: 80px;">ЦЗПГ</td>
+                <td style="width: 110px;"></td>
             </tr>
         </thead>
         {% for course, course_element_list in courses_info %}
-            <tr>
-                <td>{{ course.pk }}</td>
-                <td>{{ course.sphere_txt }}</td>
-                <td>{{ course.name_txt }}</td>
-                <td>{{ course.short_nm }}</td>
-                <td>{{ course.price_per_hour }}</td>
-                <td>{{ course.number_of_hours }}</td>
+            <tr id="course_row_{{ course.pk }}">
+            <form method="post" id="course_data_form_{{ course.pk }}">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ course.pk }}">
+                <td><input type="text" name="sphere_txt" value="{{ course.sphere_txt }}" style="border-width: 0; width: 100%;" readonly/></td>
+                <td><input type="text" name="name_txt" value="{{ course.name_txt }}" style="border-width: 0; width: 100%;" readonly/></td>
+                <td><input type="text" name="short_nm" value="{{ course.short_nm }}" style="border-width: 0; width: 100%;" readonly/></td>
+                <td><input type="text" name="price_per_hour" value="{{ course.price_per_hour }}" style="border-width: 0; width: 100%;" readonly/></td>
+                <td><input type="text" name="number_of_hours" value="{{ course.number_of_hours }}" style="border-width: 0; width: 100%;" readonly/></td>
                 <td>dev</td>
+                </form>
                 <td>
-                    <button>
-                        <span class="glyphicon glyphicon-arrow-down"></span>
+                    <button onclick="toggleInfoTab('course', {{ course.pk }})">
+                        <span id="course_row_more_info_button_span_{{ course.pk }}" class="glyphicon glyphicon-arrow-down"></span>
                     </button>
-                    <button>
-                        <span class="glyphicon glyphicon-pencil"></span>
+                    <button id="course_data_button_{{ course.pk }}" onclick="enableEditObjectMode('course', {{ course.pk }})">
+                        <span id="course_data_button_span_{{ course.pk }}" class="glyphicon glyphicon-pencil"></span>
                     </button>
-                    <button>
-                            <span class="glyphicon glyphicon-remove"></span>
+                    <button id="delete_course_data_button_{{ course.pk }}" onclick="deleteItem('course', {{ course.pk }})">
+                            <span id="delete_course_data_button_span_{{ course.pk }}" class="glyphicon glyphicon-remove"></span>
                     </button>
                 </td>
             </tr>
-        {% endfor %}
+            <tr id="course_row_more_info_{{ course.pk }}" hidden="true">
+                <td colspan="8">
+                    <table class="table main-table" style="width: 100%" id="course_element_table_{{ course.pk }}">
+                        <thead>
+                            <tr>
+                                <td>Учитель</td>
+                                <td style="width: 120px;">ПН</td>
+                                <td style="width: 120px;">ВТ</td>
+                                <td style="width: 120px;">СР</td>
+                                <td style="width: 120px;">ЧТ</td>
+                                <td style="width: 120px;">ПТ</td>
+                                <td style="width: 120px;">СБ</td>
+                                <td style="width: 120px;">ВС</td>
+                                <td style="width: 80px;"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for course_element, classes in course_element_list %}
 
+                            <tr id="course_element_row_{{ course_element.pk }}">
+                            <form method="post" id="course_element_data_form_{{ course_element.pk }}">
+                                <input type="hidden" name="id" value="{{ course_element.pk }}">
+                            {% csrf_token %}
+                                <td>
+                                    <select name="teacher_id" disabled>
+                                        {% for i in teachers_list %}
+                                            <option value="{{ i.person_id }}">{{ i.person.person_surname_txt }} {{ i.person.person_name_txt }} {{ i.person.person_father_name_txt }} - {{ i.auth_user.username }} </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                {% for i in classes %}
+                                    <td>
+                                        {% if i is None %}
+                                            <input type="text" name="course_class" value="" style="border-width: 0; width: 18px;" readonly/>:
+                                            <input type="text" name="course_class" value="" style="border-width: 0; width: 18px;" readonly/>-
+                                            <input type="text" name="course_class" value="" style="border-width: 0; width: 18px;" readonly/>:
+                                            <input type="text" name="course_class" value="" style="border-width: 0; width: 18px;" readonly/>
+                                        {% else %}
+                                            <input type="text" name="course_class" value="{{ i.start_tm.hour }}" style="border-width: 0; width: 18px;" readonly/>:
+                                            <input type="text" name="course_class" value="{{ i.start_tm.minute }}" style="border-width: 0; width: 18px;" readonly/>-
+                                            <input type="text" name="course_class" value="{{ i.end_tm.hour }}" style="border-width: 0; width: 18px;" readonly/>:
+                                            <input type="text" name="course_class" value="{{ i.end_tm.minute }}" style="border-width: 0; width: 18px;" readonly/>
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </form>
+                                <td>
+                                    <button id="course_element_data_button_{{ course_element.pk }}" onclick="enableEditObjectMode('course_element', {{ course_element.pk }})">
+                                        <span id="course_element_data_button_span_{{ course_element.pk }}" class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                    <button onclick="deleteItem('course_element', {{ course_element.pk }})">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </td>
+                            </tr>
+
+                                {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr id="course_element_add_row_{{ course.pk }}">
+                                 <form method="post" id="course_element_add_form_{{ course.pk }}" name="course_element_add_form_{{ course.pk }}">
+                                <input type="hidden" name="course_id" value="{{ course.pk }}">
+                                 {% csrf_token %}
+                                <td>
+                                    <select name="teacher_id">
+                                        {% for i in teachers_list %}
+                                            <option value="{{ i.person_id }}">{{ i.person.person_surname_txt }} {{ i.person.person_name_txt }} {{ i.person.person_father_name_txt }} - {{ i.auth_user.username }} </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                        <input type="text" name="course_class_start_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_start_minute" value="" style="border-width: 0; width: 18px;" />-
+                                        <input type="text" name="course_class_end_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_end_minute" value="" style="border-width: 0; width: 18px;" />
+                                    </td>
+                                 <td>
+                                        <input type="text" name="course_class_start_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_start_minute" value="" style="border-width: 0; width: 18px;" />-
+                                        <input type="text" name="course_class_end_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_end_minute" value="" style="border-width: 0; width: 18px;" />
+                                    </td>
+                                 <td>
+                                        <input type="text" name="course_class_start_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_start_minute" value="" style="border-width: 0; width: 18px;" />-
+                                        <input type="text" name="course_class_end_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_end_minute" value="" style="border-width: 0; width: 18px;" />
+                                    </td>
+                                 <td>
+                                        <input type="text" name="course_class_start_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_start_minute" value="" style="border-width: 0; width: 18px;" />-
+                                        <input type="text" name="course_class_end_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_end_minute" value="" style="border-width: 0; width: 18px;" />
+                                    </td>
+                                 <td>
+                                        <input type="text" name="course_class_start_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_start_minute" value="" style="border-width: 0; width: 18px;" />-
+                                        <input type="text" name="course_class_end_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_end_minute" value="" style="border-width: 0; width: 18px;" />
+                                    </td>
+                                 <td>
+                                        <input type="text" name="course_class_start_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_start_minute" value="" style="border-width: 0; width: 18px;" />-
+                                        <input type="text" name="course_class_end_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_end_minute" value="" style="border-width: 0; width: 18px;" />
+                                    </td>
+                                 <td>
+                                        <input type="text" name="course_class_start_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_start_minute" value="" style="border-width: 0; width: 18px;" />-
+                                        <input type="text" name="course_class_end_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_end_minute" value="" style="border-width: 0; width: 18px;" />
+                                    </td>
+                                </form>
+                                <td>
+                                    <button id="course_element_add_button_{{ course.pk }}" onclick="addNewObject('course_element', {{ course.pk }})">
+                                        <span class="glyphicon glyphicon-plus" id="course_element_add_button_span_{{ course.pk }}"></span>
+                                    </button>
+                                    <button>
+                                        <span class="glyphicon glyphicon-erase"></span>
+                                    </button>
+                                </td>
+
+                            </tr>
+                        </tfoot>
+                    </table>
+                </td>
+            </tr>
+        {% endfor %}
         <tfoot>
-            <tr>
-                <td>+</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+            <tr id="course_add_row_0">
+                <form action="/api/add/course/" method="post">
+                    {% csrf_token %}
+                <td><input type="text" name="sphere_txt" value="" style="border-width: 0; width: 100%;"/></td>
+                <td><input type="text" name="name_txt" value="" style="border-width: 0; width: 100%;" /></td>
+                <td><input type="text" name="short_nm" value="" style="border-width: 0; width: 100%;" /></td>
+                <td><input type="text" name="price_per_hour" value="" style="border-width: 0; width: 100%;" /></td>
+                <td><input type="text" name="number_of_hours" value="" style="border-width: 0; width: 100%;" /></td>
                 <td>-</td>
+
                 <td>
-                    <button>
-                        <span class="glyphicon glyphicon-plus"></span>
+                    <button id="course_add_button_0" onclick="addNewObject('course', 0)">
+                        <span class="glyphicon glyphicon-plus" id="course_add_button_span_0"></span>
                     </button>
                     <button>
                         <span class="glyphicon glyphicon-erase"></span>
                     </button>
                 </td>
-
+                    </form>
             </tr>
         </tfoot>
 

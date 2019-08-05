@@ -1,5 +1,6 @@
 from django.http.request import QueryDict
 from datetime import date, datetime
+import functools
 
 
 def reformat_request_get_params(params: QueryDict) -> dict:
@@ -61,8 +62,29 @@ def reconstruct_params(params: dict, to_int: list = [], to_date: list = [], date
     params.update(add)
 
 
+def reconstruct_args(params: dict, to_int: list = [], to_date: list = [], date_to_timestamp = [], renaming: dict = {},
+                       deleting: list = [], add: dict = {}):
+    for i in to_int:
+        try:
+            params[i] = int(params[i])
+        except ValueError:
+            del params[i]
+        except KeyError:
+            pass
+
+    for i in to_date:
+        make_date_in_dict(params, i)
+    for i in date_to_timestamp:
+        reformat_date_to_timestamp(params, i)
+    for i, j in renaming.items():
+        rename_arg_in_dict(params, i, j)
+    for i in deleting:
+        del params[i]
+    params.update(add)
+
+
 def post_request_to_dict_slicer(post) -> dict:
-    return {i: j[0] for i, j in dict(post).items()}
+    return {i: j[0] if len(j) == 1 else j for i, j in dict(post).items()}
 
 
 def values_from_dict_by_keys(d: dict, keys: list):
@@ -77,3 +99,25 @@ def smart_int(data: str):
 def null_check(data: str):
     # return data
     return None if data == '' else data
+
+
+def setattr_nested(base, path: str, value):
+    if '.' not in path:
+        setattr(base, path, value)
+    else:
+        path, _, target = path.rpartition('.')
+        for attrname in path.split('.'):
+            base = getattr(base, attrname)
+        setattr(base, target, value)
+
+
+def rsetattr(obj, attr, val):
+    pre, _, post = attr.rpartition('.')
+    return setattr(rgetattr(obj, pre) if pre else obj, post, val)
+
+# using wonder's beautiful simplification: https://stackoverflow.com/questions/31174295/getattr-and-setattr-on-nested-objects/31174427?noredirect=1#comment86638618_31174427
+
+def rgetattr(obj, attr, *args):
+    def _getattr(obj, attr):
+        return getattr(obj, attr, *args)
+    return functools.reduce(_getattr, [obj] + attr.split('.'))
