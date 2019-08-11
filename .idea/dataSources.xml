@@ -7,5 +7,13 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://rc1c-353tuhcgju5pf775.mdb.yandexcloud.net:6432/main_db</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="Django default" uuid="167118d7-bf46-42f2-b99d-11d480f358a6">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/cspc/settings.py</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://rc1c-353tuhcgju5pf775.mdb.yandexcloud.net:6432/main_db</jdbc-url>
+    </data-source>
   </component>
 </project>
