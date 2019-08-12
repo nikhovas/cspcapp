@@ -25,6 +25,7 @@
     <script src="{% static 'javascript/commonFiles/animations.js' %}" type="text/javascript"></script>
     <script src="{% static 'javascript/commonFiles/templates.js' %}" type="text/javascript"></script>
     <script src="{% static 'javascript/commonFiles/common.js' %}" type="text/javascript"></script>
+    <script src="{% static 'javascript/base.js' %}" type="text/javascript"></script>
     {% block scriptconnect %}
     {% endblock %}
 </head>
@@ -62,9 +63,10 @@
             <a href="#" class="dropbtn"><span class="glyphicon glyphicon-option-horizontal"></span></a>
             <span class="hidden_panel">Утилиты</span>
             <div class="dropdown-content">
-              <a href="#">Link 1</a>
-              <a href="#">Link 2</a>
-              <a href="#">Link 3</a>
+              <a href="/registration_requests/">Запросы на регистрацию</a>
+              <a href="/students_requests/">Формы учеников</a>
+                <a onclick="update_students_forms()">Загрузить формы с Google таблиц</a>
+                <a onclick="update_google_info()">Обновить Google форму</a>
             </div>
         </div>
     </div>
@@ -75,15 +77,15 @@
 
     </div>
 
-    <div class="sidebar-element">
-        <a href="/registration_requests/">1</a>
-
-    </div>
-
-    <div class="sidebar-element">
-        <a href="/students_requests/">2</a>
-
-    </div>
+{#    <div class="sidebar-element">#}
+{#        <a href="/registration_requests/">1</a>#}
+{##}
+{#    </div>#}
+{##}
+{#    <div class="sidebar-element">#}
+{#        <a href="/students_requests/">2</a>#}
+{##}
+{#    </div>#}
 
 
 </div>
