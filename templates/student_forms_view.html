@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+
+    <title>Список Учителей</title>
+{% endblock %}
+
+{% block scriptconnect %}
+    <script src="{% static 'javascript/student_form.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+
+{% block content %}
+
+    <table class="table main-table" style="width: calc(100% - 280px); float: left">
+        <thead>
+            <tr>
+                <td>Ученик</td>
+                <td>Плательщик</td>
+                <td>Курсы</td>
+                <td style="width: 40px"></td>
+            </tr>
+        </thead>
+        {% for elem in forms %}
+            <tr id="student_request_row_{{ elem.pk }}">
+                <input type="hidden" name="id" value="{{ elem.pk }}">
+                <td>
+                    {{ elem.student_surname_txt }} {{ elem.student_name_txt }} {{ elem.student_father_name_txt }}<br>
+                {% if elem.is_two_side %}
+                    {{ elem.student_document_type_txt|default:"" }} {{ elem.student_document_series|default:"" }} {{ elem.student_document_no|default:"" }} <br>
+                    {{ elem.student_authority_no|default:"" }} {{ elem.student_issue_dt|default:"" }}<br>
+                    {{ elem.student_authority_txt|default:"" }}<br>
+                    {% for i, j in REGIONS_DICT.items %}
+                        {% ifequal i elem.student_region_cd %}
+                            {{ j }} {{ elem.student_city_txt }} <br>
+                        {% endifequal %}
+                    {% endfor %}
+                    {{ elem.student_street_txt|default:"" }}
+                    {{ elem.student_house_txt|default:"" }}
+                    {{ elem.student_building_no|default:"" }}
+                    {{ elem.student_structure_no|default:"" }}
+                    {{ elem.student_flat_nm|default:"" }}<br>
+                {% endif %}
+
+
+                    {{ elem.student_birth_dt }}   {{ elem.student_phone_no|default:"" }}<br>
+                    {{ elem.student_school_name_txt }} {{ elem.student_class }} {{ elem.student_liter }}
+                </td>
+                <td>
+                    {{ elem.payer_surname_txt }} {{ elem.payer_name_txt }} {{ elem.payer_father_name_txt }}<br>
+                    {{ elem.payer_document_type_txt }} {{ elem.payer_document_series }} {{ elem.payer_document_no }}<br>
+                    {{ elem.payer_authority_no }} {{ elem.payer_issue_dt }}<br>
+                    {{ elem.payer_authority_txt }}<br>
+                    {% for i, j in REGIONS_DICT.items %}
+                        {% ifequal i elem.payer_region_cd %}
+                            {{ j }} {{ elem.payer_city_txt }} <br>
+                        {% endifequal %}
+                    {% endfor %}
+                    {{ elem.payer_street_txt }}
+                    {{ elem.payer_house_txt }}
+                    {{ elem.payer_building_no|default:"" }}
+                    {{ elem.payer_structure_no|default:"" }}
+                    {{ elem.payer_flat_nm|default:"" }}<br>
+
+                    {{ elem.payer_inn_no }}   {{ elem.payer_phone_no }}<br>
+                </td>
+                <td>
+                    {% for i in elem.get_course_elements %}
+                        {{ i.course.sphere_txt }} {{ i.course.short_nm }}<br>
+                        {{ i.course.name_txt }}<br>
+                        {{ i.teacher_person.person_surname_txt }} {{ i.teacher_person.person_name_txt }} {{ i.teacher_person.person_father_name_txt|default:"" }} {{ i.get_week_days_str }}<br>
+                        <br>
+                    {% endfor %}
+                </td>
+                <td>
+                    <button onclick="submit_student({{ elem.pk }})">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button><br>
+                                            <button style="margin-top: 10px;" onclick="deleteItem('student_request', {{ elem.pk }})"><span class="glyphicon glyphicon-remove"></span></button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div class="search-box">
+        <form method="GET">
+            <h3>Поиск</h3>
+            <input type="text" name="surname" value="{{ request_get.surname }}" placeholder="Фамилия"/>
+            <input type="text" name="name" value="{{ request_get.name }}" placeholder="Имя"/>
+            <input type="text" name="father_name" value="{{ request_get.father_name }}" placeholder="Отчество"/>
+            <input type="text" name="school" value="{{ request_get.school }}" placeholder="Школа"/>
+            <input type="number" name="grade" value="{{ request_get.grade }}" min="1" max="11" style="width: 40px; float: left; margin-right: 10px;" placeholder="11">
+            <input type="text" name="liter" value="{{ request_get.liter }}" style="width: 25px; float: left; margin-right: 10px;" placeholder="Б">
+            <input type="text" name="document_series" value="{{ request_get.document_series }}" style="width: 60px; float: left; margin-right: 10px;" placeholder="Серия">
+            <input type="text" name="document_no" value="{{ request_get.document_no }}" style="width: 93px;" placeholder="Номер">
+            <table style="">
+                <tr>
+                    <td><button type="submit"><span class="glyphicon glyphicon-search"></span></button></td>
+                    <td><button type="reset"><span class="glyphicon glyphicon-remove"></span></button></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+
+{% endblock %}

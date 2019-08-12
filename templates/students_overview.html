@@ -25,7 +25,7 @@
             </tr>
         </thead>
         {% for student, contracts_set in students_list %}
-            <tr>
+            <tr id="student_row_{{ student.pk }}">
                 <td>{{ student.school_name_txt }}</td>
                 <td>{{ student.grade }} {{ student.liter }}</td>
                 <td>
@@ -39,9 +39,9 @@
                     <a href="/student/detail/{{ student.person_id }}/" class="smallsquarebutton" target="_self">
                         <span class="glyphicon glyphicon-eye-open"></span>
                     </a>
-                    <a href="{{object.get_update_url}}" class="smallsquarebutton" target="_self">
+                    <button onclick="deleteItem('student', {{ student.pk }})" class="smallsquarebutton">
                             <span class="glyphicon glyphicon-remove"></span>
-                    </a>
+                    </button>
                 </td>
             </tr>
             <tr id="student_row_more_info_{{ student.pk }}" hidden="true">
@@ -95,11 +95,39 @@
             <table style="">
                 <tr>
                     <td><button type="submit"><span class="glyphicon glyphicon-search"></span></button></td>
-                    <td><a href="/"><span class="glyphicon glyphicon-remove"></span></a></td>
-                    <td><a href="/student_add/"><span class="glyphicon glyphicon-plus"></span></a></td>
+                    <td><button type="reset"><span class="glyphicon glyphicon-remove"></span></button></td>
                 </tr>
             </table>
         </form>
     </div>
+
+    <div class="search-box" style="margin-top: 340px;">
+        <form method="POST" action="/student_add/">
+            <h3>Добавить</h3>
+            {% csrf_token %}
+            <input type="text" name="person_surname_txt" placeholder="Фамилия"/>
+            <input type="text" name="person_name_txt" placeholder="Имя"/>
+            <input type="text" name="person_father_name_txt" placeholder="Отчество"/>
+            Рожд:
+            <input type="text" name="birth_day" placeholder="ДД" style="width: 30px;"/>-
+                <input type="text" name="birth_month" placeholder="ММ" style="width: 32px;"/>-
+                <input type="text" name="birth_year" placeholder="ГГГГ" style="width: 44px;"/>
+            <input type="hidden" name="education_day" value="01">
+            <input type="hidden" name="education_month" value="01">-
+            <input type="number" name="education_year" placeholder="Обуч" style="width: 64px; margin-bottom: 10px;"/>
+            <input type="text" name="school_name_txt" placeholder="Школа" style="width: 220px;"/>
+            <input type="text" name="liter" placeholder="Л" style="width: 20px;">
+            <table style="">
+                <tr>
+                    <td><button type="submit"><span class="glyphicon glyphicon-plus"></span></button></td>
+                    <td><button type="reset"><span class="glyphicon glyphicon-remove"></span></button></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <a class="search-box" style="margin-top: 650px; background-color: #3b5998; color: white; text-align: center; font-size: 20px;" href="/student_add/">Расширенное добавление</a>
+
+
 
 {% endblock %}

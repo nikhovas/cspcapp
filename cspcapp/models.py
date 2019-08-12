@@ -20,7 +20,13 @@ class VersionControlEditModel(models.Model):
             self.update_save(self, *args, **kwargs)
 
     def create_save(self, *args, **kwargs):
-        return 0
+        args = [j for (i, j) in model_to_dict(self).items()]
+        args.append(int(kwargs['user_id']))
+        del args[0]
+        cur = connection.cursor()
+        cur.callproc(self._meta.db_table + '_insert', args)
+        for i in cur:
+            self.pk = i[0]
 
     def update_save(self, *args, **kwargs):
         print('i am here')
@@ -66,6 +72,7 @@ class Contract(VersionControlEditModel):
     payer_phone_no = models.CharField(max_length=20, blank=True, null=True)
     payer_inn_no = models.CharField(max_length=12)
     course_element = models.ForeignKey('CourseElement', models.DO_NOTHING, blank=True, null=True)
+    student_person = models.ForeignKey('Person', models.DO_NOTHING, blank=True)
 
     class Meta:
         managed = False
@@ -128,6 +135,10 @@ class Course(NotVersionControlledEditModel):
     @property
     def total_price(self):
         return self.price_per_hour * self.number_of_hours
+
+    @property
+    def half_price(self):
+        return self.price_per_hour * self.number_of_hours / 2
 
 
 class CourseClass(models.Model):
@@ -273,6 +284,15 @@ class StudentPerson(VersionControlEditModel):
                                                            self.school_name_txt, self.liter, int(kwargs['user_id'])])
             self.is_edited = False
 
+    def create_save(self, *args, **kwargs):
+        cur = connection.cursor()
+        cur.callproc('student_person_insert', [self.person_id, self.education_start_year, self.school_name_txt,
+                                               self.liter, kwargs['user_id']])
+        new_element_id = 0
+        for i in cur:
+            new_element_id = i[0]
+        self.pk = new_element_id
+
 
 class AuthUserXPerson(NotVersionControlledEditModel):
     auth_user = models.ForeignKey(User, models.DO_NOTHING)
@@ -290,8 +310,14 @@ class AuthUserXPerson(NotVersionControlledEditModel):
             print('here!!!')
             print(self.person.birth_dt)
             self.person.save(*args, **kwargs)
-            del kwargs['user_id']
+            if 'user_id' in kwargs:
+                del kwargs['user_id']
             self.auth_user.save(*args, **kwargs)
+
+
+    def custom_create(self, *args, **kwargs):
+        super(AuthUserXPerson, self).save(*args, **kwargs)
+
 
     def custom_delete(self, user_id: int):
         self.auth_user.delete()
@@ -308,6 +334,74 @@ class CourseElementDefiniteClass(NotVersionControlledEditModel):
     class Meta:
         managed = False
         db_table = 'course_element_definite_class'
+
+
+class RegistrationRequest(NotVersionControlledEditModel):
+    registration_request_id = models.AutoField(primary_key=True)
+    person_surname_txt = models.CharField(max_length=50)
+    person_name_txt = models.CharField(max_length=50)
+    person_father_name_txt = models.CharField(max_length=50, blank=True, null=True)
+    birth_dt = models.DateField()
+    username = models.CharField(max_length=50, blank=True, unique=True)
+    password = models.CharField(max_length=50, blank=True)
+
+    class Meta:
+        managed = False
+        db_table = 'registration_request'
+
+
+class StudentRequest(NotVersionControlledEditModel):
+    student_request_id = models.AutoField(primary_key=True)
+    is_two_side = models.BooleanField(blank=True, null=True)
+    student_surname_txt = models.CharField(max_length=50, blank=True, null=True)
+    student_name_txt = models.CharField(max_length=50, blank=True, null=True)
+    student_father_name_txt = models.CharField(max_length=50, blank=True, null=True)
+    student_birth_dt = models.DateField(blank=True, null=True)
+    student_class = models.IntegerField(blank=True, null=True)
+    student_school_name_txt = models.CharField(max_length=50, blank=True, null=True)
+    student_liter = models.CharField(max_length=1, blank=True, null=True)
+    student_phone_no = models.CharField(max_length=20, blank=True, null=True)
+    student_document_no = models.IntegerField(blank=True, null=True)
+    student_document_series = models.CharField(max_length=10, blank=True, null=True)
+    student_document_type_txt = models.CharField(max_length=20, blank=True, null=True)
+    student_authority_no = models.CharField(max_length=20, blank=True, null=True)
+    student_authority_txt = models.CharField(max_length=150, blank=True, null=True)
+    student_issue_dt = models.DateField(blank=True, null=True)
+    student_region_cd = models.IntegerField(blank=True, null=True)
+    student_city_txt = models.CharField(max_length=50, blank=True, null=True)
+    student_street_txt = models.CharField(max_length=50, blank=True, null=True)
+    student_house_txt = models.CharField(max_length=10, blank=True, null=True)
+    student_building_no = models.CharField(max_length=10, blank=True, null=True)
+    student_structure_no = models.CharField(max_length=10, blank=True, null=True)
+    student_flat_nm = models.IntegerField(blank=True, null=True)
+    payer_surname_txt = models.CharField(max_length=50)
+    payer_name_txt = models.CharField(max_length=50)
+    payer_father_name_txt = models.CharField(max_length=50, blank=True, null=True)
+    payer_phone_no = models.CharField(max_length=20, blank=True, null=True)
+    payer_inn_no = models.CharField(max_length=12)
+    payer_document_no = models.IntegerField()
+    payer_document_series = models.CharField(max_length=10, blank=True, null=True)
+    payer_document_type_txt = models.CharField(max_length=20)
+    payer_authority_no = models.CharField(max_length=20)
+    payer_authority_txt = models.CharField(max_length=150)
+    payer_issue_dt = models.DateField()
+    payer_region_cd = models.IntegerField()
+    payer_city_txt = models.CharField(max_length=50)
+    payer_street_txt = models.CharField(max_length=50)
+    payer_house_txt = models.CharField(max_length=10)
+    payer_building_no = models.CharField(max_length=10, blank=True, null=True)
+    payer_structure_no = models.CharField(max_length=10, blank=True, null=True)
+    payer_flat_nm = models.IntegerField(blank=True, null=True)
+    courses = models.CharField(max_length=1024, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'student_request'
+
+    @property
+    def get_course_elements(self):
+        for i in self.courses.split(' '):
+            yield CourseElement.objects.get(pk=int(i))
 
 
 # view models

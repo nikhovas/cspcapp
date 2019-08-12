@@ -207,3 +207,47 @@ function courseTemplate(form_data, id) {
     `;
     return template;
 }
+
+
+// function course_detailTemplate(form_data, id) {
+//     console.log('aaaaa');
+//     console.log(form_data);
+//     let template = `
+//     <tr id="course_element_row_${id}">
+//                             <form method="post" id="course_element_data_form_${id}">
+//                                 ${scrfTokenInput()}
+//                                 <input type="hidden" name="course_element_id" value="${id}">
+//                                 <td>
+//                                     <select name="teacher_id">`;
+//     TEACHERS_LIST.forEach(function(item) {
+//         template += `<option value="${item.id}"`;
+//         if (item.id === form_data.teacher_id) {
+//             template += ' selected';
+//         }
+//         template += `>${item.surname} ${item.name} ${item.fatherName} - ${item.username} </option>`;
+//     });
+//     template += `</select></td>`;
+//     for (let i = 0; i < 7; ++i) {
+//         template += `
+//         <td>
+//             <input type="text" name="course_class_start_hour" value="${form_data.course_class_start_hour[i]}" style="border-width: 0; width: 18px;" readonly/>:
+//             <input type="text" name="course_class_start_minute" value="${form_data.course_class_start_minute[i]}" style="border-width: 0; width: 18px;" readonly/>-
+//             <input type="text" name="course_class_end_hour" value="${form_data.course_class_end_hour[i]}" style="border-width: 0; width: 18px;" readonly/>:
+//             <input type="text" name="course_class_end_minute" value="${form_data.course_class_end_minute[i]}" style="border-width: 0; width: 18px;" readonly/>
+//         </td>
+//         `
+//     }
+//     template += `
+//     </form>
+//                                 <td>
+//                                     <button id="course_element_data_button_${id}" onclick="enableEditObjectMode('course_element', ${id})">
+//                                         <span id="course_element_data_button_span_${id}" class="glyphicon glyphicon-pencil"></span>
+//                                     </button>
+//                                     <button onclick="deleteItem('course_element', ${id})">
+//                                             <span class="glyphicon glyphicon-remove"></span>
+//                                     </button>
+//                                 </td>
+//                             </tr>
+//     `;
+//     return template;
+// }

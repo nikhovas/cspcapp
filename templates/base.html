@@ -37,32 +37,38 @@
 
     </div>
 
-    <div class="exit-button">
-        <a href="/accounts/login/" target="_self"><span class="fas fa-door-open"></span></a>
+    <div class="sidebar-element">
+        <a href="/settings/"><span class="glyphicon glyphicon-cog"></span></a>
     </div>
 
-    <div class="sidebar-element" onclick="openNav()">
-        <a><span class="glyphicon glyphicon-option-horizontal"></span></a>
+    <div class="exit-button">
+        <a href="/accounts/logout/" target="_self"><span class="fas fa-door-open"></span></a>
     </div>
+
     <div class="sidebar-element">
         <a href="/"><span class="glyphicon glyphicon-list-alt"></span></a>
-        <span class="hidden_panel">Общий список</span>
     </div>
     {% block common_list_sublevel %}
     {% endblock %}
     <div class="sidebar-element">
         <a href="/courses/"><span class="glyphicon glyphicon-tasks"></span></a>
-        <span class="hidden_panel">Список курсов</span>
     </div>
     <div class="sidebar-element">
         <a href="/teachers/"><span class="glyphicon glyphicon-briefcase"></span></a>
-        <span class="hidden_panel">Список учителей</span>
     </div>
 
     <div class="sidebar-element">
-        <a href="#"><span class="glyphicon glyphicon-folder-open"></span></a>
-        <span class="hidden_panel">Утилиты</span>
+        <a href="#"><span class="glyphicon glyphicon-option-horizontal"></span></a>
 
+    </div>
+
+    <div class="sidebar-element">
+        <a href="/registration_requests/">1</a>
+
+    </div>
+
+    <div class="sidebar-element">
+        <a href="/students_requests/">2</a>
     </div>
 
 
@@ -72,28 +78,6 @@
     {% block content %}
     {% endblock %}
 </div>
-
-<script>
-function openNav() {
-    var i;
-    var x;
-    if (document.getElementById("mySidebar").style.width === "200px") {
-        document.getElementById("mySidebar").style.width = "60px";
-        document.getElementById("main").style.marginLeft = "60px";
-        x = document.getElementsByClassName("hidden_panel");
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
-        }
-    } else {
-        document.getElementById("mySidebar").style.width = "200px";
-        document.getElementById("main").style.marginLeft = "200px";
-        x = document.getElementsByClassName("hidden_panel");
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "inline-block";
-        }
-    }
-}
-</script>
 
 </body>
 </html>

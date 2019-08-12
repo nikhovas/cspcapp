@@ -46,7 +46,7 @@
                     <button onclick="toggleInfoTab('teacher', {{ teacher.person_id }})">
                         <span id="teacher_row_more_info_button_span_{{ teacher.person_id }}" class="glyphicon glyphicon-arrow-down"></span>
                     </button>
-                    <button type="submit"><span class="glyphicon glyphicon-time"></span></button>
+                    <a href="/person/{{ teacher.person.pk }}/"><span class="glyphicon glyphicon-time"></span></a>
                     <button id="teacher_data_change_password_{{ teacher.person.pk }}" onclick=" " >
                                                 П
                                             </button>
@@ -137,9 +137,5 @@
             </table>
         </form>
     </div>
-
-{#    <div id="dialog" title="Basic dialog">#}
-{#    <input type="password" size="25" />#}
-{#</div>#}
 
 {% endblock %}

@@ -6,16 +6,19 @@ from .utilities import reconstruct_params, post_request_to_dict_slicer, values_f
     null_check, reconstruct_args
 import datetime
 from .forms import UserForm
+from django.shortcuts import redirect
+from .views_kernel import add_student
 
 
 # Configuration Block
 
 
 class PostRequestInfo:
-    def __init__(self, _type_name, _to_date: list = (), _date_to_timestamp: list = ()):
+    def __init__(self, _type_name, _to_date: list = (), _date_to_timestamp: list = (), _to_time: list = ()):
         self.type_name = _type_name
         self.to_date = _to_date
         self.date_to_timestamp = _date_to_timestamp
+        self.to_time = _to_time
 
 
 MODEL_TYPES_DICT = \
@@ -30,7 +33,11 @@ MODEL_TYPES_DICT = \
         'course': PostRequestInfo(_type_name=Course),
         'course_element': PostRequestInfo(_type_name=CourseElement),
         'course_class': PostRequestInfo(_type_name=CourseClass),
-        'teacher': PostRequestInfo(_type_name=AuthUserXPerson, _to_date=['person.birth_dt'])
+        'teacher': PostRequestInfo(_type_name=AuthUserXPerson, _to_date=['person.birth_dt'],),
+        'course_detail': PostRequestInfo(_type_name=CourseElementDefiniteClass, _to_date=['class_dt'],
+                                         _to_time=['start_tm', 'end_tm']),
+        'reg_form': PostRequestInfo(_type_name=RegistrationRequest, _to_date=['birth_dt']),
+        'student_request': PostRequestInfo(_type_name=StudentRequest)
     }
 
 
@@ -54,7 +61,8 @@ def data_edit(request: WSGIRequest, object_type: str) -> HttpResponse:
     params = post_request_to_dict_slicer(request.POST)
     del params['csrfmiddlewaretoken']
     del params['id']
-    reconstruct_args(params=params, to_date=config.to_date, date_to_timestamp=config.date_to_timestamp)
+    reconstruct_args(params=params, to_date=config.to_date, date_to_timestamp=config.date_to_timestamp,
+                     to_time=config.to_time)
     print(params)
     for i, j in params.items():
         if rgetattr(editing_object, i, None) != j:
@@ -91,6 +99,19 @@ def course_element_add(request: WSGIRequest) -> JsonResponse:
 # Add Block
 
 
+def course_detail_add(request: WSGIRequest) -> JsonResponse:
+    # data = dict(request.POST)
+    CourseElementDefiniteClass.objects.create(class_dt=datetime.date(int(request.POST['class_dt_year']),
+                                                                     int(request.POST['class_dt_month']),
+                                                                     int(request.POST['class_dt_day'])),
+                                              start_tm=datetime.time(int(request.POST['start_tm_hour']),
+                                                                     int(request.POST['start_tm_minute'])),
+                                              end_tm=datetime.time(int(request.POST['end_tm_hour']),
+                                                                   int(request.POST['end_tm_minute'])),
+                                              course_element_id=int(request.POST['course_element_id']))
+    return JsonResponse({})
+
+
 def payment_add(request: WSGIRequest) -> HttpResponse:
     data = dict(request.POST)
     data['payment_type'] = ['1']
@@ -112,53 +133,12 @@ def payment_add(request: WSGIRequest) -> HttpResponse:
     return JsonResponse({'new_element_id': new_element_id})
 
 
-def add_new_contract(request: WSGIRequest) -> HttpResponse:
-    data = dict(request.POST)
-    data['course_element_id'] = '3'  # select now is not working
-    print(data)
-    arg_list = \
-        [
-            int(data['student_id'][0]), request.user.pk,
-
-            int(data['document_no'][0]), str(data['document_series'][0]), str(data['document_type_txt'][0]),
-            data['person_surname_txt'][0], data['person_name_txt'][0],
-            data['person_father_name_txt'][0], data['authority_no'][0], data['authority_txt'][0],
-            datetime.date(int(data['issue_dt_year'][0]), int(data['issue_dt_month'][0]), int(data['issue_dt_day'][0])),
-
-            int(data['region_cd'][0]), data['city_txt'][0], data['street_txt'][0], data['house_txt'][0],
-            null_check(data['building_no'][0]), null_check(data['structure_no'][0]), smart_int(data['flat_nm'][0]),
-
-            int(data['document_no'][1]), data['document_series'][1], data['document_type_txt'][1],
-            data['person_surname_txt'][1], data['person_name_txt'][1],
-            data['person_father_name_txt'][1], data['authority_no'][1], data['authority_txt'][1],
-            datetime.date(int(data['issue_dt_year'][1]), int(data['issue_dt_month'][1]), int(data['issue_dt_day'][1])),
-
-            int(data['region_cd'][1]), data['city_txt'][1], data['street_txt'][1], data['house_txt'][1],
-            null_check(data['building_no'][1]), null_check(data['structure_no'][1]), smart_int(data['flat_nm'][1]),
-
-            data['student_phone_no'][0], data['payer_phone_no'][0], data['payer_inn_no'][0],
-            int(data['course_element_id'][0])
-        ]
-    cur = connection.cursor()
-    try:
-        cur.callproc('full_contract_insert', arg_list)
-    except Exception as err:
-        print(err)
-
-    return JsonResponse({})
-
-
-def course_add(request: WSGIRequest) -> JsonResponse:
-    Course(sphere_txt=request.POST['sphere_txt'], name_txt=request.POST['name_txt'], short_nm=request.POST['short_nm'],
-           price_per_hour=int(request.POST['price_per_hour']), number_of_hours=request.POST['number_of_hours']).save()
-    return JsonResponse({})
-
-
 # Delete BLock
 
 
 def object_delete(request: WSGIRequest, object_type: str) -> HttpResponse:
-    MODEL_TYPES_DICT[object_type].type_name.objects.get(pk=request.POST['id']).custom_delete(request.user.pk)
+    id = request.POST['id']
+    MODEL_TYPES_DICT[object_type].type_name.objects.get(pk=id).custom_delete(request.user.pk)
     return JsonResponse({})
 
 
@@ -174,7 +154,8 @@ def new_user(request: WSGIRequest) -> JsonResponse:
                         birth_dt=datetime.date(int(request.POST['birth_dt_year']), int(request.POST['birth_dt_month']),
                                                int(request.POST['birth_dt_day'])))
     new_person.save(user_id=request.user.pk)
-    AuthUserXPerson.objects.create(auth_user=_new_user, person=new_person)
+    conn = AuthUserXPerson(auth_user=_new_user, person=new_person)
+    conn.custom_create()
     return JsonResponse({})
 
 
@@ -186,3 +167,55 @@ def get_teacher_users(request: WSGIRequest) -> JsonResponse:
         'username': i.auth_user.username,
         'id': i.person.id
     } for i in AuthUserXPerson.objects.all()])
+
+
+def submit_registration_form(request: WSGIRequest) -> JsonResponse:
+    template = RegistrationRequest.objects.get(pk=request.POST['id'])
+    _new_user = User.objects.create_user(username=template.username, password=template.password)
+    new_person = Person(person_surname_txt=template.person_surname_txt,
+                        person_name_txt=template.person_name_txt,
+                        person_father_name_txt=template.person_father_name_txt,
+                        birth_dt=template.birth_dt)
+    new_person.save(user_id=request.user.pk)
+    conn = AuthUserXPerson(auth_user=_new_user, person=new_person)
+    conn.custom_create()
+    return JsonResponse({})
+
+
+def submit_student_form(request: WSGIRequest) -> JsonResponse:
+    req = StudentRequest.objects.get(pk=request.POST['id'])
+    now = datetime.datetime.now().date()
+    ed_year = now.year - req.student_class
+    if now.month > 6:
+        ed_year += 1
+    add_student(request.user.pk,
+                document_no=[req.student_document_no, req.payer_document_no],
+                document_series=[req.student_document_series, req.payer_document_series],
+                person_surname_txt=[req.student_surname_txt, req.payer_surname_txt],
+                person_name_txt=[req.student_name_txt, req.payer_name_txt],
+                person_father_name_txt=[req.student_father_name_txt, req.payer_father_name_txt],
+                authority_no=[req.student_authority_no, req.payer_authority_no],
+                authority_txt=[req.student_authority_txt, req.payer_authority_txt],
+                issue_dt=[req.student_issue_dt, req.payer_issue_dt],
+                document_type_txt=[req.student_document_type_txt, req.payer_document_type_txt],
+
+                region_cd=[req.student_region_cd, req.payer_region_cd],
+                city_txt=[req.student_city_txt, req.payer_city_txt],
+                street_txt=[req.student_street_txt, req.payer_street_txt],
+                house_txt=[req.student_house_txt, req.payer_house_txt],
+                building_no=[req.student_building_no, req.payer_building_no],
+                structure_no=[req.student_structure_no, req.payer_structure_no],
+                flat_nm=[req.student_flat_nm, req.payer_flat_nm],
+
+                birth_dt=[req.student_birth_dt],
+                education_dt=[datetime.date(ed_year, 9, 1)],
+                school_name_txt=[req.student_school_name_txt],
+                liter=[req.student_liter],
+
+                phone=[req.student_phone_no, req.payer_phone_no],
+                inn=[req.payer_inn_no],
+
+                course_element=req.courses.split(' ')
+                )
+    req.delete()
+    return JsonResponse({})
