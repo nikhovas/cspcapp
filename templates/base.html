@@ -30,7 +30,7 @@
 </head>
 
 <body>
-<div class="sidebar" id="mySidebar">
+<div class="sidebar">
     <div class="login-info">
 {#        <div class="circle" style="padding: 0px 0px 10px 8px; padding-bottom: 45px"><font size="4">AA</font></div>#}
                 <div class="circle" style="font-size: 20px; text-align: center; padding-top: 8px;">{{ user.first_name|first }}{{ user.last_name|first }}</div>
@@ -41,9 +41,7 @@
         <a href="/accounts/login/" target="_self"><span class="fas fa-door-open"></span></a>
     </div>
 
-    <div class="sidebar-element" onclick="openNav()">
-        <a><span class="glyphicon glyphicon-option-horizontal"></span></a>
-    </div>
+
     <div class="sidebar-element">
         <a href="/"><span class="glyphicon glyphicon-list-alt"></span></a>
         <span class="hidden_panel">Общий список</span>
@@ -71,36 +69,19 @@
         </div>
     </div>
 
+    <div class="tooltip">
+        ыыыыыы
+        <span class="tooltiptext">Выход</span>
+    </div>
 
 
 </div>
 
-<div class="window-content" id="main">
+<div class="window-content">
     {% block content %}
     {% endblock %}
 </div>
 
-<script>
-function openNav() {
-    var i;
-    var x;
-    if (document.getElementById("mySidebar").style.width === "200px") {
-        document.getElementById("mySidebar").style.width = "60px";
-        document.getElementById("main").style.marginLeft = "60px";
-        x = document.getElementsByClassName("hidden_panel");
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
-        }
-    } else {
-        document.getElementById("mySidebar").style.width = "200px";
-        document.getElementById("main").style.marginLeft = "200px";
-        x = document.getElementsByClassName("hidden_panel");
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "inline-block";
-        }
-    }
-}
-</script>
 
 </body>
 </html>

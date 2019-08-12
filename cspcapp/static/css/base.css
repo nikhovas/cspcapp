@@ -74,20 +74,13 @@ body {
     font-size: 30px;
     color: whitesmoke;
     display: block;
-    z-index: 5;
+    z-index: 2;
 }
 
 input[type="checkbox"][readonly] {
   pointer-events: none;
 }
 
-
-.hidden_panel {
-    display: none;
-    font-size: 20px;
-    color: white;
-    padding-left: 10px;
-}
 
 
 .for_menu_location {
@@ -127,6 +120,31 @@ input[type="checkbox"][readonly] {
 .dropdown-content a:hover {background-color: #8b9dc3}
 
 .dropdown:hover .dropdown-content {
-  display: inline-block;
+  display: block;
+}
+
+.tooltip {
+    position: relative;
+    display: block;
+    color: deepskyblue;
+    z-index: 4;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: fixed;
+  z-index: 6;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }
 
