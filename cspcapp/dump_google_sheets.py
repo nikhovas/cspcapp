@@ -50,7 +50,7 @@ def open_spreadsheet():
     return build('sheets', 'v4', credentials=creds)
 
 
-def dump_to_local_database():
+def dump_to_local_database(reuqest: WSGIRequest) -> HttpResponse:
     service = open_spreadsheet()
     range = 'student_14_elder_form_answers!A2:BB1102'
 
@@ -128,8 +128,10 @@ def dump_to_local_database():
 
     sheet.values().clear(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=range).execute()
 
+    return HttpResponse()
 
-def update_regions_list(reuqest: WSGIRequest) -> JsonResponse:
+
+def update_form_info(reuqest: WSGIRequest) -> HttpResponse:
     service = open_spreadsheet()
 
     values = [[str(i) + " " + j] for i, j in REGIONS_DICT.items()]
@@ -139,15 +141,12 @@ def update_regions_list(reuqest: WSGIRequest) -> JsonResponse:
         range='regions_list!A2:A100',
         valueInputOption='RAW',
         body=body).execute()
-    return JsonResponse({})
 
-
-def update_course_list(reuqest: WSGIRequest) -> JsonResponse:
     service = open_spreadsheet()
 
     values = [[
         f"{i.pk} {i.course.sphere_txt} {i.course.name_txt} {i.course.short_nm} - {i.teacher_person.person_surname_txt} "
-        f"{i.teacher_person.person_name_txt} {i.teacher_person.person_father_name_txt or '' } {i.get_week_days_str}"]
+        f"{i.teacher_person.person_name_txt} {i.teacher_person.person_father_name_txt or ''} {i.get_week_days_str}"]
         for i in CourseElement.objects.all()
     ]
     body = {'values': values}
@@ -156,5 +155,5 @@ def update_course_list(reuqest: WSGIRequest) -> JsonResponse:
         range='course_list!A2:A100',
         valueInputOption='RAW',
         body=body).execute()
-    return JsonResponse({})
 
+    return HttpResponse()

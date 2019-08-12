@@ -32,8 +32,7 @@ urlpatterns = [
     url(r'^students_requests/$', views.students_request_list, name='students_request_list'),
 
     # google
-    url(r'^google/api/course_set/$', dump_google_sheets.update_course_list, name='update_course_list'),
-    url(r'^google/api/update_regions/$', dump_google_sheets.update_regions_list, name='update_regions_list'),
+    url(r'^google/api/update_form/$', dump_google_sheets.update_form_info, name='update_form_info'),
     url(r'^google/api/dump_data/$', dump_google_sheets.dump_to_local_database, name='dump_to_local_database'),
 
     url(r'^contract_print/(?P<pk>\S+)/$', views.print_contract, name='contract_print'),

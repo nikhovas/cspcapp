@@ -213,7 +213,6 @@ def registration_requests_list(request: WSGIRequest) -> HttpResponse:
 
 
 def students_request_list(request: WSGIRequest) -> HttpResponse:
-    dump_to_local_database()
     return render(request, 'student_forms_view.html', {'forms': StudentRequest.objects.all(),
                                                        'REGIONS_DICT': REGIONS_DICT})
 
