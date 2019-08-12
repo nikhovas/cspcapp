@@ -177,8 +177,8 @@
             </tr>
         {% endfor %}
         <tfoot>
-            <tr id="course_add_row_0">
-                <form action="/api/add/course/" method="post">
+            <tr>
+                <form method="post">
                     {% csrf_token %}
                 <td><input type="text" name="sphere_txt" value="" style="border-width: 0; width: 100%;"/></td>
                 <td><input type="text" name="name_txt" value="" style="border-width: 0; width: 100%;" /></td>
@@ -188,8 +188,8 @@
                 <td>-</td>
 
                 <td>
-                    <button id="course_add_button_0" onclick="addNewObject('course', 0)">
-                        <span class="glyphicon glyphicon-plus" id="course_add_button_span_0"></span>
+                    <button>
+                        <span class="glyphicon glyphicon-plus"></span>
                     </button>
                     <button>
                         <span class="glyphicon glyphicon-erase"></span>

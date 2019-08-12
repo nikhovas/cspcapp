@@ -37,29 +37,29 @@
 
     </div>
 
-    <div class="exit-button">
-        <a href="/accounts/login/" target="_self"><span class="fas fa-door-open"></span></a>
+    <div class="sidebar-element">
+        <a href="/settings/"><span class="glyphicon glyphicon-cog"></span></a>
     </div>
 
+    <div class="exit-button">
+        <a href="/accounts/logout/" target="_self"><span class="fas fa-door-open"></span></a>
+    </div>
 
     <div class="sidebar-element">
         <a href="/"><span class="glyphicon glyphicon-list-alt"></span></a>
-        <span class="hidden_panel">Общий список</span>
     </div>
     {% block common_list_sublevel %}
     {% endblock %}
     <div class="sidebar-element">
         <a href="/courses/"><span class="glyphicon glyphicon-tasks"></span></a>
-        <span class="hidden_panel">Список курсов</span>
     </div>
     <div class="sidebar-element">
         <a href="/teachers/"><span class="glyphicon glyphicon-briefcase"></span></a>
-        <span class="hidden_panel">Список учителей</span>
     </div>
 
     <div class="sidebar-element">
         <div class="dropdown">
-            <a href="#" class="dropbtn"><span class="glyphicon glyphicon-folder-open"></span></a>
+            <a href="#" class="dropbtn"><span class="glyphicon glyphicon-option-horizontal"></span></a>
             <span class="hidden_panel">Утилиты</span>
             <div class="dropdown-content">
               <a href="#">Link 1</a>
@@ -72,6 +72,17 @@
     <div class="tooltip">
         ыыыыыы
         <span class="tooltiptext">Выход</span>
+
+    </div>
+
+    <div class="sidebar-element">
+        <a href="/registration_requests/">1</a>
+
+    </div>
+
+    <div class="sidebar-element">
+        <a href="/students_requests/">2</a>
+
     </div>
 
 
@@ -81,7 +92,6 @@
     {% block content %}
     {% endblock %}
 </div>
-
 
 </body>
 </html>

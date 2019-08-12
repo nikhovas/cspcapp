@@ -8,22 +8,24 @@
 
 <body>
 
-<div class="login-box">
+<div style="color: white; top: calc(50% - 130px); left: calc(50% - 300px); position: fixed; font-family: 'Helvetica Neue';">
+    <div style="font-size: 160px;text-align: center; ">СКПК</div>
+    <div style="font-size: 30px; text-align: center; margin-top: -30px;">Система контроля платных курсов</div>
+</div>
+
+<div style="color: white; bottom: 10px; width: 100%; position: fixed; font-family: 'Helvetica Neue'; font-size: 20px; text-align: center">
+    МАОУ "Гимназия №1" г. Стерлитамак
+</div>
+<div class="actions-box">
+    <h2>Авторизация</h2>
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
-        <div>
-            <input type="text" name="username" autofocus="" required="" id="id_username" class="textbox" placeholder="Логин"/>
-        </div>
-        <div>
-            <input type="password" name="password" required="" id="id_password" class="textbox" placeholder="Пароль" />
-        </div>
-        <div>
-            <input type="submit" value="Войти" class="button"/>
-            <input type="hidden" name="next" value="{{ next }}" />
-        </div>
+        <input type="text" name="username" id="id_username" placeholder="Логин"/>
+        <input type="password" name="password" id="id_password" placeholder="Пароль" />
+        <button>Войти</button>
+        <input type="hidden" name="next" value="{{ next }}" />
     </form>
-
-    <div class="info-box">
+    <div style="padding: 5px; background-color: #c15f7e">
         {% if next %}
             {% if user.is_authenticated %}
                 <p>Ваш аккаунт не имеет доступа к этой странице</p>
@@ -34,10 +36,22 @@
             <p>Имя пользователя и пароль не совпадают</p>
         {% endif %}
     </div>
-
-
-
-</div>
+    <br>
+    <h2>Запрос на регистрацию</h2>
+    <form method="POST" action="/accounts/reg_request/">
+            {% csrf_token %}
+            <input type="text" name="surname" placeholder="Фамилия"/>
+            <input type="text" name="name" placeholder="Имя"/>
+            <input type="text" name="father_name" placeholder="Отчество"/>
+            День рождения:   <input type="text" name="birth_dt_day" placeholder="ДД" style="width: 35px;"/> -
+                <input type="text" name="birth_dt_month" placeholder="ММ" style="width: 35px;"/> -
+                <input type="text" name="birth_dt_year" placeholder="ГГГГ" style="width: 50px;"/>
+            <input type="text" name="username" placeholder="Логин"/>
+            <input type="password" name="password" placeholder="Пароль"/>
+            <input type="password" name="password_repeat" placeholder="Повторите пароль"/>
+            <button type="submit">Отправить</button>
+        </form>
+<div>
 
 
 

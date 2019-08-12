@@ -2,16 +2,8 @@ var in_editing_mode = false;
 
 
 function changeLockStatus(element, state) {
-    element.find("input").each(function(item, elem) {
-        console.log(111);
-        if (state) $(elem).prop('readonly', 'readonly');
-        else $(elem).removeProp('readonly');
-    });
-    element.find("select").each(function(item, elem) {
-        console.log(222);
-        if (state) $(elem).prop('disabled', 'disabled');
-        else $(elem).removeProp('disabled');
-    });
+    element.find("input").attr('readonly', state);
+    element.find("select").attr('disabled', state);
 }
 
 

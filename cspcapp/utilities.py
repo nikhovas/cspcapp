@@ -1,6 +1,7 @@
 from django.http.request import QueryDict
-from datetime import date, datetime
+from datetime import date, datetime, time
 import functools
+from functools import wraps
 
 
 def reformat_request_get_params(params: QueryDict) -> dict:
@@ -41,6 +42,12 @@ def reformat_date_to_timestamp(d: dict, name: str):
     del d[name + '_day']
 
 
+def make_time_in_dict(d: dict, name: str):
+    d[name] = time(int(d[name + '_hour']), int(d[name + '_minute']))
+    del d[name + '_hour']
+    del d[name + '_minute']
+
+
 def reconstruct_params(params: dict, to_int: list = [], to_date: list = [], date_to_timestamp = [], renaming: dict = {},
                        deleting: list = [], add: dict = {}, value_edit: dict = {}):
     for i in to_int:
@@ -63,7 +70,7 @@ def reconstruct_params(params: dict, to_int: list = [], to_date: list = [], date
 
 
 def reconstruct_args(params: dict, to_int: list = [], to_date: list = [], date_to_timestamp = [], renaming: dict = {},
-                       deleting: list = [], add: dict = {}):
+                       deleting: list = [], add: dict = {}, to_time = []):
     for i in to_int:
         try:
             params[i] = int(params[i])
@@ -76,6 +83,8 @@ def reconstruct_args(params: dict, to_int: list = [], to_date: list = [], date_t
         make_date_in_dict(params, i)
     for i in date_to_timestamp:
         reformat_date_to_timestamp(params, i)
+    for i in to_time:
+        make_time_in_dict(params, i)
     for i, j in renaming.items():
         rename_arg_in_dict(params, i, j)
     for i in deleting:
@@ -121,3 +130,19 @@ def rgetattr(obj, attr, *args):
     def _getattr(obj, attr):
         return getattr(obj, attr, *args)
     return functools.reduce(_getattr, [obj] + attr.split('.'))
+
+
+def http_basic_auth(func):
+    @wraps(func)
+    def _decorator(request, *args, **kwargs):
+        from django.contrib.auth import authenticate, login
+        if 'HTTP_AUTHORIZATION' in request.META:
+            authmeth, auth = request.META['HTTP_AUTHORIZATION'].split(' ', 1)
+            if authmeth.lower() == 'basic':
+                auth = auth.strip().decode('base64')
+                username, password = auth.split(':', 1)
+                user = authenticate(username=username, password=password)
+                if user:
+                    login(request, user)
+        return func(request, *args, **kwargs)
+    return _decorator
