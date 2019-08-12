@@ -30,7 +30,7 @@
 </head>
 
 <body>
-<div class="sidebar" id="mySidebar">
+<div class="sidebar">
     <div class="login-info">
 {#        <div class="circle" style="padding: 0px 0px 10px 8px; padding-bottom: 45px"><font size="4">AA</font></div>#}
                 <div class="circle" style="font-size: 20px; text-align: center; padding-top: 8px;">{{ user.first_name|first }}{{ user.last_name|first }}</div>
@@ -58,7 +58,20 @@
     </div>
 
     <div class="sidebar-element">
-        <a href="#"><span class="glyphicon glyphicon-option-horizontal"></span></a>
+        <div class="dropdown">
+            <a href="#" class="dropbtn"><span class="glyphicon glyphicon-option-horizontal"></span></a>
+            <span class="hidden_panel">Утилиты</span>
+            <div class="dropdown-content">
+              <a href="#">Link 1</a>
+              <a href="#">Link 2</a>
+              <a href="#">Link 3</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="tooltip">
+        ыыыыыы
+        <span class="tooltiptext">Выход</span>
 
     </div>
 
@@ -69,12 +82,13 @@
 
     <div class="sidebar-element">
         <a href="/students_requests/">2</a>
+
     </div>
 
 
 </div>
 
-<div class="window-content" id="main">
+<div class="window-content">
     {% block content %}
     {% endblock %}
 </div>
