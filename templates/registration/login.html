@@ -25,17 +25,18 @@
         <button>Войти</button>
         <input type="hidden" name="next" value="{{ next }}" />
     </form>
-    <div style="padding: 5px; background-color: #c15f7e">
-        {% if next %}
-            {% if user.is_authenticated %}
-                <p>Ваш аккаунт не имеет доступа к этой странице</p>
-            {% else %}
-                <p>Авторизуйтесь, чтобы увидеть эту страницу</p>
+{#    {% if user.is_authenticated  %}#}
+{#    {% if not user.is_authenticated and next or form.errors  %}#}
+        <div style="background-color: #c15f7e">
+            {% if next %}
+                {% if user.is_authenticated %}
+                    <p style="margin: 10px;">Ваш аккаунт не имеет доступа к этой странице</p>
+                {% endif %}
+            {% elif form.errors %}
+                <p>Имя пользователя и пароль не совпадают</p>
             {% endif %}
-        {% elif form.errors %}
-            <p>Имя пользователя и пароль не совпадают</p>
-        {% endif %}
-    </div>
+        </div>
+{#    {% endif %}#}
     <br>
     <h2>Запрос на регистрацию</h2>
     <form method="POST" action="/accounts/reg_request/">

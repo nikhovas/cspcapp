@@ -2,100 +2,75 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from .models import *
 from django.core.handlers.wsgi import WSGIRequest
-from .utilities import reformat_request_get_params, overview_get_format, smart_int, null_check, http_basic_auth
+from .utilities import reformat_request_get_params, overview_get_format, smart_int, null_check
 from django.contrib.auth.decorators import login_required
 from .constants import REGIONS_DICT, PAYMENT_TYPES
-from django.forms.models import model_to_dict
-from django.db.models import Sum
 from django.shortcuts import redirect
-from .views_kernel import add_student, generate_contract_pdf
-from xhtml2pdf import pisa
-from django.template.loader import get_template, render_to_string
-from django.template import Context
-from io import StringIO, BytesIO
+from .views_kernel import add_student, generate_contract_pdf, add_contract
 from cspc import settings
-import os
-from .dump_google_sheets import dump_to_local_database
+from .api_requests import new_user
 
-@login_required
+
 def students_overview(request: WSGIRequest) -> HttpResponse:
-    request_get = dict(overview_get_format(reformat_request_get_params(request.GET)))
-    query = [(i, [(j, ContractPayment.objects.filter(contract=j).aggregate(Sum('payment_amt'))['payment_amt__sum'])
-                  for j in Contract.objects.filter(student_address__person_id=i.person_id)])
-             for i in StudentsOverviewFunction.execute(**request_get)]
-    get_request_preview = {i: j for i, j in request_get.items() if j is not None}
-    return render(request, 'students_overview.html', {'students_list': query, 'request_get': get_request_preview})
+    return render(request, 'students_overview.html', {'students_list': StudentsOverviewFunction.execute(
+        **dict(overview_get_format(reformat_request_get_params(request.GET))))})
 
 
-@login_required
 def student_detail_view(request: WSGIRequest, pk: int) -> HttpResponse:
     if request.POST:
-        data = dict(request.POST)
-        data['course_element_id'] = '3'  # select now is not working
-        print(data)
-        arg_list = \
-            [
-                int(data['student_id'][0]), request.user.pk,
-
-                int(data['document_no'][0]), str(data['document_series'][0]), str(data['document_type_txt'][0]),
-                data['person_surname_txt'][0], data['person_name_txt'][0],
-                data['person_father_name_txt'][0], data['authority_no'][0], data['authority_txt'][0],
-                datetime.date(int(data['issue_dt_year'][0]), int(data['issue_dt_month'][0]),
-                              int(data['issue_dt_day'][0])),
-
-                int(data['region_cd'][0]), data['city_txt'][0], data['street_txt'][0], data['house_txt'][0],
-                null_check(data['building_no'][0]), null_check(data['structure_no'][0]), smart_int(data['flat_nm'][0]),
-
-                int(data['document_no'][1]), data['document_series'][1], data['document_type_txt'][1],
-                data['person_surname_txt'][1], data['person_name_txt'][1],
-                data['person_father_name_txt'][1], data['authority_no'][1], data['authority_txt'][1],
-                datetime.date(int(data['issue_dt_year'][1]), int(data['issue_dt_month'][1]),
-                              int(data['issue_dt_day'][1])),
-
-                int(data['region_cd'][1]), data['city_txt'][1], data['street_txt'][1], data['house_txt'][1],
-                null_check(data['building_no'][1]), null_check(data['structure_no'][1]), smart_int(data['flat_nm'][1]),
-
-                data['student_phone_no'][0], data['payer_phone_no'][0], data['payer_inn_no'][0],
-                int(data['course_element_id'][0])
-            ]
-        cur = connection.cursor()
-        try:
-            cur.callproc('full_contract_insert', arg_list)
-        except Exception as err:
-            print(err)
+        # data = dict(request.POST)
+        print(request.POST['course_element'])
+        add_contract(request.user, student=StudentPerson.objects.get(pk=pk), **dict(request.POST))
+        # print(data)
+        # arg_list = \
+        #     [
+        #         int(data['student_id'][0]), request.user.pk,
+        #
+        #         int(data['document_no'][0]), str(data['document_series'][0]), str(data['document_type_txt'][0]),
+        #         data['person_surname_txt'][0], data['person_name_txt'][0],
+        #         data['person_father_name_txt'][0], data['authority_no'][0], data['authority_txt'][0],
+        #         datetime.date(int(data['issue_dt_year'][0]), int(data['issue_dt_month'][0]),
+        #                       int(data['issue_dt_day'][0])),
+        #
+        #         int(data['region_cd'][0]), data['city_txt'][0], data['street_txt'][0], data['house_txt'][0],
+        #         null_check(data['building_no'][0]), null_check(data['structure_no'][0]), smart_int(data['flat_nm'][0]),
+        #
+        #         int(data['document_no'][1]), data['document_series'][1], data['document_type_txt'][1],
+        #         data['person_surname_txt'][1], data['person_name_txt'][1],
+        #         data['person_father_name_txt'][1], data['authority_no'][1], data['authority_txt'][1],
+        #         datetime.date(int(data['issue_dt_year'][1]), int(data['issue_dt_month'][1]),
+        #                       int(data['issue_dt_day'][1])),
+        #
+        #         int(data['region_cd'][1]), data['city_txt'][1], data['street_txt'][1], data['house_txt'][1],
+        #         null_check(data['building_no'][1]), null_check(data['structure_no'][1]), smart_int(data['flat_nm'][1]),
+        #
+        #         data['student_phone_no'][0], data['payer_phone_no'][0], data['payer_inn_no'][0],
+        #         int(data['course_element_id'][0])
+        #     ]
+        # cur = connection.cursor()
+        # try:
+        #     cur.callproc('full_contract_insert', arg_list)
+        # except Exception as err:
+        #     print(err)
         return redirect(f"/student/detail/{pk}/")
     student_person = StudentPerson.objects.filter(pk=pk)[0]
-    contracts = []
-    documents_set = set()
-    addresses_set = set()
-    courses = []
-
-    for contract in Contract.objects.filter(student_person=pk):
-        documents_set.add(contract.student_document)
-        documents_set.add(contract.payer_document)
-        addresses_set.add(contract.student_address)
-        addresses_set.add(contract.payer_address)
-        contracts.append((contract, ContractPayment.objects.filter(contract=contract).order_by('payment_dt')))
 
     info = {'student_person': student_person,
             'person': student_person.person,
-            'contracts': contracts,
             'regions': REGIONS_DICT,
             'payment_types': PAYMENT_TYPES,
-            'documents_set': documents_set,
-            'addresses_set': addresses_set,
-            'courses': [(course, CourseElement.objects.filter(course=course)) for course in Course.objects.all()]
+            'courses': [(course, CourseElement.objects.filter(course=course)) for course in Course.objects.all()],
+            'contracts': Contract.objects.filter(student_person=student_person)
             }
     return render(request, 'student_detail_view.html', info)
 
 
-@login_required
 def courses_view(request: WSGIRequest) -> HttpResponse:
     if request.POST:
         Course(sphere_txt=request.POST['sphere_txt'], name_txt=request.POST['name_txt'],
-               short_nm=request.POST['short_nm'],
-               price_per_hour=int(request.POST['price_per_hour']),
-               number_of_hours=request.POST['number_of_hours']).save()
+               short_nm=request.POST['short_nm'], price_per_hour=int(request.POST['price_per_hour']),
+               number_of_hours=int(request.POST['number_of_hours']),
+               number_of_month=int(request.POST['number_of_month'])).save()
         return redirect('/courses/')
     courses_info = []
     for i in Course.objects.all():
@@ -117,10 +92,9 @@ def courses_view(request: WSGIRequest) -> HttpResponse:
     return render(request, 'courses_info_view.html', {'courses_info': courses_info, 'teachers_list': teachers_list})
 
 
-@login_required
 def teachers_view(request: WSGIRequest) -> HttpResponse:
-    # teachers_info = [(i, CourseElement.objects.filter(course=i)) for i in Course.objects.all()]
-    # Тут нужно изменить на учителей
+    if request.POST:
+        new_user(request)
     return render(request, 'teachers_info_view.html', {'teachers': [
         (i, [
             (j, CourseElementDefiniteClass.objects.filter(course_element=j))
@@ -128,7 +102,6 @@ def teachers_view(request: WSGIRequest) -> HttpResponse:
         ]) for i in AuthUserXPerson.objects.all()]})
 
 
-@login_required
 def versions(request: WSGIRequest, pk: int) -> HttpResponse:
     cursor = connection.cursor()
     # common_info = cursor.execute(f"select * from ")
@@ -174,10 +147,10 @@ def person_version(request: WSGIRequest, pk: int) -> HttpResponse:
     })
 
 
-@login_required
 def student_add_function(request: WSGIRequest) -> HttpResponse:
     if request.POST:
-        add_student(request.user.pk, dict(request.POST))
+        print(type(request.user))
+        add_student(request.user, is_approved=True, **dict(request.POST))
         return redirect('/')
     else:
         return render(request, 'student_add.html', {'courses': CourseElement.objects.all()})

@@ -1,4 +1,8 @@
 function deleteItem(type, id) {
+    if (type in config) {
+        let deleteMsg = config[type].delete_caution;
+        if (deleteMsg && !confirm('Внимание!\n' + deleteMsg)) return;
+    }
     changeLockStatus($(`#${type}_row_${id}`), false);
     // changeLockStatus(document.getElementById(`${type}_data_form_${id}`), false);
     $(`#${type}_data_button_span_${id}`).className = "glyphicon glyphicon-hourglass";
@@ -8,8 +12,11 @@ function deleteItem(type, id) {
         type : "POST",
         data : {'csrfmiddlewaretoken': get_scrf_token(), 'id': id},
         dataType : "json",
-        success : function(json) { delete_object_success_end(type, id); },
-        error : function(xhr,errmsg,err) { alert("Err: " + xhr.responseText); delete_object_failure_end(type, id); }
+        success : function(json) {
+            if (json.success) delete_object_success_end(type, id);
+            else alert(json.error_msg); delete_object_failure_end(type, id);
+            },
+        error : function(xhr,errmsg,err) { console.log(xhr); console.log(errmsg); console.log(err); alert("Err: " + "1)" + xhr.responseText + "\n\n\n2) " + errmsg + "\n\n\n3) " + err); delete_object_failure_end(type, id); }
     });
 }
 

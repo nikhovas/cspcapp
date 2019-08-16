@@ -2,6 +2,7 @@ from django.conf.urls import url, include
 from . import views
 from . import api_requests
 from . import dump_google_sheets
+import django.contrib.auth.views
 
 
 urlpatterns = [
@@ -36,6 +37,8 @@ urlpatterns = [
     url(r'^google/api/dump_data/$', dump_google_sheets.dump_to_local_database, name='dump_to_local_database'),
 
     url(r'^contract_print/(?P<pk>\S+)/$', views.print_contract, name='contract_print'),
+
+    url(r'^logout/$', django.contrib.auth.views.logout_then_login, {'login_url': '/accounts/login/'}, name='user_logout'),
 
     url(r'^', views.students_overview, name='cspcapp_students_overview'),
 

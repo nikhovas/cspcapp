@@ -16,13 +16,11 @@
                 <table class="table main-table" style="width: 100%">
                     <thead>
                     <tr>
-                            <td></td>
                             <td style="width: 33.33%"> Ученик </td>
                             <td style="width: 33.33%"> Платильщик </td>
                         </tr>
                     </thead>
                     <tr>
-                        <td>Фамилия</td>
                         <td>
                             <input type="text" name="person_surname_txt" placeholder="Фамилия" style="border-width: 0;">
                         </td>
@@ -31,7 +29,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Имя</td>
                         <td>
                             <input type="text" name="person_name_txt" placeholder="Имя" style="border-width: 0;">
                         </td>
@@ -40,7 +37,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Отчество</td>
                         <td>
                             <input type="text" name="person_father_name_txt" placeholder="Отчество" style="border-width: 0;">
                         </td>
@@ -49,7 +45,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Дата рождения</td>
                         <td>
                             <input type="text" name="birth_day" placeholder="ДД" style="border-width: 0; width: 26px;"/>-
                             <input type="text" name="birth_month" placeholder="ММ" style="border-width: 0; width: 26px"/>-
@@ -60,7 +55,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Документ выдан кем</td>
                         <td>
                             <input type="text" name="authority_txt" placeholder="Документ выдан кем" style="border-width: 0;">
                         </td>
@@ -69,7 +63,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Код подразделения</td>
                         <td>
                             <input type="text" name="authority_no" placeholder="Код" style="border-width: 0;">
                         </td>
@@ -78,7 +71,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Тип документа</td>
                         <td>
                             <input type="text" name="document_type_txt" placeholder="Тип документа" style="border-width: 0;">
                         </td>
@@ -87,7 +79,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Дата выдачи</td>
                         <td>
                             <input type="text" name="issue_day" placeholder="ДД" style="border-width: 0; width: 26px;"/>-
                             <input type="text" name="issue_month" placeholder="ММ" style="border-width: 0; width: 26px"/>-
@@ -99,7 +90,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Серия</td>
                         <td>
                             <input type="text" name="document_series" placeholder="Серия" style="border-width: 0;">
                         </td>
@@ -108,7 +98,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Номер</td>
                         <td>
                             <input type="text" name="document_no" placeholder="Номер" style="border-width: 0;">
                         </td>
@@ -117,7 +106,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Регион</td>
                         <td>
                             <input type="text" name="region_cd" placeholder="Регион" style="border-width: 0;">
                         </td>
@@ -126,7 +114,14 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Город</td>
+                        <td>
+                            <input type="text" name="area_txt" placeholder="Район" style="border-width: 0;">
+                        </td>
+                        <td>
+                            <input type="text" name="area_txt" placeholder="Район" style="border-width: 0;">
+                        </td>
+                    </tr>
+                    <tr>
                         <td>
                             <input type="text" name="city_txt" placeholder="Город" style="border-width: 0;">
                         </td>
@@ -135,7 +130,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Улица</td>
                         <td>
                             <input type="text" name="street_txt" placeholder="Улица" style="border-width: 0;">
                         </td>
@@ -144,57 +138,33 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Дом</td>
                         <td>
-                            <input type="text" name="house_txt" placeholder="Дом" style="border-width: 0;">
+                            <input type="text" name="house_txt" placeholder="Дом" style="border-width: 0; width: 24%;">
+                            <input type="text" name="building_no" placeholder="Строение" style="border-width: 0; width: 24%;">
+                            <input type="text" name="structure_no" placeholder="Корпус" style="border-width: 0; width: 24%;">
+                            <input type="text" name="flat_nm" placeholder="Квартира" style="border-width: 0; width: 23%;">
                         </td>
                         <td>
-                            <input type="text" name="house_txt" placeholder="Дом" style="border-width: 0;">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Строение</td>
-                        <td>
-                            <input type="text" name="building_no" placeholder="Строение" style="border-width: 0;">
-                        </td>
-                        <td>
-                            <input type="text" name="building_no" placeholder="Строение" style="border-width: 0;">
+                            <input type="text" name="house_txt" placeholder="Дом" style="border-width: 0; width: 24%;">
+                            <input type="text" name="building_no" placeholder="Строение" style="border-width: 0; width: 24%;">
+                            <input type="text" name="structure_no" placeholder="Корпус" style="border-width: 0; width: 24%;">
+                            <input type="text" name="flat_nm" placeholder="Квартира" style="border-width: 0; width: 23%;">
                         </td>
                     </tr>
                     <tr>
-                        <td>Корпус</td>
                         <td>
-                            <input type="text" name="structure_no" placeholder="Корпус" style="border-width: 0;">
+                            <input type="text" name="student_phone_no" placeholder="+7*********" style="border-width: 0;">
                         </td>
                         <td>
-                            <input type="text" name="structure_no" placeholder="Корпус" style="border-width: 0;">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Квартира</td>
-                        <td>
-                            <input type="text" name="flat_nm" placeholder="Квартира" style="border-width: 0;">
-                        </td>
-                        <td>
-                            <input type="text" name="flat_nm" placeholder="Квартира" style="border-width: 0;">
+                            <input type="text" name="payer_phone_no" placeholder="+7*********" style="border-width: 0;">
                         </td>
                     </tr>
                     <tr>
-                        <td>Телефон</td>
-                        <td>
-                            <input type="text" name="phone" placeholder="+7*********" style="border-width: 0;">
-                        </td>
-                        <td>
-                            <input type="text" name="phone" placeholder="+7*********" style="border-width: 0;">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>ИНН</td>
                         <td>
                             -
                         </td>
                         <td>
-                            <input type="text" name="inn" placeholder="ИНН" style="border-width: 0;">
+                            <input type="text" name="payer_inn_no" placeholder="ИНН" style="border-width: 0;">
                         </td>
                     </tr>
                 </table>
