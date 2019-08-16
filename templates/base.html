@@ -32,6 +32,8 @@
 
 <body>
 <div class="sidebar">
+
+
     <div class="login-info">
 {#        <div class="circle" style="padding: 0px 0px 10px 8px; padding-bottom: 45px"><font size="4">AA</font></div>#}
                 <div class="circle" style="font-size: 20px; text-align: center; padding-top: 8px;">{{ user.first_name|first }}{{ user.last_name|first }}</div>
@@ -39,43 +41,40 @@
     </div>
 
     <div class="sidebar-element">
-        <a href="/settings/"><span class="glyphicon glyphicon-cog"></span></a>
+        <a href="/settings/" data-toggle="tooltip" data-placement="right" title="Настройки"><span class="glyphicon glyphicon-cog"></span></a>
     </div>
 
     <div class="exit-button">
-        <a href="/accounts/logout/" target="_self"><span class="fas fa-door-open"></span></a>
+        <a href="/accounts/logout/" target="_self" data-toggle="tooltip" data-placement="right" title="Выход"><span class="fas fa-door-open"></span></a>
     </div>
 
+
     <div class="sidebar-element">
-        <a href="/"><span class="glyphicon glyphicon-list-alt"></span></a>
+        <a href="/" data-toggle="tooltip" data-placement="right" title="Список учеников"><span class="glyphicon glyphicon-list-alt"></span></a>
     </div>
     {% block common_list_sublevel %}
     {% endblock %}
     <div class="sidebar-element">
-        <a href="/courses/"><span class="glyphicon glyphicon-tasks"></span></a>
+        <a href="/courses/" data-toggle="tooltip" data-placement="right" title="Список курсов"><span class="glyphicon glyphicon-tasks"></span></a>
     </div>
     <div class="sidebar-element">
-        <a href="/teachers/"><span class="glyphicon glyphicon-briefcase"></span></a>
+        <a href="/teachers/" data-toggle="tooltip" data-placement="right" title="Список учителей"><span class="glyphicon glyphicon-briefcase"></span></a>
     </div>
+
 
     <div class="sidebar-element">
         <div class="dropdown">
             <a href="#" class="dropbtn"><span class="glyphicon glyphicon-option-horizontal"></span></a>
-            <span class="hidden_panel">Утилиты</span>
             <div class="dropdown-content">
-              <a href="/registration_requests/">Запросы на регистрацию</a>
-              <a href="/students_requests/">Формы учеников</a>
+                <a href="/registration_requests/">Запросы на регистрацию</a>
+                <a href="/students_requests/">Формы учеников</a>
                 <a onclick="update_students_forms()">Загрузить формы с Google таблиц</a>
                 <a onclick="update_google_info()">Обновить Google форму</a>
             </div>
         </div>
     </div>
 
-    <div class="tooltip">
-        ыыыыыы
-        <span class="tooltiptext">Выход</span>
 
-    </div>
 
 {#    <div class="sidebar-element">#}
 {#        <a href="/registration_requests/">1</a>#}
@@ -94,6 +93,12 @@
     {% block content %}
     {% endblock %}
 </div>
+
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip({delay: 100});
+});
+</script>
 
 </body>
 </html>
