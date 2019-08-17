@@ -1,0 +1,58 @@
+<hr color="#3b5998" style="border-color: white; border-width: 4px; margin: -10px;"/>
+
+        <div style="margin-bottom: 60px">
+            <h2 style="color: darkblue; margin-bottom: 30px">Данные студента</h2>
+
+        <table class="table main-table" style="width: 100%; text-align: left;">
+                <thead>
+                    <tr>
+                        <td>Начало обучения</td>
+                        <td>Школа</td>
+                        <td>Литер</td>
+                        <td>Изменил</td>
+                        <td>Время изменения</td>
+                    </tr>
+                </thead>
+                {% for elem in object.version_history %}
+                    <tr>
+                        <td>{{ elem.education_start_year }}</td>
+                        <td>{{ elem.school_name_txt }}</td>
+                        <td>{{ elem.liter }}</td>
+                        <td>{{ elem.change_user }}</td>
+                        <td>{{ elem.change_timestamp }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+<table class="table main-table" style="width: 100%">
+        <thead>
+            <tr>
+                <td>Направление</td>
+                <td>Имя</td>
+                <td>Краткое имя</td>
+                <td style="width: 40px;"></td>
+            </tr>
+        </thead>
+        {% for contract in object.contract_set.all %}
+            <tr id="contract_version_row_{{ contract.pk }}">
+{#            <td>{{ contract.course_element }}</td>#}
+                <td>{{ contract.course_element.course.sphere_txt }}</td>
+                <td>{{ contract.course_element.course.name_txt }}</td>
+                <td>{{ contract.course_element.course.short_nm }}</td>
+                <td>
+                    <button onclick="toggleInfoTab('contract_version', {{ contract.pk }})">
+                        <span id="contract_version_row_more_info_button_span_{{ contract.pk }}" class="glyphicon glyphicon-arrow-down"></span>
+                    </button>
+                </td>
+            </tr>
+            <tr id="contract_version_row_more_info_{{ contract.pk }}" hidden="true">
+            <td colspan="4">
+                <div>
+                    {{ contract.version_history_html_table }}
+                </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+

@@ -1,0 +1,28 @@
+<div style="margin-top: 80px; margin-bottom: 60px">
+        <h2 style="color: darkblue; margin-bottom: 30px">Общие сведения</h2>
+        <table class="table main-table" style="width: 100%; text-align: left;">
+            <thead>
+                <tr>
+                    <td>Фамилия</td>
+                    <td>Имя</td>
+                    <td>Отчество</td>
+                    <td>Дата рождения</td>
+                    <td>Изменил</td>
+                    <td>Время изменения</td>
+                </tr>
+            </thead>
+            {% for elem in object.version_history %}
+                <tr>
+                <td>{{ elem.person_surname_txt }}</td>
+                <td>{{ elem.person_name_txt }}</td>
+                <td>{{ elem.person_father_name_txt }}</td>
+                <td>{{ elem.birth_dt }}</td>
+                <td>{{ elem.change_user }}</td>
+                <td>{{ elem.change_timestamp }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+
+{{ object.studentperson.version_history_html_table }}

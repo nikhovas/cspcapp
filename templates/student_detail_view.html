@@ -77,15 +77,14 @@
                             <button type="submit" onclick="enableEditObjectMode('student', {{ person.pk }})" id="student_data_button_{{ person.pk }}">
                                                 <span class="glyphicon glyphicon-pencil" id="student_data_button_span_{{ person.pk }}"></span>
                                             </button>
-                            <a href="/person/{{ student_person.pk }}/"><span class="glyphicon glyphicon-time"></span></a>
+                            <a href="/person/{{ student_person.pk }}/versions/"><span class="glyphicon glyphicon-time"></span></a>
                         </td>
                     </tr>
                 </table>
     </div>
-    <div style="margin-top: 3%; width: 100%; float: left;">
+    <div style="width: 100%; float: left;">
         <h3 style="color: black; ">Договоры</h3>
     </div>
-    <button type="submit" style="display: inline-block"> <span class="glyphicon glyphicon-time"></span></button>
     <table class="table main-table contracts-table" style="width: 100%">
         <colgroup>
             <col style="width: 45px">
@@ -164,7 +163,7 @@
                         </button>
 
                     <button class="long-button">
-                        <a href="/contract/5/">
+                        <a href="/contract/{{ contract.pk }}/versions/">
                             <span class="glyphicon glyphicon-time"/>
                             </a>
                         </button>
@@ -328,8 +327,7 @@
                                     <td>Размер оплаты</td>
                                     <td>Тип оплаты</td>
                                     <td>Номер квитанции</td>
-                                    <td style="width: 110px;">
-                                    <button style="background-color: white; color: #3b5998"> <span class="glyphicon glyphicon-time"></span> </button></td>
+                                    <td style="width: 110px;"></td>
                                 </tr>
                             </thead>
 
@@ -360,7 +358,7 @@
                                             <button id="payment_data_button_{{ payment.pk }}" onclick="enableEditObjectMode('payment', {{ payment.pk }})">
                                                 <span class="glyphicon glyphicon-pencil" id="payment_data_button_span_{{ payment.pk }}"></span>
                                             </button>
-                                            <button type="submit"><span class="glyphicon glyphicon-time"></span></button>
+                                            <a href="/payment/{{ payment.pk }}/versions/"><span class="glyphicon glyphicon-time"></span></a>
                                             <button onclick="delete_object('payment', {{ payment.pk }})"><span class="glyphicon glyphicon-remove"></span></button>
                                         </td>
 

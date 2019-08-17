@@ -2,11 +2,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-    <title>Изменеия в договорах</title>
+    <title>Изменения</title>
 {% endblock %}
 
 {% block content %}
-    <h1 align="center">Изменения в договоре</h1>
     {{ object.version_history_html_table }}
-
 {% endblock %}

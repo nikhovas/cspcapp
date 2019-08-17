@@ -58,9 +58,8 @@
                             </tr>
                         </thead>
                         <tbody>
-{#                        {{ student.student_person_cast.liter }}#}
-                            {{ student.person.contract__set }}
-                            {% for contract in student.contracts %}
+
+                            {% for contract in student.person.contract_set.all %}
                                 <tr>
                                     <td>{{ contract.course_element.course.sphere_txt }} {{ contract.course_element.course.name_txt }}</td>
                                     <td>{{ contract.course_element.teacher_person.person_surname_txt }}

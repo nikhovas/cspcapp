@@ -102,10 +102,10 @@ def teachers_view(request: WSGIRequest) -> HttpResponse:
         ]) for i in AuthUserXPerson.objects.all()]})
 
 
-def versions(request: WSGIRequest, pk: int) -> HttpResponse:
-    cursor = connection.cursor()
-    # common_info = cursor.execute(f"select * from ")
-    return render(request, 'versions/contracts_versions.html', {})
+def versions(request: WSGIRequest, pk: int, model_name: str) -> HttpResponse:
+    return render(request, 'versions/version.html', {
+        'object': MODEL_TYPES_DICT[model_name].type_name.objects.get(pk=pk)
+    })
 
 
 def meta_base_view(request):
@@ -113,38 +113,14 @@ def meta_base_view(request):
 
 
 def contract_version(request: WSGIRequest, pk: int) -> HttpResponse:
-    contract = Contract.objects.get(pk=pk)
-    cur = connection.cursor()
-    cur.execute(f"SELECT * FROM contract_log where contract_id = {pk}")
-    common_contract_info = [i for i in cur]
-    cur.execute(f"SELECT * FROM document_by_id({contract.student_document.pk})")
-    student_passport_info = [i for i in cur]
-    cur.execute(f"SELECT * FROM adress_by_id({contract.student_address.pk})")
-    student_address_info = [i for i in cur]
-    cur.execute(f"SELECT * FROM document_by_id({contract.payer_document.pk})")
-    payer_passport_info = [i for i in cur]
-    cur.execute(f"SELECT * FROM adress_by_id({contract.payer_address.pk})")
-    payer_address_info = [i for i in cur]
-    # common_contract_info =
-    return render(request, 'versions/contracts_versions.html', {
-        'common_contract_info': common_contract_info,
-        'student_passport_info': student_passport_info,
-        'student_address_info': student_address_info,
-        'payer_passport_info': payer_passport_info,
-        'payer_address_info': payer_address_info
-    })
+    return render(request, 'versions/version.html', {'object': Contract.objects.get(pk=pk)})
 
 
 def person_version(request: WSGIRequest, pk: int) -> HttpResponse:
-    cur = connection.cursor()
-    cur.execute(f"SELECT * FROM person_log where person_id = {pk}")
-    person_info = [i for i in cur]
-    cur.execute(f"SELECT * FROM student_person_log where person_id = {pk}")
-    student_person_info = [i for i in cur]
-    return render(request, 'versions/person_version.html', {
-        'person_info': person_info,
-        'student_person_info': student_person_info
-    })
+    print('+++')
+    print(Person.objects.get(pk=pk).simple_version_history_html_table())
+    print('+++')
+    return render(request, 'versions/person_version.html', {'person': Person.objects.get(pk=pk)})
 
 
 def student_add_function(request: WSGIRequest) -> HttpResponse:

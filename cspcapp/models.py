@@ -8,6 +8,8 @@ from django.db.models.fields.related import OneToOneField as O2of
 import datetime
 from django.db.models import Sum
 from django.core.exceptions import FieldError
+from django.template.loader import get_template
+from cspcapp.constants import REGIONS_DICT
 
 
 class HasRelatedObjectsException(Exception):
@@ -30,7 +32,7 @@ class Model(models.Model):
         self.__dict__['is_edited'] = True
         super().__init__(*args, **kwargs)
 
-    def __setattr__(self, item, value):
+    def __setattr__(self, item: str, value):
         if item is not 'change_user':
             was_edited = hasattr(self, 'is_edited') and getattr(self, 'is_edited')
             try:
@@ -42,17 +44,47 @@ class Model(models.Model):
                 raise
         super().__setattr__(item, value)
 
-    class Meta:
-        abstract = True
+    # def __getattr__(self, item: str):
+    #     if item.endswith('_active'):
+    #         item = item[:-7]
+    #         return (i for i in getattr(self, item).all() if not i.deleted)
+    #     elif item.endswith('_deleted'):
+    #         item = item[:-8]
+    #         item.replace('_deleted', '')
+    #         return (i for i in getattr(self, item).all() if i.deleted)
+    #     return getattr(self, item)
+
+    @property
+    def version_history(self):
+        cur = connection.cursor()
+        pk_name: str = self._meta.pk.name
+        if not pk_name.endswith('_id'):
+            pk_name += '_id'
+        cur.execute(f"SELECT * FROM {self._meta.db_table}_log WHERE {pk_name} = {self.pk}")
+        columns = [column[0] for column in cur.description]
+        for row in cur:
+            args = dict(zip(columns, row))
+            change_timestamp = args['change_timestamp']
+            del args['change_timestamp']
+            obj = self.__class__(**args)
+            obj.change_timestamp = change_timestamp
+            yield obj
 
     def delete(self, using=None, keep_parents=False, user=None):
-        try:
-            not_deleted = self.delete_connections()
-            if len(not_deleted) is not 0:
-                raise HasRelatedObjectsException(not_deleted)
-        except FieldError:
-            pass
-        super().delete(using, keep_parents)
+        if hasattr(self, 'VersionInfo'):
+            for i in self.__class__._meta.get_fields():
+                if i.field_name != self._meta.pk.name:
+                    setattr(self, i.field_name, None)
+            self.change_user = user
+            self.save()
+        else:
+            try:
+                not_deleted = self.delete_connections()
+                if len(not_deleted) is not 0:
+                    raise HasRelatedObjectsException(not_deleted)
+            except FieldError:
+                pass
+            super().delete(using, keep_parents)
 
     def get_related_connections(self, deep=False, ignore_options=()) -> set:
         connections = set()
@@ -67,6 +99,34 @@ class Model(models.Model):
                         for j in related_objects:
                             connections |= j.get_related_connections(deep=deep, ignore_options=ignore_options)
         return connections
+
+    def simple_version_history_html_table(self):
+        for i in self.__class__._meta.get_fields():
+            print(i.__dict__)
+
+    @property
+    def version_history_html_table(self) -> str:
+        return get_template(f"versions/details/{self._meta.db_table}_versions.html").render({'object': self})
+        # if hasattr(self, 'VersionInfo'):
+        #     return get_template(f"versions/details/simple_version_table.html").render({
+        #         'object': self
+        #     })
+        # else:
+        #     raise Exception('no versions')
+
+    @property
+    def deleted(self) -> bool:
+        for i in self.__class__._meta.get_fields():
+            if type(i) is models.AutoField:
+                continue
+            print(i.__dict__)
+            if i.column not in (self._meta.pk.name, 'change_user', 'change_timestamp') \
+                    and getattr(self, i.column) is not None:
+                return False
+        return True
+
+    class Meta:
+        abstract = True
 
     def delete_connections(self) -> set:
         connections = set()
@@ -107,6 +167,11 @@ class Contract(Model):
         managed = False
         db_table = 'contract'
 
+    class VersionInfo:
+        version_control_visible_fields = ('student_phone_no', 'payer_phone_no', 'payer_inn_no',)
+        check_if_deleted = {'student_document': None, 'student_address': None, 'payer_document': None,
+                            'payer_address': None}
+
     @property
     def payment_details(self):
         payed = ContractPayment.objects.filter(contract=self).aggregate(Sum('payment_amt'))['payment_amt__sum'] or 0
@@ -127,6 +192,11 @@ class ContractPayment(Model):
     payment_type = models.SmallIntegerField()
     voucher_no = models.CharField(max_length=50, blank=True, null=True)
     change_user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+
+    class VersionInfo:
+        version_control_visible_fields = ('payment_dt', 'payment_amt', 'payment_type', 'voucher_no',)
+        codes_dict = {'region_cd': REGIONS_DICT}
+        check_if_deleted = {'payment_type': None, 'payment_amt': None}
 
     class Meta:
         managed = False
@@ -244,16 +314,18 @@ class Person(Model):
         managed = False
         db_table = 'person'
 
+    class VersionInfo:
+        version_control_visible_fields = ('person_surname_txt', 'person_name_txt', 'person_father_name_txt',
+                                          'birth_dt',)
+        codes_dict = {'region_cd': REGIONS_DICT}
+        check_if_deleted = {'person_surname_txt': None, 'person_name_txt': None, 'person_father_name_txt': None}
+
     @property
     def get_surname_and_initials(self) -> str:
         res = str(self.person_surname_txt) + " " + str(self.person_name_txt)[0] + "."
         if self.person_father_name_txt is not None:
             res += " " + str(self.person_father_name_txt)[0] + "."
         return res
-
-    # @property
-    # def student_person_cast(self):
-    #     return StudentPerson.objects.get(pk=self.pk)
 
 
 class PersonDocument(Model):
@@ -270,9 +342,18 @@ class PersonDocument(Model):
     issue_dt = models.DateField()
     change_user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
+    @property
+    def version_history_html_table(self) -> str:
+        return get_template('versions/details/person_document_versions.html').render({'object': self})
+
     class Meta:
         managed = False
         db_table = 'person_document'
+
+    class VersionInfo:
+        version_control_visible_fields = ('document_no', 'document_series', 'city_txt', 'street_txt', 'house_txt',
+                                          'building_no', 'structure_no', 'flat_nm', )
+        check_if_deleted = {'document_type_txt': None}
 
 
 class PersonHomeAddress(Model):
@@ -288,9 +369,20 @@ class PersonHomeAddress(Model):
     flat_nm = models.SmallIntegerField(blank=True, null=True)
     change_user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
+    @property
+    def version_history_html_table(self) -> str:
+        return get_template('versions/details/person_home_address_versions.html').render({'object': self,
+                                                                                          'REGIONS_DICT': REGIONS_DICT})
+
     class Meta:
         managed = False
         db_table = 'person_home_address'
+
+    class VersionInfo:
+        version_control_visible_fields = ('region_cd', 'area_txt', 'city_txt', 'street_txt', 'house_txt',
+                                          'building_no', 'structure_no', 'flat_nm', )
+        codes_dict = {'region_cd': REGIONS_DICT}
+        check_if_deleted = {'region_cd': None}
 
 
 class StudentPerson(Model):
@@ -305,6 +397,14 @@ class StudentPerson(Model):
         managed = False
         db_table = 'student_person'
 
+    class VersionInfo:
+        version_control_visible_fields = ('education_start_year', 'school_name_txt', 'liter',)
+        check_if_deleted = {'education_start_year': None, 'school_name_txt': None, 'liter': None}
+
+    @property
+    def version_history_html_table(self) -> str:
+        return get_template('versions/details/student_person_versions.html').render({'object': self})
+
 
 class AuthUserXPerson(Model):
     ru_localization = ''
@@ -316,12 +416,6 @@ class AuthUserXPerson(Model):
     class Meta:
         managed = False
         db_table = 'auth_user_x_person'
-
-
-    # def save(self, *args, **kwargs):
-    #     self.auth_user.save()
-    #     self.person.save()
-    #     super().save(*args, **kwargs)
 
 
 class CourseElementDefiniteClass(Model):
@@ -453,3 +547,35 @@ class StudentsOverviewFunction(Model):
 
     class Meta:
         managed = False
+
+
+# profiles
+
+
+class PostRequestInfo:
+    def __init__(self, _type_name, _to_date: list = (), _date_to_timestamp: list = (), _to_time: list = (),
+                 _additional_save: list = ()):
+        self.type_name = _type_name
+        self.to_date = _to_date
+        self.date_to_timestamp = _date_to_timestamp
+        self.to_time = _to_time
+        self.additional_save = _additional_save
+
+
+MODEL_TYPES_DICT = {
+        'person_document': PostRequestInfo(_type_name=PersonDocument, _to_date=['issue_dt']),
+        'person_home_address': PostRequestInfo(_type_name=PersonHomeAddress),
+        'contract': PostRequestInfo(_type_name=Contract),
+        'payment': PostRequestInfo(_type_name=ContractPayment, _date_to_timestamp=['payment_dt']),
+        'person': PostRequestInfo(_type_name=Person, _to_date=['education_start_year', 'birth_dt']),
+        'contract_student_phone': PostRequestInfo(_type_name=Contract),
+        'student': PostRequestInfo(_type_name=StudentPerson, _to_date=['education_start_year', 'person.birth_dt']),
+        'course': PostRequestInfo(_type_name=Course),
+        'course_element': PostRequestInfo(_type_name=CourseElement),
+        'course_class': PostRequestInfo(_type_name=CourseClass),
+        'teacher': PostRequestInfo(_type_name=AuthUserXPerson, _to_date=['person.birth_dt'],),
+        'course_detail': PostRequestInfo(_type_name=CourseElementDefiniteClass, _to_date=['class_dt'],
+                                         _to_time=['start_tm', 'end_tm']),
+        'reg_form': PostRequestInfo(_type_name=RegistrationRequest, _to_date=['birth_dt']),
+        'student_request': PostRequestInfo(_type_name=StudentRequest)
+}

@@ -1,0 +1,16 @@
+<table class="table main-table" style="width: 100%; text-align: left;">
+            <thead>
+                <tr>
+                    {% for i in headers %}
+                        <td>{{ i }}</td>
+                    {% endfor %}
+                </tr>
+            </thead>
+            {% for elem in object.version_history %}
+                <tr>
+                {% for i in elem %}
+                        <td>{{ i }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>

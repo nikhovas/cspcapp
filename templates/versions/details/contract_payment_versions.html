@@ -1,0 +1,25 @@
+<table class="table main-table" style="width: 100%; text-align: left;">
+            <thead>
+                <tr>
+                    <td>Дата оплаты</td>
+                    <td>Размер оплаты</td>
+                    <td>Тип оплаты</td>
+                    <td>Номер квитанции</td>
+                    <td>Логин пользователя</td>
+                    <td>Время изменения</td>
+                </tr>
+            </thead>
+            {% for elem in object.version_history %}
+
+                    <tr>
+                        <td>{{ object.payment_dt }}</td>
+                        <td>{{ object.payment_amt }}</td>
+                        <td>{{ object.payment_type }}</td>
+                        <td>{{ object.voucher_no }}</td>
+                        <td>{{ object.change_user }}</td>
+                        <td>{{ object.change_timestamp }}</td>
+                    </tr>
+
+            {% endfor %}
+
+        </table>

@@ -15,36 +15,6 @@ import sys
 # Configuration Block
 
 
-class PostRequestInfo:
-    def __init__(self, _type_name, _to_date: list = (), _date_to_timestamp: list = (), _to_time: list = (),
-                 _additional_save: list = ()):
-        self.type_name = _type_name
-        self.to_date = _to_date
-        self.date_to_timestamp = _date_to_timestamp
-        self.to_time = _to_time
-        self.additional_save = _additional_save
-
-
-MODEL_TYPES_DICT = \
-    {
-        'person_document': PostRequestInfo(_type_name=PersonDocument, _to_date=['issue_dt']),
-        'person_home_address': PostRequestInfo(_type_name=PersonHomeAddress),
-        'contract': PostRequestInfo(_type_name=Contract),
-        'payment': PostRequestInfo(_type_name=ContractPayment, _date_to_timestamp=['payment_dt']),
-        'person': PostRequestInfo(_type_name=Person, _to_date=['education_start_year', 'birth_dt']),
-        'contract_student_phone': PostRequestInfo(_type_name=Contract),
-        'student': PostRequestInfo(_type_name=StudentPerson, _to_date=['education_start_year', 'person.birth_dt']),
-        'course': PostRequestInfo(_type_name=Course),
-        'course_element': PostRequestInfo(_type_name=CourseElement),
-        'course_class': PostRequestInfo(_type_name=CourseClass),
-        'teacher': PostRequestInfo(_type_name=AuthUserXPerson, _to_date=['person.birth_dt'],),
-        'course_detail': PostRequestInfo(_type_name=CourseElementDefiniteClass, _to_date=['class_dt'],
-                                         _to_time=['start_tm', 'end_tm']),
-        'reg_form': PostRequestInfo(_type_name=RegistrationRequest, _to_date=['birth_dt']),
-        'student_request': PostRequestInfo(_type_name=StudentRequest)
-    }
-
-
 DELETE_RENAMING = {'payment': 'contract_payment'}
 
 
