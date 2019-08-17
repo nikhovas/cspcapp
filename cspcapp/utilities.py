@@ -102,7 +102,7 @@ def values_from_dict_by_keys(d: dict, keys: list):
 
 def smart_int(data: str):
     # return '' if data == '' else int(data)
-    return None if data == '' else int(data)
+    return None if data == '' or data is None else int(data)
 
 
 def null_check(data: str):

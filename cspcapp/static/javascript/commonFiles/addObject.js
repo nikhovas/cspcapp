@@ -26,8 +26,8 @@ function addObjectFailure(type, parent_id) {
 
 
 function addObjectSuccess(type, id, parent_id) {
-    let form = $(`#${type}_add_form_${parent_id}`);
-    let form_data = pair_array_to_map(form.serializeArray());
+    let form = $(`#${type}_add_row_${parent_id}`);
+    let form_data = jsonFromObject(form);
     // let template = window[`${type}Template`](form_data, id);
     // let table = document.getElementById(`${type}_table_${parent_id}`);
     $(`#${type}_table_${parent_id}`).find('tbody').append(window[`${type}Template`](form_data, id));

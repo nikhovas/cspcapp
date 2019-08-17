@@ -1,3 +1,6 @@
+from cspcapp.models import *
+
+
 REGIONS_DICT = {
     1: 'Адыгея Респ',
     2: 'Башкортостан Респ',
@@ -95,3 +98,6 @@ PAYMENT_TYPES = {
 
 
 DAYS_OF_WEEK = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС']
+
+
+

@@ -1,0 +1,32 @@
+<table class="table main-table" style="width: 100%; text-align: left;">
+            <thead>
+                <tr>
+                    <td>Фамилия</td>
+                    <td>Имя</td>
+                    <td>Отчество</td>
+                    <td>Тип документа</td>
+                    <td>Кем выдан</td>
+                    <td>Код подр</td>
+                    <td>Дата выдачи</td>
+                    <td>Номер</td>
+                    <td>Серия</td>
+                    <td>Логин</td>
+                    <td>Время изменения</td>
+                </tr>
+            </thead>
+            {% for elem in object.version_history %}
+                <tr>
+                    <td>{{ elem.person_surname_txt }}</td>
+                    <td>{{ elem.person_name_txt }}</td>
+                    <td>{{ elem.person_father_name_txt }}</td>
+                    <td>{{ elem.document_type_txt }}</td>
+                    <td>{{ elem.authority_txt }}</td>
+                    <td>{{ elem.authority_no }}</td>
+                    <td>{{ elem.issue_dt }}</td>
+                    <td>{{ elem.document_no }}</td>
+                    <td>{{ elem.document_series }}</td>
+                    <td>{{ elem.change_user }}</td>
+                    <td>{{ elem.change_timestamp }}</td>
+                </tr>
+            {% endfor %}
+        </table>

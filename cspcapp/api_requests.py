@@ -8,42 +8,13 @@ import datetime
 from .forms import UserForm
 from django.shortcuts import redirect
 from .views_kernel import add_student
+from django.db.utils import IntegrityError
+import sys
 
 
 # Configuration Block
 
 
-class PostRequestInfo:
-    def __init__(self, _type_name, _to_date: list = (), _date_to_timestamp: list = (), _to_time: list = ()):
-        self.type_name = _type_name
-        self.to_date = _to_date
-        self.date_to_timestamp = _date_to_timestamp
-        self.to_time = _to_time
-
-
-MODEL_TYPES_DICT = \
-    {
-        'person_document': PostRequestInfo(_type_name=PersonDocument, _to_date=['issue_dt']),
-        'person_home_address': PostRequestInfo(_type_name=PersonHomeAddress),
-        'contract': PostRequestInfo(_type_name=Contract),
-        'payment': PostRequestInfo(_type_name=ContractPayment, _date_to_timestamp=['payment_dt']),
-        'person': PostRequestInfo(_type_name=Person, _to_date=['education_start_year', 'birth_dt']),
-        'contract_student_phone': PostRequestInfo(_type_name=Contract),
-        'student': PostRequestInfo(_type_name=StudentPerson, _to_date=['education_start_year', 'person.birth_dt']),
-        'course': PostRequestInfo(_type_name=Course),
-        'course_element': PostRequestInfo(_type_name=CourseElement),
-        'course_class': PostRequestInfo(_type_name=CourseClass),
-        'teacher': PostRequestInfo(_type_name=AuthUserXPerson, _to_date=['person.birth_dt'],),
-        'course_detail': PostRequestInfo(_type_name=CourseElementDefiniteClass, _to_date=['class_dt'],
-                                         _to_time=['start_tm', 'end_tm']),
-        'reg_form': PostRequestInfo(_type_name=RegistrationRequest, _to_date=['birth_dt']),
-        'student_request': PostRequestInfo(_type_name=StudentRequest)
-    }
-
-
-CONFIG_RELINK = {'contract_student_phone': 'contract', 'contract_payer_phone': 'contract',
-                 'contract_payer_inn': 'contract', 'contract_course_element': 'contract'}
-# NEED_OWN_EDIT_SYSTEM = ['course_element']
 DELETE_RENAMING = {'payment': 'contract_payment'}
 
 
@@ -51,38 +22,26 @@ DELETE_RENAMING = {'payment': 'contract_payment'}
 
 
 def data_edit(request: WSGIRequest, object_type: str) -> HttpResponse:
-    print('in edit!')
-    if object_type in CONFIG_RELINK.keys():
-        object_type = CONFIG_RELINK[object_type]
-    print('in edit2!')
     config = MODEL_TYPES_DICT[object_type]
-    editing_object = config.type_name.objects.get(pk=request.POST['id'])
-
     params = post_request_to_dict_slicer(request.POST)
+    editing_object = config.type_name.objects.get(pk=request.POST['id'])
     del params['csrfmiddlewaretoken']
     del params['id']
     reconstruct_args(params=params, to_date=config.to_date, date_to_timestamp=config.date_to_timestamp,
                      to_time=config.to_time)
-    print(params)
     for i, j in params.items():
-        if rgetattr(editing_object, i, None) != j:
-            arr = i.split('.')
-            editing_object.is_edited = True
-            if len(arr) > 1:
-                rgetattr(editing_object, '.'.join(arr[:-1])).is_edited = True
-            print(f"not equal: {i}")
-            rsetattr(editing_object, i, j)
-
-    # editing_object.update(**params)
-    editing_object.save(user_id=request.user.pk)
+        rsetattr(editing_object, i, j)
+    if hasattr(editing_object, 'change_user'):
+        editing_object.change_user = request.user
+    editing_object.save()
     return JsonResponse({})
 
 
 def course_element_add(request: WSGIRequest) -> JsonResponse:
     data = dict(request.POST)
     print(data)
-    course_element = CourseElement.objects.create(course_id=int(request.POST['course_id']),
-                                                  teacher_person_id=int(data['teacher_id'][0]))
+    course_element = CourseElement.objects.create(course_id=request.POST['course_id'],
+                                                  teacher_person_id=request.POST['teacher_id'])
     course_element.save()
     course_element_id = course_element.pk
     for k in range(0, 7):
@@ -114,23 +73,18 @@ def course_detail_add(request: WSGIRequest) -> JsonResponse:
 
 def payment_add(request: WSGIRequest) -> HttpResponse:
     data = dict(request.POST)
-    data['payment_type'] = ['1']
     print(data)
-    arg_list = [int(data['payment_amt'][0]), int(data['contract_id'][0]), int(data['payment_type'][0]),
-                data['voucher_no'][0], request.user.pk,
-                datetime.datetime(int(data['payment_dt_year'][0]), int(data['payment_dt_month'][0]),
-                                  int(data['payment_dt_day'][0]))]
-    cur = connection.cursor()
-    try:
-        cur.callproc('contract_payment_insert', arg_list)
-    except Exception as err:
-        print(err)
-
-    new_element_id = 0
-    for row in cur:
-        new_element_id = row[0]
-
-    return JsonResponse({'new_element_id': new_element_id})
+    contract_payment = ContractPayment(payment_amt=request.POST['payment_amt'],
+                                       contract_id=request.POST['contract_id'],
+                                       payment_type=request.POST['payment_type'],
+                                       voucher_no=request.POST['voucher_no'],
+                                       change_user_id=request.user.pk,
+                                       payment_dt=datetime.datetime(int(data['payment_dt_year'][0]),
+                                                                    int(data['payment_dt_month'][0]),
+                                                                    int(data['payment_dt_day'][0]))
+                                       )
+    contract_payment.save()
+    return JsonResponse({'new_element_id': contract_payment.pk})
 
 
 # Delete BLock
@@ -138,24 +92,33 @@ def payment_add(request: WSGIRequest) -> HttpResponse:
 
 def object_delete(request: WSGIRequest, object_type: str) -> HttpResponse:
     id = request.POST['id']
-    MODEL_TYPES_DICT[object_type].type_name.objects.get(pk=id).custom_delete(request.user.pk)
-    return JsonResponse({})
+    try:
+        MODEL_TYPES_DICT[object_type].type_name.objects.get(pk=id).delete()
+    except IntegrityError:
+        exc_type, value, exc_traceback = sys.exc_info()
+        return JsonResponse({
+            'success': False,
+            'error_msg': f"Ошибка: есть зависимости, не подлежащие автоматическому удалению\n\n\n{value}"
+        })
+    except HasRelatedObjectsException as error:
+        res = 'Ошибка: есть зависимости, не подлежащие автоматическому удалению:'
+        for i in error.relations_set:
+            res += f"\n{i[0].ru_localization} -> {i[1].ru_localization}"
+        return JsonResponse({'success': False, 'error_msg': res})
+    return JsonResponse({'success': True})
 
 
 def new_user(request: WSGIRequest) -> JsonResponse:
-    # form = UserForm(request.POST)
-    # print(form.is_valid())
-    # print(form.cleaned_data)
-    print(request.POST)
-    _new_user = User.objects.create_user(username=request.POST['username'], password=request.POST['password'])
+    _new_user = User.objects.create_user(username=request.POST['username'], password=request.POST['password'],
+                                         first_name=request.POST['name'], last_name=request.POST['surname'])
     new_person = Person(person_surname_txt=request.POST['surname'],
                         person_name_txt=request.POST['name'],
                         person_father_name_txt=request.POST['father_name'],
                         birth_dt=datetime.date(int(request.POST['birth_dt_year']), int(request.POST['birth_dt_month']),
                                                int(request.POST['birth_dt_day'])))
-    new_person.save(user_id=request.user.pk)
+    new_person.save()
     conn = AuthUserXPerson(auth_user=_new_user, person=new_person)
-    conn.custom_create()
+    conn.save()
     return JsonResponse({})
 
 
@@ -172,13 +135,13 @@ def get_teacher_users(request: WSGIRequest) -> JsonResponse:
 def submit_registration_form(request: WSGIRequest) -> JsonResponse:
     template = RegistrationRequest.objects.get(pk=request.POST['id'])
     _new_user = User.objects.create_user(username=template.username, password=template.password)
+    _new_user.save()
     new_person = Person(person_surname_txt=template.person_surname_txt,
                         person_name_txt=template.person_name_txt,
                         person_father_name_txt=template.person_father_name_txt,
-                        birth_dt=template.birth_dt)
-    new_person.save(user_id=request.user.pk)
-    conn = AuthUserXPerson(auth_user=_new_user, person=new_person)
-    conn.custom_create()
+                        birth_dt=template.birth_dt, change_user=request.user)
+    new_person.save()
+    AuthUserXPerson.objects.create(auth_user=_new_user, person=new_person)
     return JsonResponse({})
 
 
@@ -188,7 +151,7 @@ def submit_student_form(request: WSGIRequest) -> JsonResponse:
     ed_year = now.year - req.student_class
     if now.month > 6:
         ed_year += 1
-    add_student(request.user.pk,
+    add_student(request.user,
                 document_no=[req.student_document_no, req.payer_document_no],
                 document_series=[req.student_document_series, req.payer_document_series],
                 person_surname_txt=[req.student_surname_txt, req.payer_surname_txt],
@@ -200,6 +163,7 @@ def submit_student_form(request: WSGIRequest) -> JsonResponse:
                 document_type_txt=[req.student_document_type_txt, req.payer_document_type_txt],
 
                 region_cd=[req.student_region_cd, req.payer_region_cd],
+                area_txt=[req.student_area_txt, req.payer_area_txt],
                 city_txt=[req.student_city_txt, req.payer_city_txt],
                 street_txt=[req.student_street_txt, req.payer_street_txt],
                 house_txt=[req.student_house_txt, req.payer_house_txt],
@@ -212,8 +176,9 @@ def submit_student_form(request: WSGIRequest) -> JsonResponse:
                 school_name_txt=[req.student_school_name_txt],
                 liter=[req.student_liter],
 
-                phone=[req.student_phone_no, req.payer_phone_no],
-                inn=[req.payer_inn_no],
+                student_phone_no=[req.student_phone_no],
+                payer_phone_no=[req.payer_phone_no],
+                payer_inn_no=[req.payer_inn_no],
 
                 course_element=req.courses.split(' ')
                 )

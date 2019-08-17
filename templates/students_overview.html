@@ -24,7 +24,7 @@
                 <td style="width: 110px;"></td>
             </tr>
         </thead>
-        {% for student, contracts_set in students_list %}
+        {% for student in students_list %}
             <tr id="student_row_{{ student.pk }}">
                 <td>{{ student.school_name_txt }}</td>
                 <td>{{ student.grade }} {{ student.liter }}</td>
@@ -46,9 +46,6 @@
             </tr>
             <tr id="student_row_more_info_{{ student.pk }}" hidden="true">
             <td colspan="4">
-            {% for elem in student.courseelement_set %}
-                {{ elem }}
-                            {% endfor %}
                     <table class="table main-table" style="width: 100%" id="course_element_table_{{ course.pk }}">
                         <thead>
                             <tr>
@@ -61,16 +58,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for contract, contract_sum in contracts_set %}
+
+                            {% for contract in student.person.contract_set.all %}
                                 <tr>
                                     <td>{{ contract.course_element.course.sphere_txt }} {{ contract.course_element.course.name_txt }}</td>
                                     <td>{{ contract.course_element.teacher_person.person_surname_txt }}
                                         {{ contract.course_element.teacher_person.person_name_txt }}
                                         {% if not contract.course_element.teacher_person.person_father_name_txt is None %}{{ contract.course_element.teacher_person.person_father_name_txt }} {% endif %}</td>
                                     <td>{{ contract.course_element.get_week_days_str }}</td>
-                                    <td>{{ contract_sum }}</td>
+                                    <td>{{ contract.payment_details.payed_sum }}</td>
                                     <td>{{ contract.course_element.course.total_price }}</td>
-                                    <td style="background-color: {% if contract_sum < contract.course_element.course.total_price %} red {% else %} green {% endif %}"></td>
+                                    {% if contract.payment_details.payed_sum < contract.payment_details.full_price %}
+                                        <td style="background-color: red; color: white;">{{ contract.payment_details.need_to_pay }}</td>
+                                    {% else %}
+                                        <td style="background-color: green; color: white;">{% if contract.payment_details.need_to_pay != 0 %}{{ contract.payment_details.need_to_pay }}{% endif %}</td>
+                                    {% endif %}
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -83,14 +85,14 @@
     <div class="search-box">
         <form method="GET">
             <h3>Поиск</h3>
-            <input type="text" name="surname" value="{{ request_get.surname }}" placeholder="Фамилия"/>
-            <input type="text" name="name" value="{{ request_get.name }}" placeholder="Имя"/>
-            <input type="text" name="father_name" value="{{ request_get.father_name }}" placeholder="Отчество"/>
-            <input type="text" name="school" value="{{ request_get.school }}" placeholder="Школа"/>
-            <input type="number" name="grade" value="{{ request_get.grade }}" min="1" max="11" style="width: 40px; float: left; margin-right: 10px;" placeholder="11">
-            <input type="text" name="liter" value="{{ request_get.liter }}" style="width: 25px; float: left; margin-right: 10px;" placeholder="Б">
-            <input type="text" name="document_series" value="{{ request_get.document_series }}" style="width: 60px; float: left; margin-right: 10px;" placeholder="Серия">
-            <input type="text" name="document_no" value="{{ request_get.document_no }}" style="width: 93px;" placeholder="Номер">
+            <input type="text" name="surname" value="{{ request.GET.surname }}" placeholder="Фамилия"/>
+            <input type="text" name="name" value="{{ request.GET.name }}" placeholder="Имя"/>
+            <input type="text" name="father_name" value="{{ request.GET.father_name }}" placeholder="Отчество"/>
+            <input type="text" name="school" value="{{ request.GET.school }}" placeholder="Школа"/>
+            <input type="number" name="grade" value="{{ request.GET.grade }}" min="1" max="11" style="width: 40px; float: left; margin-right: 10px;" placeholder="11">
+            <input type="text" name="liter" value="{{ request.GET.liter }}" style="width: 25px; float: left; margin-right: 10px;" placeholder="Б">
+            <input type="text" name="document_series" value="{{ request.GET.document_series }}" style="width: 60px; float: left; margin-right: 10px;" placeholder="Серия">
+            <input type="text" name="document_no" value="{{ request.GET.document_no }}" style="width: 93px;" placeholder="Номер">
             <input type="checkbox" name="dept" style="margin-right: 10px;">Только с неоплатой
             <table style="">
                 <tr>

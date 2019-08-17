@@ -77,15 +77,14 @@
                             <button type="submit" onclick="enableEditObjectMode('student', {{ person.pk }})" id="student_data_button_{{ person.pk }}">
                                                 <span class="glyphicon glyphicon-pencil" id="student_data_button_span_{{ person.pk }}"></span>
                                             </button>
-                            <a href="/person/{{ student_person.pk }}/"><span class="glyphicon glyphicon-time"></span></a>
+                            <a href="/person/{{ student_person.pk }}/versions/"><span class="glyphicon glyphicon-time"></span></a>
                         </td>
                     </tr>
                 </table>
     </div>
-    <div style="margin-top: 3%; width: 100%; float: left;">
+    <div style="width: 100%; float: left;">
         <h3 style="color: black; ">Договоры</h3>
     </div>
-    <button type="submit" style="display: inline-block"> <span class="glyphicon glyphicon-time"></span></button>
     <table class="table main-table contracts-table" style="width: 100%">
         <colgroup>
             <col style="width: 45px">
@@ -104,7 +103,7 @@
                 <td colspan="3">Плательщик</td>
             </tr>
         </thead>
-        {% for contract, contract_payments in contracts %}
+        {% for contract in contracts %}
             <tr id="contract_tr_main_{{ contract.pk }}">
                 <td colspan="2">
                     <div>
@@ -164,7 +163,7 @@
                         </button>
 
                     <button class="long-button">
-                        <a href="/contract/5/">
+                        <a href="/contract/{{ contract.pk }}/versions/">
                             <span class="glyphicon glyphicon-time"/>
                             </a>
                         </button>
@@ -218,8 +217,8 @@
                                 <input type="text" name="city_txt" value="{{ contract.student_address.city_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 160px)" readonly/>
                                 <input type="text" name="street_txt" value="{{ contract.student_address.street_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 194px)" readonly/>
                                 <input type="text" name="house_txt" value="{{ contract.student_address.house_txt }}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
-                                <input type="text" name="building_no" value="{% if contract.student_address.building_no %} {{ contract.student_address.building_no }} {% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
-                                <input type="text" name="structure_no" value="{% if contract.student_address.structure_no %} {{ contract.student_address.structure_no }} {% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="building_no" value="{% if contract.student_address.building_no %}{{ contract.student_address.building_no }}{% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="structure_no" value="{% if contract.student_address.structure_no %}{{ contract.student_address.structure_no }}{% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
                                 <input type="text" name="flat_nm" value="{% if contract.student_address.flat_nm %}{{ contract.student_address.flat_nm }}{% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>
                             </form>
                         </div>
@@ -277,11 +276,12 @@
                                         <option value="{{ i }}" {% if i == contract.payer_address.region_cd %}selected{% endif %}>{{ j }}</option>
                                     {% endfor %}
                                 </select>
-                                <input type="text" name="city_txt" value="{{ contract.payer_address.city_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 160px)" readonly/>
+                                <input type="text" name="city_txt" value="{{ contract.payer_address.area_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(50% - 80px)" readonly/>
+                                <input type="text" name="city_txt" value="{{ contract.payer_address.city_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(50% - 80px)" readonly/>
                                 <input type="text" name="street_txt" value="{{ contract.payer_address.street_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 194px)" readonly/>
                                 <input type="text" name="house_txt" value="{{ contract.payer_address.house_txt }}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
-                                <input type="text" name="building_no" value="{% if contract.payer_address.building_no %} {{ contract.payer_address.building_no }} {% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
-                                <input type="text" name="structure_no" value="{% if contract.payer_address.structure_no %} {{ contract.payer_address.structure_no }} {% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="building_no" value="{% if contract.payer_address.building_no %}{{ contract.payer_address.building_no }}{% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="structure_no" value="{% if contract.payer_address.structure_no %}{{ contract.payer_address.structure_no }}{% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
                                 <input type="text" name="flat_nm" value="{% if contract.payer_address.flat_nm %}{{ contract.payer_address.flat_nm }}{% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>
                             </form>
                         </div>
@@ -327,12 +327,11 @@
                                     <td>Размер оплаты</td>
                                     <td>Тип оплаты</td>
                                     <td>Номер квитанции</td>
-                                    <td style="width: 110px;">
-                                    <button style="background-color: white; color: #3b5998"> <span class="glyphicon glyphicon-time"></span> </button></td>
+                                    <td style="width: 110px;"></td>
                                 </tr>
                             </thead>
 
-                            {% for payment in contract_payments %}
+                            {% for payment in contract.contractpayment_set.all %}
                                 <tr id="payment_row_{{ payment.pk }}">
                                     <form action="" method="post" id="payment_data_form_{{ payment.pk }}" name="payment_data_form_{{ payment.pk }}">
                                         <td>
@@ -359,7 +358,7 @@
                                             <button id="payment_data_button_{{ payment.pk }}" onclick="enableEditObjectMode('payment', {{ payment.pk }})">
                                                 <span class="glyphicon glyphicon-pencil" id="payment_data_button_span_{{ payment.pk }}"></span>
                                             </button>
-                                            <button type="submit"><span class="glyphicon glyphicon-time"></span></button>
+                                            <a href="/payment/{{ payment.pk }}/versions/"><span class="glyphicon glyphicon-time"></span></a>
                                             <button onclick="delete_object('payment', {{ payment.pk }})"><span class="glyphicon glyphicon-remove"></span></button>
                                         </td>
 
@@ -442,25 +441,26 @@
                                 <input type="text" name="authority_txt" placeholder="Кем выдан" style="background-color: #3b5998; border-width: 0; width: 100%"/>
                                 <input type="text" name="document_type_txt" placeholder="Тип документа" style="background-color: #3b5998; border-width: 0; width: calc(100% - 314px)"/>
                                 <input type="text" name="authority_no" placeholder="Номер подразделения" style="background-color: #3b5998; border-width: 0; width: 90px"/>
-                                <input type="text" name="issue_dt_day" placeholder="ДД" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px"/>-
-                                <input type="text" name="issue_dt_month" placeholder="ММ" style="background-color: #3b5998; border-width: 0; width: 16px"/>-
-                                <input type="text" name="issue_dt_year" placeholder="ГГГГ" style="background-color: #3b5998; border-width: 0; width: 33px"/>
+                                <input type="text" name="issue_day" placeholder="ДД" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px"/>-
+                                <input type="text" name="issue_month" placeholder="ММ" style="background-color: #3b5998; border-width: 0; width: 16px"/>-
+                                <input type="text" name="issue_year" placeholder="ГГГГ" style="background-color: #3b5998; border-width: 0; width: 33px"/>
                                 <input type="text" name="document_series" placeholder="Серия" style="background-color: #3b5998; border-width: 0; width: 33px; margin-left: 20px"/>
                                 <input type="text" name="document_no" placeholder="Номер" style="background-color: #3b5998; border-width: 0; width: 50px"/>
                     </div>
                     <div class="address-data-box" id="contract_add_address_data_student" style="margin-top: 5px;">
                                 <select name="region_cd" style="background-color: #3b5998; border-width: 0; width: 150px; -webkit-appearance:none;" onclick="return false;">
-                                    <option disabled selected>Регион</option>
+                                    <option value="" disabled selected>Регион</option>
                                     {% for i, j in regions.items %}
                                         <option value="{{ i }}">{{ j }}</option>
                                     {% endfor %}
                                 </select>
-                                <input type="text" name="city_txt" placeholder="Город" style="background-color: #3b5998; border-width: 0; width: calc(100% - 160px)"/>
+                                <input type="text" name="area_txt" placeholder="Район" style="background-color: #3b5998; border-width: 0; width: calc(50% - 80px)" />
+                                <input type="text" name="city_txt" placeholder="Город" style="background-color: #3b5998; border-width: 0; width: calc(50% - 80px)"/>
                                 <input type="text" name="street_txt" placeholder="Улица" style="background-color: #3b5998; border-width: 0; width: calc(100% - 194px)"/>
-                                <input type="text" name="house_txt" placeholder="Дом" style="background-color: #3b5998; border-width: 0; width: 40px"/>-
-                                <input type="text" name="building_no" placeholder="Строение" style="background-color: #3b5998; border-width: 0; width: 40px"/>-
-                                <input type="text" name="structure_no" placeholder="Корпус" style="background-color: #3b5998; border-width: 0; width: 40px"/>-
-                                <input type="text" name="flat_nm" placeholder="Квартира" style="background-color: #3b5998; border-width: 0; width: 40px"/>
+                                <input type="text" name="house_txt" placeholder="дом" style="background-color: #3b5998; border-width: 0; width: 40px"/>-
+                                <input type="text" name="building_no" placeholder="стр." style="background-color: #3b5998; border-width: 0; width: 40px"/>-
+                                <input type="text" name="structure_no" placeholder="корп." style="background-color: #3b5998; border-width: 0; width: 40px"/>-
+                                <input type="text" name="flat_nm" placeholder="кв." style="background-color: #3b5998; border-width: 0; width: 40px"/>
                     </div>
                 </td>
                 <td colspan="3">
@@ -471,35 +471,30 @@
                                 <input type="text" name="authority_txt" placeholder="Кем выдан" style="background-color: #3b5998; border-width: 0; width: 100%"/>
                                 <input type="text" name="document_type_txt" placeholder="Тип документа" style="background-color: #3b5998; border-width: 0; width: calc(100% - 314px)"/>
                                 <input type="text" name="authority_no" placeholder="Номер подразделения" style="background-color: #3b5998; border-width: 0; width: 90px"/>
-                                <input type="text" name="issue_dt_day" placeholder="ДД" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px"/>-
-                                <input type="text" name="issue_dt_month" placeholder="ММ" style="background-color: #3b5998; border-width: 0; width: 16px"/>-
-                                <input type="text" name="issue_dt_year" placeholder="ГГГГ" style="background-color: #3b5998; border-width: 0; width: 33px"/>
+                                <input type="text" name="issue_day" placeholder="ДД" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px"/>-
+                                <input type="text" name="issue_month" placeholder="ММ" style="background-color: #3b5998; border-width: 0; width: 16px"/>-
+                                <input type="text" name="issue_year" placeholder="ГГГГ" style="background-color: #3b5998; border-width: 0; width: 33px"/>
                                 <input type="text" name="document_series" placeholder="Серия" style="background-color: #3b5998; border-width: 0; width: 33px; margin-left: 20px"/>
                                 <input type="text" name="document_no" placeholder="Номер" style="background-color: #3b5998; border-width: 0; width: 50px"/>
 
                     </div>
                     <div class="address-data-box" id="contract_add_address_data_payer" style="margin-top: 5px;">
                                 <select name="region_cd" style="background-color: #3b5998; border-width: 0; width: 150px; -webkit-appearance:none;" onclick="return false;">
-                                    <option disabled selected>Регион</option>
+                                    <option value="" disabled selected>Регион</option>
                                     {% for i, j in regions.items %}
                                         <option value="{{ i }}">{{ j }}</option>
                                     {% endfor %}
                                 </select>
-                                <input type="text" name="city_txt" placeholder="Город" style="background-color: #3b5998; border-width: 0; width: calc(100% - 160px)"/>
+                                <input type="text" name="area_txt" placeholder="Район" style="background-color: #3b5998; border-width: 0; width: calc(50% - 80px)" />
+                                <input type="text" name="city_txt" placeholder="Город" style="background-color: #3b5998; border-width: 0; width: calc(50% - 80px)" />
                                 <input type="text" name="street_txt" placeholder="Улица" style="background-color: #3b5998; border-width: 0; width: calc(100% - 194px)"/>
-                                <input type="text" name="house_txt" placeholder="Дом" style="background-color: #3b5998; border-width: 0; width: 40px"/>-
-                                <input type="text" name="building_no" placeholder="Строение" style="background-color: #3b5998; border-width: 0; width: 40px"/>-
-                                <input type="text" name="structure_no" placeholder="Корпус" style="background-color: #3b5998; border-width: 0; width: 40px"/>-
-                                <input type="text" name="flat_nm" placeholder="Квартира" style="background-color: #3b5998; border-width: 0; width: 40px"/>
+                                <input type="text" name="house_txt" placeholder="дом" style="background-color: #3b5998; border-width: 0; width: 40px"/>-
+                                <input type="text" name="building_no" placeholder="стр." style="background-color: #3b5998; border-width: 0; width: 40px"/>-
+                                <input type="text" name="structure_no" placeholder="корп." style="background-color: #3b5998; border-width: 0; width: 40px"/>-
+                                <input type="text" name="flat_nm" placeholder="кв." style="background-color: #3b5998; border-width: 0; width: 40px"/>
                     </div>
                 </td>
             </tr>
         </table>
     </form>
-{% endblock %}
-
-{% block common_list_sublevel %}
-    <div class="portfolio_element" style="background-color: #8b9dc3">
-        <span class="far fa-address-card"></span>
-    </div>
 {% endblock %}

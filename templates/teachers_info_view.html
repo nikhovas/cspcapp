@@ -26,7 +26,7 @@
         {% for teacher, course_elements_set in teachers %}
             <tr id="teacher_row_{{ teacher.person_id }}">
                 {% csrf_token %}
-                <input type="hidden" name="id" value="{{ teacher.person.pk }}">
+                <input type="hidden" name="id" value="{{ teacher.auth_user_x_person_id }}">
 {#                <input type="hidden" name="auth_user_id" value="{{ teacher.auth_user_id }}">#}
                 <td><input type="text" name="person.person_surname_txt" value="{{ teacher.person.person_surname_txt }}" style="border-width: 0; width: 100%;" readonly/></td>
                 <td><input type="text" name="person.person_name_txt" value="{{ teacher.person.person_name_txt }}" style="border-width: 0; width: 100%;" readonly/></td>
@@ -116,7 +116,7 @@
 {#    </div>#}
 
     <div class="search-box">
-        <form method="POST" action="/api/new_user/">
+        <form method="POST">
             <h3>Добавить</h3>
             {% csrf_token %}
             <input type="text" name="surname" placeholder="Фамилия"/>

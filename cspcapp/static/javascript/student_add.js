@@ -5,7 +5,7 @@ function addRow() {
     let text = $('#add_course_element_select option:selected').text();
     $('#course_elements_table').find('tbody').append(`
 <tr id="course_row_${newRowID}">
-                        <td><input type="hidden" name="course_element" value=${val}">${text}</td>
+                        <td><input type="hidden" name="course_element" value="${val}">${text}</td>
                         <td>
                             <button type="button" style="width: 100%" onclick="deleteRow(${newRowID})">
                                 <span class="glyphicon glyphicon-trash" "></span>

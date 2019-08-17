@@ -39,8 +39,25 @@ function serializeObject(object) {
         }
 
     });
-
+    console.log(result);
     return result;
+}
+
+
+function jsonFromObject(object) {
+    let arr = [];
+    object.find("input,select").each(function(item) {
+        if (this.type === 'checkbox') {
+            if ($(this).is(':checked')) {
+                arr.push({'name': this.name, 'value': 'True'});
+            } else {
+                arr.push({'name': this.name, 'value': 'False'});
+            }
+        } else {
+            arr.push({'name': this.name, 'value': this.value});
+        }
+    });
+    return pair_array_to_map(arr);
 }
 
 

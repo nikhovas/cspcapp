@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'cspc.middlewares.LoginRequiredMiddleware'
 ]
 
 ROOT_URLCONF = 'cspc.urls'
@@ -65,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cspcapp.template_contexts.user_additional_info'
             ],
         },
     },
@@ -82,6 +84,15 @@ DATABASES = {
         'PORT': '6432',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'postgres',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5436',
+#     }
+# }
 
 
 

@@ -1,0 +1,44 @@
+<table class="table main-table" style="width: 100%; text-align: left;">
+            <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+            </colgroup>
+            <thead>
+                <tr>
+                    <td>Регион</td>
+                    <td>Район</td>
+                    <td>Город</td>
+                    <td>Улица</td>
+                    <td>Номер дома</td>
+                    <td>Номер строения</td>
+                    <td>Номер корпуса</td>
+                    <td>Номер квартиры</td>
+                    <td>Логин пользователя</td>
+                    <td>Время изменения</td>
+                </tr>
+            </thead>
+
+            {% for elem in object.version_history %}
+                <tr>
+                    {% for i, j in REGIONS_DICT.items %}{% ifequal i elem.region_cd %}
+                    <td>{{ j }}</td>
+                        {% endifequal %}{% endfor %}
+                    <td>{{ elem.area_txt|default:'' }}</td>
+                    <td>{{ elem.city_txt|default:'' }}</td>
+                    <td>{{ elem.street_txt }}</td>
+                    <td>{{ elem.house_txt }}</td>
+                    <td>{{ elem.building_no|default:'' }}</td>
+                    <td>{{ elem.structure_no|default:'' }}</td>
+                    <td>{{ elem.flat_nm|default:'' }}</td>
+                    <td>{{ elem.change_user }}</td>
+                    <td>{{ elem.change_timestamp }}</td>
+                </tr>
+            {% endfor %}
+        </table>

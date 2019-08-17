@@ -2,6 +2,7 @@ from django.conf.urls import url, include
 from . import views
 from . import api_requests
 from . import dump_google_sheets
+import django.contrib.auth.views
 
 
 urlpatterns = [
@@ -19,10 +20,7 @@ urlpatterns = [
     url(r'^courses/$', views.courses_view, name='cspcapp_courses_view'),
     url(r'^teachers/$', views.teachers_view, name='cspcapp_teachers_view'),
     url(r'^student_add/$', views.student_add_function, name='cspcapp_student_add'),
-
-    url(r'^versions/(?P<pk>\S+)/$', views.versions, name='cspcapp_versions'),
-    url(r'^contract/(?P<pk>\S+)/$', views.contract_version, name='contract_version'),
-    url(r'^person/(?P<pk>\S+)/$', views.person_version, name='person_version'),
+    url(r'^(?P<model_name>\S+)/(?P<pk>\S+)/versions/$', views.versions, name='cspcapp_versions'),
     url(r'^settings/$', views.account_settings, name='account_settings'),
     url(r'^registration_requests/submit/$', api_requests.submit_registration_form, name='registration_submit'),
     url(r'^registration_requests/$', views.registration_requests_list, name='registration_requests_list'),
@@ -36,6 +34,8 @@ urlpatterns = [
     url(r'^google/api/dump_data/$', dump_google_sheets.dump_to_local_database, name='dump_to_local_database'),
 
     url(r'^contract_print/(?P<pk>\S+)/$', views.print_contract, name='contract_print'),
+
+    url(r'^logout/$', django.contrib.auth.views.logout_then_login, {'login_url': '/accounts/login/'}, name='user_logout'),
 
     url(r'^', views.students_overview, name='cspcapp_students_overview'),
 
