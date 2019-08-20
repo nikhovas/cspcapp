@@ -1,0 +1,9 @@
+{% if versions %}
+<a href="/{{ object.get_db_table }}/{{ object.pk }}/versions/" target="_self">
+    <span class="glyphicon glyphicon-eye-open"></span>
+</a>
+{% else %}
+<a href="/{{ object.get_db_table }}/{{ object.pk }}/" target="_self">
+    <span class="glyphicon glyphicon-eye-open"></span>
+</a>
+{% endif %}

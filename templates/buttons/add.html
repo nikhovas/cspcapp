@@ -1,0 +1,17 @@
+{% if simplebuttons %}
+    <button>
+        <span class="glyphicon glyphicon-plus"></span>
+    </button>
+{% elif parent %}
+    <button type="submit" id="{{ child_type }}_add_button_{{ parent.pk }}" onclick="addNewObject('{{ child_type }}', {{ parent.pk }})">
+        <span class="glyphicon glyphicon-plus" id="{{ child_type }}_add_button_span_{{ parent.pk }}"></span>
+    </button>
+{% elif is_no_parent %}
+    <button id="{{ db_table }}_add_button_0" onclick="addNewObject('{{ db_table }}', 0)">
+        <span class="glyphicon glyphicon-plus" id="{{ db_table }}_add_button_span_0"></span>
+    </button>
+{% else %}
+    <button id="{{ db_table }}_add_button_{{ object.pk }}" onclick="addNewObject('{{ db_table }}', {{ object.pk }})">
+        <span class="glyphicon glyphicon-plus" id="{{ db_table }}_add_button_span_{{ object.pk }}"></span>
+    </button>
+{% endif %}

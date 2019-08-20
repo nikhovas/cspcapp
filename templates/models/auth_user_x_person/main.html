@@ -1,0 +1,63 @@
+<tr id="{{ object.get_db_table }}_row_{{ object.pk }}">
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{ object.pk }}">
+    <td><input type="text" name="person.person_surname_txt" value="{{ object.person.person_surname_txt }}" style="border-width: 0; width: 100%;" readonly/></td>
+    <td><input type="text" name="person.person_name_txt" value="{{ object.person.person_name_txt }}" style="border-width: 0; width: 100%;" readonly/></td>
+    <td><input type="text" name="person.person_father_name_txt" value="{{ object.person.person_father_name_txt }}" style="border-width: 0; width: 100%;" readonly/></td>
+    <td><input type="text" name="person.birth_dt_day" value="{{ object.person.birth_dt.day }}" style="border-width: 0; width: 18px;" readonly/>-
+        <input type="text" name="person.birth_dt_month" value="{{ object.person.birth_dt.month }}" style="border-width: 0; width: 18px;" readonly/>-
+        <input type="text" name="person.birth_dt_year" value="{{ object.person.birth_dt.year }}" style="border-width: 0; width: 33px;" readonly/>
+    <td>
+    <input type="checkbox" name="auth_user.is_superuser" {% if object.auth_user.is_superuser %} checked {% endif %} readonly>
+            </td>
+                <td>{{ object.auth_user.username }}</td>
+                <td>
+                    <div class="buttons-table-horizontal default-buttons">
+                        {{ object.person.versions_button }}
+                        {{ object.expand_button }}
+                    <button id="teacher_data_change_password_{{ object.person.pk }}" onclick=" " >
+                                                П
+                                            </button>
+
+                    {{ object.edit_button }}
+                    {{ object.remove_button }}
+                        </div>
+
+                </td>
+            </tr>
+            <tr id="{{ object.get_db_table }}_row_more_info_{{ object.pk }}" hidden="true" style="column-count: 2">
+            <td colspan="7">
+            {% for object in object.person.courseelement_set.all %}
+                {{ object.course.sphere_txt }} {{ object.course.name_txt }} {{ object.get_week_days_str }}
+                    <table class="table main-table" style="width: 100%" id="course_element_table_{{ object.pk }}">
+                        <thead>
+                            <tr>
+                                <td>Дата</td>
+                                <td style="width: 120px;">Начало</td>
+                                <td style="width: 120px;">Конец</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for i in object.courseelementdefiniteclass_set.all %}
+                            <tr>
+                            <td>{{ i.class_dt }}</td>
+                                <td>{{ i.start_tm }}</td>
+                                <td>{{ i.end_tm }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+
+                        </tfoot>
+                    </table>
+                {% endfor %}
+
+                    {{ course_element.course }}
+                    {% for course_element_detail in course_element.courseelementdetailclass_set.all %}
+                        {{ course_element_detail }}
+                        {% endfor %}
+
+
+
+                </td>
+            </tr>

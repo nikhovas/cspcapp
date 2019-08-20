@@ -1,0 +1,48 @@
+<tr id="course_element_row_{{ object.pk }}">
+                            <form method="post" id="course_element_data_form_{{ object.pk }}">
+                                <input type="hidden" name="id" value="{{ object.pk }}">
+                            {% csrf_token %}
+                                <td>
+                                    <select name="teacher_person_id" disabled>
+                                        {% for i in teachers %}
+                                            <option value="{{ i.person_id }}" {% if i.person_id == object.teacher_person_id %}
+                                            selected
+                                            {% endif %}
+                                            >{{ i.person.person_surname_txt }} {{ i.person.person_name_txt }} {{ i.person.person_father_name_txt }} - {{ i.auth_user.username }} </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                {% for i in object.get_course_classes %}
+                                    <td>
+                                    {% if i is None %}
+                                            <input type="text" name="course_class" value="" style="border-width: 0; width: 18px;" readonly/>:
+                                            <input type="text" name="course_class" value="" style="border-width: 0; width: 18px;" readonly/>-
+                                            <input type="text" name="course_class" value="" style="border-width: 0; width: 18px;" readonly/>:
+                                            <input type="text" name="course_class" value="" style="border-width: 0; width: 18px;" readonly/>
+                                        {% else %}
+                                            <input type="text" name="course_class" value="{{ i.start_tm.hour|stringformat:"02d" }}" style="border-width: 0; width: 18px;" readonly/>:
+                                            <input type="text" name="course_class" value="{{ i.start_tm.minute|stringformat:"02d" }}" style="border-width: 0; width: 18px;" readonly/>-
+                                            <input type="text" name="course_class" value="{{ i.end_tm.hour|stringformat:"02d" }}" style="border-width: 0; width: 18px;" readonly/>:
+                                            <input type="text" name="course_class" value="{{ i.end_tm.minute|stringformat:"02d" }}" style="border-width: 0; width: 18px;" readonly/>
+                                        {% endif %}
+
+                                    </td>
+                                {% endfor %}
+                            </form>
+{% if user.is_superuser %}
+                                <td>
+
+                                    <div class="buttons-table-horizontal default-buttons">
+                                        {{ object.edit_button }}
+                                        {{ object.remove_button }}
+{#                                        <button id="course_element_data_button_{{ object.pk }}" onclick="enableEditObjectMode('course_element', {{ object.pk }})">#}
+{#                                            <span id="course_element_data_button_span_{{ object.pk }}" class="glyphicon glyphicon-pencil"></span>#}
+{#                                        </button>#}
+{#                                        <button onclick="deleteItem('course_element', {{ object.pk }})">#}
+{#                                                <span class="glyphicon glyphicon-remove"></span>#}
+{#                                        </button>#}
+                                    </div>
+
+                                </td>
+{% endif %}
+                            </tr>

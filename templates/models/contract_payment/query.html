@@ -1,0 +1,21 @@
+<table class="table" id="contract_payment_table_{{ parent.pk }}">
+    <thead>
+    <tr>
+        <td style="width: 180px;">Дата оплаты</td>
+        <td>Размер оплаты</td>
+        <td>Тип оплаты</td>
+        <td>Номер квитанции</td>
+        {% if user.is_superuser %}<td style="width: 130px;"></td>{% endif %}
+    </tr>
+    </thead>
+    <tbody id="contract_payment_table_body_{{ parent.pk }}">
+    {% for object in object_set %}
+        {% include 'models/contract_payment/main.html' %}
+    {% endfor %}
+    </tbody>
+    {% if user.is_superuser %}
+        <tfoot>
+        {% include 'models/contract_payment/add.html' %}
+        </tfoot>
+    {% endif %}
+</table>

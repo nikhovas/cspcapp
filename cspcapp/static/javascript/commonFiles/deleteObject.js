@@ -3,6 +3,12 @@ function deleteItem(type, id) {
         let deleteMsg = config[type].delete_caution;
         if (deleteMsg && !confirm('Внимание!\n' + deleteMsg)) return;
     }
+    var deleteReason = '';
+    var deleteDate = '';
+    if (type === 'contract') {
+        deleteReason = prompt('Причина удаления', '');
+        deleteDate = prompt(`Дата расторжения в формате 'ГГГГ-ММ-ДД', пусто - сегодня`, '');
+    }
     changeLockStatus($(`#${type}_row_${id}`), false);
     // changeLockStatus(document.getElementById(`${type}_data_form_${id}`), false);
     $(`#${type}_data_button_span_${id}`).className = "glyphicon glyphicon-hourglass";
@@ -10,7 +16,8 @@ function deleteItem(type, id) {
     $.ajax({
         url : `/api/delete/${type}/`,
         type : "POST",
-        data : {'csrfmiddlewaretoken': get_scrf_token(), 'id': id},
+        data : {'csrfmiddlewaretoken': get_scrf_token(), 'id': id, 'delete_reason': deleteReason,
+            'delete_date': deleteDate},
         dataType : "json",
         success : function(json) {
             if (json.success) delete_object_success_end(type, id);

@@ -44,16 +44,6 @@ class Model(models.Model):
                 raise
         super().__setattr__(item, value)
 
-    # def __getattr__(self, item: str):
-    #     if item.endswith('_active'):
-    #         item = item[:-7]
-    #         return (i for i in getattr(self, item).all() if not i.deleted)
-    #     elif item.endswith('_deleted'):
-    #         item = item[:-8]
-    #         item.replace('_deleted', '')
-    #         return (i for i in getattr(self, item).all() if i.deleted)
-    #     return getattr(self, item)
-
     @property
     def version_history(self):
         cur = connection.cursor()
@@ -72,9 +62,8 @@ class Model(models.Model):
 
     def delete(self, using=None, keep_parents=False, user=None):
         if hasattr(self, 'VersionInfo'):
-            for i in self.__class__._meta.get_fields():
-                if i.field_name != self._meta.pk.name:
-                    setattr(self, i.field_name, None)
+            for i, j in self.VersionInfo.check_if_deleted:
+                setattr(self, i, j)
             self.change_user = user
             self.save()
         else:
@@ -107,21 +96,54 @@ class Model(models.Model):
     @property
     def version_history_html_table(self) -> str:
         return get_template(f"versions/details/{self._meta.db_table}_versions.html").render({'object': self})
-        # if hasattr(self, 'VersionInfo'):
-        #     return get_template(f"versions/details/simple_version_table.html").render({
-        #         'object': self
-        #     })
-        # else:
-        #     raise Exception('no versions')
+
+    @property
+    def html(self) -> str:
+        return get_template(f"models/{self._meta.db_table}/main.html").render({
+            'object': self,
+            'REGIONS_DICT': REGIONS_DICT
+        })
+
+    @property
+    def html_main_url(self):
+        return 'models/' + self._meta.db_table + '/main.html'
+
+    @property
+    def add_button(self):
+        return get_template('buttons/add.html').render({'object': self, 'db_table': self._meta.db_table})
+
+    @property
+    def edit_button(self):
+        return get_template('buttons/edit.html').render({'object': self, 'db_table': self._meta.db_table})
+
+    @property
+    def expand_button(self):
+        return get_template('buttons/expand.html').render({'object': self, 'db_table': self._meta.db_table})
+
+    @property
+    def remove_button(self):
+        return get_template('buttons/remove.html').render({'object': self, 'db_table': self._meta.db_table})
+
+    @property
+    def versions_button(self):
+        return get_template('buttons/versions.html').render({'object': self, 'db_table': self._meta.db_table})
+
+    @property
+    def print_button(self):
+        return get_template('buttons/print.html').render({'object': self, 'db_table': self._meta.db_table})
+
+    @property
+    def goto_button(self):
+        return get_template('buttons/goto.html').render({'object': self, 'db_table': self._meta.db_table})
+
+    @property
+    def get_db_table(self):
+        return self._meta.db_table
 
     @property
     def deleted(self) -> bool:
-        for i in self.__class__._meta.get_fields():
-            if type(i) is models.AutoField:
-                continue
-            print(i.__dict__)
-            if i.column not in (self._meta.pk.name, 'change_user', 'change_timestamp') \
-                    and getattr(self, i.column) is not None:
+        for i, j in self.VersionInfo.check_if_deleted.items():
+            if getattr(self, i) != j:
                 return False
         return True
 
@@ -143,6 +165,35 @@ class Model(models.Model):
                     if rel_objects.count() != 0:
                         connections.add((i.related_model, i.model))
         return connections
+
+    @property
+    def deep_json(self):
+        result_dict = {}
+        for i in self.__class__._meta.get_fields():
+            try:
+                if type(i) is models.OneToOneField:
+                    name: str = i.name
+                    if name.endswith('_id'):
+                        name = name[:-3]
+                    result_dict[name] = getattr(self, name).deep_json
+                else:
+                    val = getattr(self, i.name)
+                    if type(val) is datetime.date:
+                        result_dict[i.name + '_year'] = val.year
+                        result_dict[i.name + '_month'] = val.month
+                        result_dict[i.name + '_day'] = val.day
+                    elif type(val) is datetime.time:
+                        result_dict[i.name + '_hour'] = val.hour
+                        result_dict[i.name + '_minute'] = val.minute
+                    elif type(val) in (str, int):
+                        result_dict[i.name] = val
+            except Exception:
+                pass
+        return result_dict
+
+    @property
+    def first_version(self):
+        return next(self.version_history)
 
 
 class Contract(Model):
@@ -170,7 +221,7 @@ class Contract(Model):
     class VersionInfo:
         version_control_visible_fields = ('student_phone_no', 'payer_phone_no', 'payer_inn_no',)
         check_if_deleted = {'student_document': None, 'student_address': None, 'payer_document': None,
-                            'payer_address': None}
+                            'payer_address': None, 'course_element': None}
 
     @property
     def payment_details(self):
@@ -181,6 +232,21 @@ class Contract(Model):
             'full_price': full_price,
             'need_to_pay': full_price - payed
         }
+
+    def delete(self, using=None, keep_parents=False, user=None, date=datetime.datetime.now().date, reason=''):
+        if date == '':
+            print('here')
+            date = datetime.datetime.now().date()
+        print(date)
+        ct = ContractTermination(
+            contract=self, termination_dt=date, termination_reason_txt=reason,
+            course_name_txt=f"{self.course_element.course.sphere_txt} {self.course_element.course.name_txt}"
+        )
+        ct.save()
+        for i, j in self.VersionInfo.check_if_deleted.items():
+            setattr(self, i, j)
+        self.change_user = user
+        self.save()
 
 
 class ContractPayment(Model):
@@ -203,11 +269,13 @@ class ContractPayment(Model):
         db_table = 'contract_payment'
 
 
-class ContractTermination(Model):
+class ContractTermination(models.Model):
     ru_localization = 'Расторжение контракта'
-    contract = models.OneToOneField(Contract, models.CASCADE, primary_key=True)
+    contract = models.OneToOneField(Contract, models.CASCADE)
     termination_dt = models.DateField(blank=True, null=True)
     termination_reason_txt = models.CharField(max_length=100, blank=True, null=True)
+    course_name_txt = models.CharField(max_length=128)
+    contract_termination_id = models.AutoField(primary_key=True)
 
     class Meta:
         managed = False
@@ -230,6 +298,10 @@ class Course(Model):
 
     @property
     def total_price(self):
+        if type(self.price_per_hour) is str:
+            self.price_per_hour = int(self.price_per_hour)
+        if type(self.number_of_hours) is str:
+            self.number_of_hours = int(self.number_of_hours)
         return self.price_per_hour * self.number_of_hours
 
     @property
@@ -299,6 +371,18 @@ class CourseElement(Model):
                     on_current_day[0].save()
 
     course_class = property(get_course_class, set_course_class)
+
+    @property
+    def get_course_classes(self):
+        for k in range(0, 7):
+            on_current_day = CourseClass.objects.filter(course_element=self).filter(week_day_txt=str(k))
+            yield on_current_day[0] if len(on_current_day) != 0 else None
+
+    @property
+    def deep_json(self):
+        result_dict = super().deep_json
+        result_dict['get_course_classes'] = [i.deep_json if i is not None else {} for i in self.get_course_classes]
+        return result_dict
 
 
 class Person(Model):
@@ -387,6 +471,7 @@ class PersonHomeAddress(Model):
 
 class StudentPerson(Model):
     ru_localization = 'Личность студента'
+    also_save = ('person',)
     person = models.OneToOneField(Person, models.CASCADE, primary_key=True)
     education_start_year = models.DateField(blank=True, null=True)
     school_name_txt = models.CharField(max_length=50, blank=True, null=True)
@@ -404,6 +489,9 @@ class StudentPerson(Model):
     @property
     def version_history_html_table(self) -> str:
         return get_template('versions/details/student_person_versions.html').render({'object': self})
+
+    def has_contract_with_teacher(self, teacher_user: Person):
+        return len(CourseElement.objects.filter(contract__student_person=self, teacher_person=teacher_user)) != 0
 
 
 class AuthUserXPerson(Model):
@@ -562,18 +650,26 @@ class PostRequestInfo:
         self.additional_save = _additional_save
 
 
+RELINKS_FOR_EDIT = {
+    'contract_student_phone': Contract._meta.db_table,
+    'contract_payer_phone': Contract._meta.db_table,
+    'contract_payer_inn': Contract._meta.db_table,
+    'contract_course_element': Contract._meta.db_table
+}
+
+
 MODEL_TYPES_DICT = {
-        'person_document': PostRequestInfo(_type_name=PersonDocument, _to_date=['issue_dt']),
-        'person_home_address': PostRequestInfo(_type_name=PersonHomeAddress),
-        'contract': PostRequestInfo(_type_name=Contract),
-        'payment': PostRequestInfo(_type_name=ContractPayment, _date_to_timestamp=['payment_dt']),
+        PersonDocument._meta.db_table: PostRequestInfo(_type_name=PersonDocument, _to_date=['issue_dt']),
+        PersonHomeAddress._meta.db_table: PostRequestInfo(_type_name=PersonHomeAddress),
+        Contract._meta.db_table: PostRequestInfo(_type_name=Contract),
+        ContractPayment._meta.db_table: PostRequestInfo(_type_name=ContractPayment, _date_to_timestamp=['payment_dt']),
         'person': PostRequestInfo(_type_name=Person, _to_date=['education_start_year', 'birth_dt']),
-        'contract_student_phone': PostRequestInfo(_type_name=Contract),
-        'student': PostRequestInfo(_type_name=StudentPerson, _to_date=['education_start_year', 'person.birth_dt']),
+        # 'contract_student_phone': PostRequestInfo(_type_name=Contract),
+        'student_person': PostRequestInfo(_type_name=StudentPerson, _to_date=['education_start_year', 'person.birth_dt']),
         'course': PostRequestInfo(_type_name=Course),
         'course_element': PostRequestInfo(_type_name=CourseElement),
         'course_class': PostRequestInfo(_type_name=CourseClass),
-        'teacher': PostRequestInfo(_type_name=AuthUserXPerson, _to_date=['person.birth_dt'],),
+        'auth_user_x_person': PostRequestInfo(_type_name=AuthUserXPerson, _to_date=['person.birth_dt'],),
         'course_detail': PostRequestInfo(_type_name=CourseElementDefiniteClass, _to_date=['class_dt'],
                                          _to_time=['start_tm', 'end_tm']),
         'reg_form': PostRequestInfo(_type_name=RegistrationRequest, _to_date=['birth_dt']),

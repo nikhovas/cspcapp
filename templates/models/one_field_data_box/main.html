@@ -1,0 +1,16 @@
+{% if user.is_superuser %}
+    <div class="one-field-data-box" id="{{ object_type }}_data_{{ object_id }}">
+        <form action="" method="post" id="{{ object_type }}_data_form_{{ object_id }}" name="{{ object_type }}_data_form_{{ object_id }}">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ object_id }}">
+            <input type="text" name="{{ object_name }}" value="{{ object_value }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)" readonly/>
+        </form>
+    </div>
+    <button style="background-color: #3b5998; height: 40px;" onclick="enableEditObjectMode('{{ object_type }}', {{ object_id }})" id="{{ object_type }}_data_button_{{ object_id }}">
+        <span class="glyphicon glyphicon-pencil" id="{{ object_type }}_data_button_span_{{ object_id }}"></span>
+    </button>
+{% else %}
+    <div class="one-field-data-box" style="width: 100%">
+        {{ object_value }}
+    </div>
+{% endif %}

@@ -1,0 +1,27 @@
+<table class="table main-table" style="width: 100%" id="course_element_table_{{ object.pk }}">
+                        <thead>
+                            <tr>
+                                <td>Учитель</td>
+                                <td style="width: 120px;">ПН</td>
+                                <td style="width: 120px;">ВТ</td>
+                                <td style="width: 120px;">СР</td>
+                                <td style="width: 120px;">ЧТ</td>
+                                <td style="width: 120px;">ПТ</td>
+                                <td style="width: 120px;">СБ</td>
+                                <td style="width: 120px;">ВС</td>
+                                {% if user.is_superuser %}<td style="width: 90px;"></td>{% endif %}
+                            </tr>
+                        </thead>
+                        <tbody id="course_element_table_body_{{ object.pk }}">
+                            {% for object in object.courseelement_set.all %}
+
+                            {% include 'models/course_element/main.html' %}
+
+                                {% endfor %}
+                        </tbody>
+{% if user.is_superuser %}
+                        <tfoot>
+                        {% include 'models/course_element/add.html' %}
+                        </tfoot>
+{% endif %}
+                    </table>

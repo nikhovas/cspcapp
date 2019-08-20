@@ -8,6 +8,16 @@ from django.template import Context
 from io import StringIO, BytesIO
 from .constants import REGIONS_DICT, PAYMENT_TYPES
 from xhtml2pdf import pisa
+from django.core.exceptions import PermissionDenied
+
+
+def superuser_only(function):
+    def _inner(request, *args, **kwargs):
+        if not request.user.is_superuser:
+            raise PermissionDenied
+        return function(request, *args, **kwargs)
+
+    return _inner
 
 
 def add_contract(user, student: StudentPerson, course_element, **data):

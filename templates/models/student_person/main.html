@@ -1,0 +1,54 @@
+<div id="csrf_token_div">
+    {% csrf_token %}
+    </div>
+
+    <h2 style="color: black">
+        {{ object.person.person_surname_txt }} {{ object.person.person_name_txt }} {{ object.person.person_father_name_txt }} ID: {{ object.pk }}
+    </h2>
+
+    <div style="display: inline-block; width: 100%" >
+                <table class="table main-table" id="first-table" style="width: 100%">
+                    <thead>
+                    <tr style="color: #f1f1f1">
+                        <td> Фамилия </td>
+                        <td> Имя </td>
+                        <td> Отчество </td>
+                        <td> Дата рождения </td>
+                        <td> Начало учебы </td>
+                        <td> Школа </td>
+                        <td style="width: 50px;">Литер</td>
+                        {% if user.is_superuser %}<td style="width: 100px;"></td>{% endif %}
+                    </tr>
+                    </thead>
+                    <tr style="" id="{{ object.get_db_table }}_row_{{ object.pk }}">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ object.pk }}" readonly>
+                        <td><input type="text" name="person.person_surname_txt" value="{{ object.person.person_surname_txt }}" style="width: 100%; border-width: 0;" readonly/></td>
+                        <td><input type="text" name="person.person_name_txt" value="{{ object.person.person_name_txt }}" style="width: 100%; border-width: 0;" readonly/></td>
+                        <td><input type="text" name="person.person_father_name_txt" value="{{ object.person.person_father_name_txt }}" style="width: 100%; border-width: 0;" readonly/></td>
+                        <td><input type="text" name="person.birth_dt__day" value="{{ object.person.birth_dt.day }}" style="border-width: 0; width: 18px; border-width: 0;" readonly/>-
+                        <input type="text" name="person.birth_dt__month" value="{{ object.person.birth_dt.month }}" style="border-width: 0; width: 18px; border-width: 0;" readonly/>-
+                        <input type="text" name="person.birth_dt__year" value="{{ object.person.birth_dt.year }}" style="border-width: 0; width: 33px; border-width: 0;" readonly/></td>
+                        <td><input type="text" name="education_start_year__day" value="{{ object.education_start_year.day }}" style="border-width: 0; width: 18px; border-width: 0;" readonly/>-
+                        <input type="text" name="education_start_year__month" value="{{ object.education_start_year.month }}" style="border-width: 0; width: 18px; border-width: 0;" readonly/>-
+                        <input type="text" name="education_start_year__year" value="{{ object.education_start_year.year }}" style="border-width: 0; width: 33px; border-width: 0;" readonly/></td>
+                        <td><input type="text" name="school_name_txt" value="{{ object.school_name_txt }}" style="width: 100%; border-width: 0;" readonly/></td>
+                        <td><input type="text" name="liter" value="{{ object.liter }}" style="width: 18px; border-width: 0;" readonly/></td>
+                        {% if user.is_superuser %}
+                        <td>
+                        <div class="buttons-table-horizontal default-buttons">
+                            {{ object.person.versions_button }}
+                            {{ object.edit_button }}
+                        </div>
+                        </td>
+                        {% endif %}
+                    </tr>
+                </table>
+    </div>
+    <div style="width: 100%; float: left;">
+        <h3 style="color: black; ">Договоры</h3>
+    </div>
+
+    {% with object_set=object.contract_set.all %}
+        {% include 'models/contract/query.html' %}
+    {% endwith %}

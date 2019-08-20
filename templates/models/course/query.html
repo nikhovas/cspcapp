@@ -1,0 +1,25 @@
+<table class="table" style="width: 100%;" id="course_table_0">
+        <thead>
+            <tr>
+                <td>Сфера</td>
+                <td>Имя</td>
+                <td>Краткое имя</td>
+                <td style="width: 40px;">ЦЗЧ</td>
+                <td style="width: 40px;">Часы</td>
+                <td style="width: 80px;">ЦЗГ</td>
+                <td style="width: 80px;">Месяцы</td>
+                <td style="width: {% if user.is_superuser %}130{% else %}40{% endif %}px;"></td>
+            </tr>
+        </thead>
+<tbody id="course_table_body_0">
+        {% for object in object_set %}
+            {% include 'models/course/main.html' %}
+        {% endfor %}
+</tbody>
+{% if user.is_superuser %}
+        <tfoot>
+            {% include 'models/course/add.html' %}
+        </tfoot>
+{% endif %}
+
+    </table>

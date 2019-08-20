@@ -1,6 +1,4 @@
-body {
-  background-color: whitesmoke;
-}
+
 
 .circle {
     width: 46px;
@@ -22,6 +20,12 @@ body {
     background-color: #3b5998;
     overflow-x: hidden;
     padding-top: 20px;
+    margin: 0;
+}
+
+.sidebar * {
+    margin: 0;
+    padding: 0;
 }
 
 .sidebar-element {

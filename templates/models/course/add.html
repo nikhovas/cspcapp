@@ -1,0 +1,20 @@
+<tr id="course_add_row_0">
+{#    <form method="post">#}
+        {% csrf_token %}
+        <td><input type="text" name="sphere_txt" value="" style="border-width: 0; width: 100%;"/></td>
+        <td><input type="text" name="name_txt" value="" style="border-width: 0; width: 100%;" /></td>
+        <td><input type="text" name="short_nm" value="" style="border-width: 0; width: 100%;" /></td>
+        <td><input type="text" name="price_per_hour" value="" style="border-width: 0; width: 100%;" /></td>
+        <td><input type="text" name="number_of_hours" value="" style="border-width: 0; width: 100%;" /></td>
+        <td>-</td>
+        <td><input type="text" name="number_of_month" value="" style="border-width: 0; width: 100%;" /></td>
+        <td>
+            <div class="buttons-table-horizontal default-buttons">
+                {% with is_no_parent=True db_table='course' %}
+                    {% include 'buttons/add.html' %}
+                    {% include 'buttons/erase.html' %}
+                {% endwith %}
+            </div>
+        </td>
+{#    </form>#}
+</tr>

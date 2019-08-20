@@ -1,0 +1,62 @@
+<tr id="course_element_add_row_{{ parent.pk }}">
+    <input type="hidden" name="course_id"  value="{{ parent.pk }}">
+    {% csrf_token %}
+                                <td>
+                                    <select name="teacher_id" id="add_row_teacher_id">
+                                        {% for i in teachers %}
+                                            <option value="{{ i.person_id }}" >{{ i.person.person_surname_txt }} {{ i.person.person_name_txt }} {{ i.person.person_father_name_txt }} - {{ i.auth_user.username }} </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                        <input type="text" name="course_class_start_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_start_minute" value="" style="border-width: 0; width: 18px;" />-
+                                        <input type="text" name="course_class_end_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_end_minute" value="" style="border-width: 0; width: 18px;" />
+                                    </td>
+                                 <td>
+                                        <input type="text" name="course_class_start_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_start_minute" value="" style="border-width: 0; width: 18px;" />-
+                                        <input type="text" name="course_class_end_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_end_minute" value="" style="border-width: 0; width: 18px;" />
+                                    </td>
+                                 <td>
+                                        <input type="text" name="course_class_start_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_start_minute" value="" style="border-width: 0; width: 18px;" />-
+                                        <input type="text" name="course_class_end_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_end_minute" value="" style="border-width: 0; width: 18px;" />
+                                    </td>
+                                 <td>
+                                        <input type="text" name="course_class_start_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_start_minute" value="" style="border-width: 0; width: 18px;" />-
+                                        <input type="text" name="course_class_end_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_end_minute" value="" style="border-width: 0; width: 18px;" />
+                                    </td>
+                                 <td>
+                                        <input type="text" name="course_class_start_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_start_minute" value="" style="border-width: 0; width: 18px;" />-
+                                        <input type="text" name="course_class_end_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_end_minute" value="" style="border-width: 0; width: 18px;" />
+                                    </td>
+                                 <td>
+                                        <input type="text" name="course_class_start_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_start_minute" value="" style="border-width: 0; width: 18px;" />-
+                                        <input type="text" name="course_class_end_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_end_minute" value="" style="border-width: 0; width: 18px;" />
+                                    </td>
+                                 <td>
+                                        <input type="text" name="course_class_start_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_start_minute" value="" style="border-width: 0; width: 18px;" />-
+                                        <input type="text" name="course_class_end_hour" value="" style="border-width: 0; width: 18px;" />:
+                                        <input type="text" name="course_class_end_minute" value="" style="border-width: 0; width: 18px;" />
+                                    </td>
+                                <td>
+                                    <div class="buttons-table-horizontal default-buttons">
+                                        {% with child_type='course_element' %}
+                                            {% include 'buttons/add.html' %}
+                                        {% endwith %}
+                                        {% include 'buttons/erase.html' %}
+                                    </div>
+                                </td>
+
+                            </tr>

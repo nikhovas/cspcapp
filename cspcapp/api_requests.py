@@ -1,4 +1,5 @@
 from .models import *
+from django.shortcuts import render
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse, HttpResponse
 from django.db import connection
@@ -10,6 +11,10 @@ from django.shortcuts import redirect
 from .views_kernel import add_student
 from django.db.utils import IntegrityError
 import sys
+import os
+import cspc.settings
+import cspcapp.constants
+from .views_kernel import superuser_only
 
 
 # Configuration Block
@@ -21,14 +26,19 @@ DELETE_RENAMING = {'payment': 'contract_payment'}
 # Edit Block
 
 
+@superuser_only
 def data_edit(request: WSGIRequest, object_type: str) -> HttpResponse:
+    if object_type in RELINKS_FOR_EDIT:
+        object_type = RELINKS_FOR_EDIT[object_type]
     config = MODEL_TYPES_DICT[object_type]
     params = post_request_to_dict_slicer(request.POST)
     editing_object = config.type_name.objects.get(pk=request.POST['id'])
     del params['csrfmiddlewaretoken']
     del params['id']
+    print(params)
     reconstruct_args(params=params, to_date=config.to_date, date_to_timestamp=config.date_to_timestamp,
                      to_time=config.to_time)
+    print(params)
     for i, j in params.items():
         rsetattr(editing_object, i, j)
     if hasattr(editing_object, 'change_user'):
@@ -37,27 +47,10 @@ def data_edit(request: WSGIRequest, object_type: str) -> HttpResponse:
     return JsonResponse({})
 
 
-def course_element_add(request: WSGIRequest) -> JsonResponse:
-    data = dict(request.POST)
-    print(data)
-    course_element = CourseElement.objects.create(course_id=request.POST['course_id'],
-                                                  teacher_person_id=request.POST['teacher_id'])
-    course_element.save()
-    course_element_id = course_element.pk
-    for k in range(0, 7):
-        if data['course_class_start_hour'][k] != '' and data['course_class_start_minute'][k] != '' and \
-                data['course_class_end_hour'][k] != '' and data['course_class_end_minute'][k] != '':
-            CourseClass(start_tm=datetime.time(int(data['course_class_start_hour'][k]),
-                                               int(data['course_class_start_minute'][k])),
-                        end_tm=datetime.time(int(data['course_class_end_hour'][k]),
-                                             int(data['course_class_end_minute'][k])),
-                        week_day_txt=str(k), course_element_id=course_element_id).save()
-    return JsonResponse({'new_element_id': course_element_id})
-
-
 # Add Block
 
 
+@superuser_only
 def course_detail_add(request: WSGIRequest) -> JsonResponse:
     # data = dict(request.POST)
     CourseElementDefiniteClass.objects.create(class_dt=datetime.date(int(request.POST['class_dt_year']),
@@ -71,28 +64,15 @@ def course_detail_add(request: WSGIRequest) -> JsonResponse:
     return JsonResponse({})
 
 
-def payment_add(request: WSGIRequest) -> HttpResponse:
-    data = dict(request.POST)
-    print(data)
-    contract_payment = ContractPayment(payment_amt=request.POST['payment_amt'],
-                                       contract_id=request.POST['contract_id'],
-                                       payment_type=request.POST['payment_type'],
-                                       voucher_no=request.POST['voucher_no'],
-                                       change_user_id=request.user.pk,
-                                       payment_dt=datetime.datetime(int(data['payment_dt_year'][0]),
-                                                                    int(data['payment_dt_month'][0]),
-                                                                    int(data['payment_dt_day'][0]))
-                                       )
-    contract_payment.save()
-    return JsonResponse({'new_element_id': contract_payment.pk})
-
-
 # Delete BLock
 
 
+@superuser_only
 def object_delete(request: WSGIRequest, object_type: str) -> HttpResponse:
     id = request.POST['id']
     try:
+        if object_type == 'contract':
+            Contract.objects.get(pk=id).delete(date=request.POST['delete_date'], reason=request.POST['delete_reason'])
         MODEL_TYPES_DICT[object_type].type_name.objects.get(pk=id).delete()
     except IntegrityError:
         exc_type, value, exc_traceback = sys.exc_info()
@@ -108,6 +88,7 @@ def object_delete(request: WSGIRequest, object_type: str) -> HttpResponse:
     return JsonResponse({'success': True})
 
 
+@superuser_only
 def new_user(request: WSGIRequest) -> JsonResponse:
     _new_user = User.objects.create_user(username=request.POST['username'], password=request.POST['password'],
                                          first_name=request.POST['name'], last_name=request.POST['surname'])
@@ -122,6 +103,7 @@ def new_user(request: WSGIRequest) -> JsonResponse:
     return JsonResponse({})
 
 
+@superuser_only
 def get_teacher_users(request: WSGIRequest) -> JsonResponse:
     return JsonResponse([{
         'surname': i.person.person_surname_txt,
@@ -132,6 +114,7 @@ def get_teacher_users(request: WSGIRequest) -> JsonResponse:
     } for i in AuthUserXPerson.objects.all()])
 
 
+@superuser_only
 def submit_registration_form(request: WSGIRequest) -> JsonResponse:
     template = RegistrationRequest.objects.get(pk=request.POST['id'])
     _new_user = User.objects.create_user(username=template.username, password=template.password)
@@ -145,6 +128,7 @@ def submit_registration_form(request: WSGIRequest) -> JsonResponse:
     return JsonResponse({})
 
 
+@superuser_only
 def submit_student_form(request: WSGIRequest) -> JsonResponse:
     req = StudentRequest.objects.get(pk=request.POST['id'])
     now = datetime.datetime.now().date()
@@ -184,3 +168,107 @@ def submit_student_form(request: WSGIRequest) -> JsonResponse:
                 )
     req.delete()
     return JsonResponse({})
+
+
+def search_dates_in_json(data: dict):
+    dates_keys = {}
+    for i, j in data.items():
+        if type(j) is not dict:
+            divided = i.split('__')
+            if len(divided) == 2:
+                if divided[0] not in dates_keys:
+                    dates_keys[divided[0]] = {divided[1]: j}
+                else:
+                    dates_keys[divided[0]][divided[1]] = j
+        else:
+            search_dates_in_json(j)
+    for i, j in dates_keys.items():
+        try:
+            date = datetime.date(int(j['year']), int(j['month']), int(j['day']))
+            del data[i + '__year']
+            del data[i + '__month']
+            del data[i + '__day']
+            data[i] = date
+        except Exception:
+            pass
+
+
+def generate_object(data: dict, object_elem):
+    for i, j in data.items():
+        if type(j) is dict:
+            elem = (object_elem._meta.get_field(i).related_model)()
+            generate_object(j, elem)
+            data[i] = elem
+        setattr(object_elem, i, data[i])
+    object_elem.save()
+
+
+@superuser_only
+def course_element_add(request: WSGIRequest) -> JsonResponse:
+    data = dict(request.POST)
+    course_element = CourseElement.objects.create(course_id=request.POST['course_id'],
+                                                  teacher_person_id=request.POST['teacher_id'])
+    course_element.save()
+    course_element_id = course_element.pk
+    for k in range(0, 7):
+        if data['course_class_start_hour'][k] != '' and data['course_class_start_minute'][k] != '' and \
+                data['course_class_end_hour'][k] != '' and data['course_class_end_minute'][k] != '':
+            CourseClass(start_tm=datetime.time(int(data['course_class_start_hour'][k]),
+                                               int(data['course_class_start_minute'][k])),
+                        end_tm=datetime.time(int(data['course_class_end_hour'][k]),
+                                             int(data['course_class_end_minute'][k])),
+                        week_day_txt=str(k), course_element_id=course_element_id).save()
+    return JsonResponse({
+        'html': render(request, 'models/course_element/main.html', {'object': course_element}).content.decode('utf-8')
+    })
+
+
+def add_object(request: WSGIRequest, object_type) -> JsonResponse:
+    elem = MODEL_TYPES_DICT[object_type].type_name()
+    args_dict = {}
+    args = {i: j[0] for i, j in dict(request.POST).items()}
+    for i, j in dict(request.POST).items():
+        path = i.split('.')
+        last_elem = args_dict
+        for k in path[:-1]:
+            if k not in last_elem:
+                last_elem[k] = {}
+            last_elem = last_elem[k]
+        last_elem[path[-1]] = j[0]
+
+    search_dates_in_json(args_dict)
+    if object_type == 'contract':
+        flat_nm = args_dict['student_address']['flat_nm']
+        args_dict['student_address']['flat_nm'] = None if flat_nm is '' else int(flat_nm)
+        flat_nm = args_dict['payer_address']['flat_nm']
+        args_dict['payer_address']['flat_nm'] = None if flat_nm is '' else int(flat_nm)
+        if args_dict['student_document']['document_type_txt'] == '':
+            del args_dict['student_document']
+            del args_dict['student_address']
+
+    generate_object(args_dict, elem)
+
+    return JsonResponse({
+        'html': render(request, 'models/' + object_type +'/main.html', {'object': elem}).content.decode('utf-8')
+    })
+
+
+def get_session_data(request: WSGIRequest) -> JsonResponse:
+    models_dict = {}
+    parent_dir = os.path.join(os.path.join(cspc.settings.BASE_DIR, 'templates'), 'models')
+    for subdir in next(os.walk(parent_dir))[1]:
+        child_1_dir = os.path.join(parent_dir, subdir)
+        models_dict[subdir] = {file[:-5]: open(os.path.join(child_1_dir, file), 'r').read()
+                               for file in next(os.walk(child_1_dir))[2]}
+    return JsonResponse({
+        'models': models_dict,
+        'statics': {
+            'REGIONS_DICT': REGIONS_DICT,
+            'PAYMENT_TYPES': cspcapp.constants.PAYMENT_TYPES,
+            'DAYS_OF_WEEK': cspcapp.constants.DAYS_OF_WEEK,
+            'courses': [i for i in Course.objects.values()],
+            'course_elements': [i for i in CourseElement.objects.values()],
+            'teachers': [i for i in AuthUserXPerson.objects.values()],
+            'user': {'pk': request.user.pk, 'username': request.user.username, 'is_superuser': request.user.is_superuser}
+        }
+    })

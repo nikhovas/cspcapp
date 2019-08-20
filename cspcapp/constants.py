@@ -1,6 +1,3 @@
-from cspcapp.models import *
-
-
 REGIONS_DICT = {
     1: 'Адыгея Респ',
     2: 'Башкортостан Респ',

@@ -1,0 +1,48 @@
+{% if user.is_superuser %}
+    <tr id="{{ object.get_db_table }}_row_{{ object.pk }}">
+        <form action="" method="post" id="{{ object.get_db_table }}_data_form_{{ object.pk }}" name="{{ object.get_db_table }}_data_form_{{ object.pk }}">
+            <td>
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ object.pk }}">
+                <input type="text" name="payment_dt__day" value="{{ object.payment_dt.day }}" style="border-width: 0; width: 18px;" readonly/>-
+                <input type="text" name="payment_dt__month" value="{{ object.payment_dt.month }}" style="border-width: 0; width: 18px" readonly/>-
+                <input type="text" name="payment_dt__year" value="{{ object.payment_dt.year }}" style="border-width: 0; width: 33px" readonly/>
+            </td>
+            <td>
+                <input type="text" name="payment_amt" value="{{ object.payment_amt }}" style="border-width: 0; width: 100%;" readonly/>
+            </td>
+            <td>
+                <select name="payment_type" style="border-width: 0; width: 100%;">
+                    {% for i, j in payment_types.items %}
+                        <option value="{{ i }}" {% if i == object.payment_type %}selected{% endif %}>{{ j }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input type="text" name="voucher_no" value="{{ object.voucher_no }}" style="border-width: 0; width: 100%;" readonly/></td>
+        </form>
+        <td>
+             <div class="buttons-table-horizontal default-buttons">
+                 {% if user.is_superuser %}{{ object.edit_button }}{% endif %}
+                 {{ object.versions_button }}
+                 {% if user.is_superuser %}
+                     {{ object.remove_button }}
+            {% endif %}
+         </div>
+        </td>
+    </tr>
+{% else %}
+    <tr>
+        <form action="" method="post" id="{{ object.get_db_table }}_data_form_{{ object.pk }}" name="{{ object.get_db_table }}_data_form_{{ object.pk }}">
+            <td>{{ object.payment_dt }}</td>
+            <td>{{ object.payment_amt }}</td>
+            <td>
+                {% for i, j in payment_types.items %}
+                    {% if i == object.payment_type %}
+                        {{ j }}
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td>{{ object.voucher_no }}</td>
+        </form>
+    </tr>
+{% endif %}

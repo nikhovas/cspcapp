@@ -1,0 +1,125 @@
+<table class="table search-bar" style="width: calc(100% - 280px); float: left">
+        <colgroup>
+            <col>
+            <col width="70px">
+            <col>
+            <col width="80px">
+        </colgroup>
+        <thead>
+            <tr>
+                <td>Школа</td>
+                <td>Класс</td>
+                <td>Ученик</td>
+                <td style="width: {% if user.is_superuser %}140{% else %}90{% endif %}px;"></td>
+            </tr>
+        </thead>
+        {% for student in students_list %}
+            <tr id="student_row_{{ student.pk }}">
+                <td>{{ student.school_name_txt }}</td>
+                <td>{{ student.grade }} {{ student.liter }}</td>
+                <td>
+                    {{ student.person_surname_txt }} {{ student.person_name_txt }}
+                    {{ student.person_father_name_txt }}
+                </td>
+                <td>
+                    <div class="buttons-table-horizontal default-buttons">
+                    {{ student.person.expand_button }}
+                    {{ student.person.person.goto_button }}
+                    {% if user.is_superuser %}{{ student.person.remove_button }}{% endif %}
+                        </div>
+                </td>
+            </tr>
+            <tr id="{{ student.person.get_db_table }}_row_more_info_{{ student.person.pk }}" hidden="true">
+            <td colspan="4">
+                    <table class="table main-table" style="width: 100%" id="course_element_table_{{ course.pk }}">
+                        <thead>
+                            <tr>
+                                <td>Курс</td>
+                                <td>Учитель</td>
+                                <td>Дни</td>
+                                <td>Оплачено</td>
+                                <td>Необходимо</td>
+                                <td></td>ы
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for contract in student.person.contract_set.all %}
+                                {% if user.is_superuser or contract.course_element.teacher_person == user.authuserxperson.person %}
+                                    {% if not contract.deleted %}
+                                <tr>
+                                    <td>{{ contract.course_element.course.sphere_txt }} {{ contract.course_element.course.name_txt }}</td>
+                                    <td>{{ contract.course_element.teacher_person.person_surname_txt }}
+                                        {{ contract.course_element.teacher_person.person_name_txt }}
+                                        {% if not contract.course_element.teacher_person.person_father_name_txt is None %}{{ contract.course_element.teacher_person.person_father_name_txt }} {% endif %}</td>
+                                    <td>{{ contract.course_element.get_week_days_str }}</td>
+                                    <td>{{ contract.payment_details.payed_sum }}</td>
+                                    <td>{{ contract.course_element.course.total_price }}</td>
+                                    {% if contract.payment_details.payed_sum < contract.payment_details.full_price %}
+                                        <td style="background-color: red; color: white;">{{ contract.payment_details.need_to_pay }}</td>
+                                    {% else %}
+                                        <td style="background-color: green; color: white;">{% if contract.payment_details.need_to_pay != 0 %}{{ contract.payment_details.need_to_pay }}{% endif %}</td>
+                                    {% endif %}
+                            </tr>
+                                        {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div class="static-right-block">
+        <div class="filter-div">
+        <form method="GET">
+            <h3>Поиск</h3>
+            <input type="text" name="surname" value="{{ request.GET.surname }}" placeholder="Фамилия"/>
+            <input type="text" name="name" value="{{ request.GET.name }}" placeholder="Имя"/>
+            <input type="text" name="father_name" value="{{ request.GET.father_name }}" placeholder="Отчество"/>
+            <input type="text" name="school" value="{{ request.GET.school }}" placeholder="Школа"/>
+            <input type="number" name="grade" value="{{ request.GET.grade }}" min="1" max="11" style="width: 40px; float: left; margin-right: 10px;" placeholder="11">
+            <input type="text" name="liter" value="{{ request.GET.liter }}" style="width: 25px; float: left; margin-right: 10px;" placeholder="Б">
+            <input type="text" name="document_series" value="{{ request.GET.document_series }}" style="width: 60px; float: left; margin-right: 10px;" placeholder="Серия">
+            <input type="text" name="document_no" value="{{ request.GET.document_no }}" style="width: 93px;" placeholder="Номер">
+            <input type="checkbox" name="dept" style="margin-right: 10px;">Только с неоплатой
+            <table style="">
+                <tr>
+                    <td><button type="submit"><span class="glyphicon glyphicon-search"></span></button></td>
+                    <td><button type="reset"><span class="glyphicon glyphicon-remove"></span></button></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+        {% if user.is_superuser %}
+    <div class="filter-div">
+        <form method="POST" action="/student_add/">
+            <h3>Добавить</h3>
+            {% csrf_token %}
+            <input type="text" name="person_surname_txt" placeholder="Фамилия"/>
+            <input type="text" name="person_name_txt" placeholder="Имя"/>
+            <input type="text" name="person_father_name_txt" placeholder="Отчество"/>
+            Рожд:
+            <input type="text" name="birth_day" placeholder="ДД" style="width: 30px;"/>-
+                <input type="text" name="birth_month" placeholder="ММ" style="width: 32px;"/>-
+                <input type="text" name="birth_year" placeholder="ГГГГ" style="width: 44px;"/>
+            <input type="hidden" name="education_day" value="01">
+            <input type="hidden" name="education_month" value="01">-
+            <input type="number" name="education_year" placeholder="Обуч" style="width: 64px; margin-bottom: 10px;"/>
+            <input type="text" name="school_name_txt" placeholder="Школа" style="width: 220px;"/>
+            <input type="text" name="liter" placeholder="Л" style="width: 20px;">
+            <table style="">
+                <tr>
+                    <td><button type="submit"><span class="glyphicon glyphicon-plus"></span></button></td>
+                    <td><button type="reset"><span class="glyphicon glyphicon-remove"></span></button></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <a class="filter-div" style="background-color: #3b5998; color: white; text-align: center; font-size: 20px;" href="/student_add/">Расширенное добавление</a>
+        {% endif %}
+    </div>
+
+

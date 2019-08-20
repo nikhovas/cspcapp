@@ -17,6 +17,7 @@ from .utilities import reconstruct_params, post_request_to_dict_slicer, values_f
     null_check, reconstruct_args
 
 from .views_kernel import generate_contract_pdf, generate_contract_pdf_unchecked, add_student
+from .views_kernel import superuser_only
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
@@ -50,6 +51,7 @@ def open_spreadsheet():
     return build('sheets', 'v4', credentials=creds)
 
 
+@superuser_only
 def submit_student_form(request: WSGIRequest) -> JsonResponse:
     req = StudentRequest.objects.get(pk=request.POST['id'])
     now = datetime.datetime.now().date()
@@ -89,6 +91,7 @@ def submit_student_form(request: WSGIRequest) -> JsonResponse:
     return JsonResponse({})
 
 
+@superuser_only
 def dump_to_local_database(reuqest: WSGIRequest) -> HttpResponse:
     service = open_spreadsheet()
     range = 'student_14_elder_form_answers!A2:BD1102'
@@ -185,6 +188,7 @@ def dump_to_local_database(reuqest: WSGIRequest) -> HttpResponse:
     return HttpResponse()
 
 
+@superuser_only
 def update_form_info(reuqest: WSGIRequest) -> HttpResponse:
     service = open_spreadsheet()
 

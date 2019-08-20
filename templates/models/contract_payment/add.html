@@ -1,0 +1,29 @@
+<tr id="contract_payment_add_row_{{ parent.pk }}">
+                                    <form action="" method="post" id="contract_payment_add_form_{{ parent.pk }}" name="contract_payment_add_form_{{ parent.pk }}">
+                                        <td>
+                                            {% csrf_token %}
+                                            <input type="hidden" name="contract_id" value="{{ parent.pk }}">
+                                            <input type="text" name="payment_dt__day" id="new_payment_issue_dt_day" style="border-width: 0; width: 18px;"/>-
+                                            <input type="text" name="payment_dt__month" id="new_payment_issue_dt_month" style="border-width: 0; width: 18px"/>-
+                                            <input type="text" name="payment_dt__year" id="new_payment_issue_dt_year" style="border-width: 0; width: 33px"/>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="payment_amt" id="new_payment_payment_amt" style="border-width: 0; width: 100%;"/>
+                                        </td>
+                                        <td>
+                                            <select name="payment_type" id="new_payment_payment_type" style="border-width: 0; width: 100%; -webkit-appearance:none;">
+                                                {% for i, j in payment_types.items %}
+                                                    <option value="{{ i }}">{{ j }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td><input type="text" name="voucher_no" id="new_payment_voucher_no" style="border-width: 0; width: 100%;"/></td>
+                                    </form>
+                                        <td>
+                                            <div class="buttons-table-horizontal default-buttons">
+                                                {% with child_type='contract_payment' %}
+                                                    {% include 'buttons/add.html' %}
+                                                {% endwith %}
+                                            </div>
+                                        </td>
+                                </tr>

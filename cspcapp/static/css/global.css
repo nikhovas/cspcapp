@@ -1,0 +1,175 @@
+:root {
+    --main-color: #3b5998;
+    --main-color-2: white;
+    --main-background: whitesmoke;
+    --main-margin-padding: 10px;
+}
+
+body {
+    background-color: var(--main-background);
+}
+
+/*table*/
+
+.table {
+    background-color: var(--main-color-2);
+    margin-top: var(--main-margin-padding);
+}
+
+.table thead {
+    background-color: var(--main-color);
+    color: var(--main-color-2);;
+}
+
+.table tr {
+    border-width: 0;
+}
+
+.filter-div {
+    width: 100%;
+    margin: var(--main-margin-padding);
+    padding: var(--main-margin-padding);
+    display: block;
+    border: 1px solid gainsboro;
+    background-color: var(--main-color-2);
+}
+
+.static-right-block {
+    width: 270px;
+    position: fixed;
+    right: 0;
+    height: 100%;
+    margin: var(--main-margin-padding);
+}
+
+.static-right-block .filter-div {
+    margin: 0 0 var(--main-margin-padding) 0;
+}
+
+/*filter-div*/
+
+.filter-div h3 {
+    color: black;
+}
+
+
+.filter-div input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.filter-div input[type="password"] {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.filter-div table {
+    margin-left: -5px;
+    width: calc(100% + 10px);
+}
+
+.filter-div table button {
+    width: 100%;
+    height: 30px;
+    background-color: #3b5998;
+    color: white;
+    border-width: 0;
+    text-align: center;
+    vertical-align: middle;
+    horiz-align: center;
+    align-items: center;
+}
+
+.filter-div table a {
+    width: 100%;
+    height: 30px;
+    background-color: #3b5998;
+    color: white;
+    border-width: 0;
+    text-align: center;
+    vertical-align: middle;
+    horiz-align: center;
+    align-items: center;
+    display: block;
+}
+
+.filter-div table a span {
+    top: 6px;
+}
+
+.filter-div table td {
+    padding: 5px;
+}
+
+.buttons-table-horizontal {
+    border-width: 0;
+}
+
+.buttons-table-horizontal > a:last-child {
+    margin-right: 0;
+}
+
+.buttons-table-horizontal > button:last-child {
+    margin-right: 0;
+}
+
+.buttons-table-horizontal button {
+    border-width: 0;
+    background-color: var(--main-color);
+    color: white;
+    margin-left: 0;
+    margin-top: 0;
+    margin-right: var(--main-margin-padding);
+    display: block;
+    float: left;
+    text-align: center;
+}
+
+.buttons-table-horizontal a {
+    border-width: 0;
+    background-color: var(--main-color);
+    color: white;
+    margin-left: 0;
+    margin-top: 0;
+    margin-right: var(--main-margin-padding);
+    display: block;
+    float: left;
+    text-align: center;
+}
+
+.buttons-table-horizontal a span {
+    vertical-align: middle;
+}
+
+.default-buttons { }
+
+.default-buttons button {
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+}
+
+.default-buttons a {
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+}
+
+.default-buttons > a > span {
+}
+
+.table-buttons {
+    margin-top: var(--main-margin-padding);
+    table-layout: fixed;
+    border-spacing: var(--main-margin-padding) var(--main-margin-padding);
+}
+
+.table-buttons button {
+    width: 100%;
+    height: 30px;
+}
+
+.table-buttons a {
+    width: 100%;
+    height: 30px;
+}

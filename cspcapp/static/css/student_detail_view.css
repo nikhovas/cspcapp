@@ -153,11 +153,41 @@
     color: white;
 }
 
+.contracts-table {
+
+}
+
 .contracts-table:disabled {
     color: white;
 }
 
 
+
+.contracts-table a span {
+    width: calc(25% - 7px);
+}
+
 input[type="text"]:disabled {
   color: white;
 }
+
+/*.first_column_contract_table {*/
+
+/*}*/
+
+/*.first_column_contract_table button, a {*/
+/*    display: block;*/
+/*    color: white;*/
+/*    border-width: 0;*/
+/*    text-align: center;*/
+/*    vertical-align: middle;*/
+/*    horiz-align: center;*/
+/*    align-items: center;*/
+/*    margin-top: 5px;*/
+/*    margin-left: 5px;*/
+/*    margin-right: 0;*/
+/*    background-color: #3b5998;*/
+/*    width: calc(25% - 7px);*/
+/*    height: 30px;*/
+/*    float: left;*/
+/*}*/
