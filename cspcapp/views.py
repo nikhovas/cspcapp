@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, JsonResponse, FileResponse
 from .models import *
 from django.core.handlers.wsgi import WSGIRequest
@@ -13,9 +13,11 @@ from .views_kernel import superuser_only
 
 
 def students_overview(request: WSGIRequest) -> HttpResponse:
+    pre_format = overview_get_format(reformat_request_get_params(request.GET))
+
     return render(request, 'students_overview.html', {'students_list': [
         i for i in StudentsOverviewFunction.execute(
-            **dict(overview_get_format(reformat_request_get_params(request.GET)))
+            **dict(pre_format)
         ) if i.person.has_contract_with_teacher(request.user.authuserxperson.person) or request.user.is_superuser
     ]})
 
@@ -63,10 +65,10 @@ def account_settings(request: WSGIRequest) -> HttpResponse:
     })
 
 
-@superuser_only
 def reg_request(request: WSGIRequest) -> HttpResponse:
     if request.POST['password'] != request.POST['password_repeat']:
-        return JsonResponse({})
+        return redirect('/accounts/login/')
+    print(1111)
     reg_req = RegistrationRequest.objects.create(person_surname_txt=request.POST['surname'],
                                                  person_name_txt=request.POST['name'],
                                                  person_father_name_txt=request.POST['father_name'],
@@ -108,3 +110,9 @@ def details(request: WSGIRequest, pk: int, model_name: str) -> HttpResponse:
 
 def queries(request: WSGIRequest, model_name: str) -> HttpResponse:
     return render(request, 'models/main.html', {'object_set': MODEL_TYPES_DICT[model_name].type_name.objects.all()})
+
+
+def handler404(request, exception, template_name="404.html"):
+    response = render_to_response("404.html")
+    response.status_code = 404
+    return response

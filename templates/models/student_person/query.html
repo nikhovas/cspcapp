@@ -10,11 +10,13 @@
                 <td>Школа</td>
                 <td>Класс</td>
                 <td>Ученик</td>
-                <td style="width: {% if user.is_superuser %}140{% else %}90{% endif %}px;"></td>
+                <td style="width: 90px;"></td>
             </tr>
         </thead>
         {% for student in students_list %}
-            <tr id="student_row_{{ student.pk }}">
+{#{% if request.GET %}#}
+{#                                    {% if request.GET.deletion_status == 1 and not student.deleted or request.GET.deletion_status == 2 and student.deleted or request.GET.deletion_status == 0 or not request.GET %}#}
+            <tr id="student_person_row_{{ student.pk }}" {% if student.person.deleted %}style="background-color: var(--main-triade-red)"{% endif %}>
                 <td>{{ student.school_name_txt }}</td>
                 <td>{{ student.grade }} {{ student.liter }}</td>
                 <td>
@@ -25,11 +27,11 @@
                     <div class="buttons-table-horizontal default-buttons">
                     {{ student.person.expand_button }}
                     {{ student.person.person.goto_button }}
-                    {% if user.is_superuser %}{{ student.person.remove_button }}{% endif %}
+{#                    {% if user.is_superuser %}{{ student.person.person.remove_button }}{% endif %}#}
                         </div>
                 </td>
             </tr>
-            <tr id="{{ student.person.get_db_table }}_row_more_info_{{ student.person.pk }}" hidden="true">
+            <tr id="student_person_row_more_info_{{ student.person.pk }}" hidden="true">
             <td colspan="4">
                     <table class="table main-table" style="width: 100%" id="course_element_table_{{ course.pk }}">
                         <thead>
@@ -45,8 +47,9 @@
                         <tbody>
 
                             {% for contract in student.person.contract_set.all %}
+
                                 {% if user.is_superuser or contract.course_element.teacher_person == user.authuserxperson.person %}
-                                    {% if not contract.deleted %}
+{#                                    {% if not contract.deleted %}#}
                                 <tr>
                                     <td>{{ contract.course_element.course.sphere_txt }} {{ contract.course_element.course.name_txt }}</td>
                                     <td>{{ contract.course_element.teacher_person.person_surname_txt }}
@@ -56,18 +59,21 @@
                                     <td>{{ contract.payment_details.payed_sum }}</td>
                                     <td>{{ contract.course_element.course.total_price }}</td>
                                     {% if contract.payment_details.payed_sum < contract.payment_details.full_price %}
-                                        <td style="background-color: red; color: white;">{{ contract.payment_details.need_to_pay }}</td>
+                                        <td style="background-color: var(--main-triade-red); color: white;">{{ contract.payment_details.need_to_pay }}</td>
                                     {% else %}
-                                        <td style="background-color: green; color: white;">{% if contract.payment_details.need_to_pay != 0 %}{{ contract.payment_details.need_to_pay }}{% endif %}</td>
+                                        <td style="background-color: var(--main-triade-green); color: white;">{% if contract.payment_details.need_to_pay != 0 %}{{ contract.payment_details.need_to_pay }}{% endif %}</td>
                                     {% endif %}
                             </tr>
                                         {% endif %}
-                                {% endif %}
+
                             {% endfor %}
                         </tbody>
                     </table>
                 </td>
             </tr>
+{#            {% endif %}#}
+{#                                {% endif %}#}
+
         {% endfor %}
     </table>
 
@@ -83,11 +89,16 @@
             <input type="text" name="liter" value="{{ request.GET.liter }}" style="width: 25px; float: left; margin-right: 10px;" placeholder="Б">
             <input type="text" name="document_series" value="{{ request.GET.document_series }}" style="width: 60px; float: left; margin-right: 10px;" placeholder="Серия">
             <input type="text" name="document_no" value="{{ request.GET.document_no }}" style="width: 93px;" placeholder="Номер">
-            <input type="checkbox" name="dept" style="margin-right: 10px;">Только с неоплатой
+            <input type="checkbox" name="dept" style="margin-right: 10px;">Только с неоплатой<br>
+{#            <select name="deletion_status" style="width: 100%">#}
+{#                <option value="0" {% if request.GET.deletion_status == 0 %}selected{% endif %}>Все</option>#}
+{#                <option value="1" {% if request.GET.deletion_status == 1 %}selected{% endif %}>Активные</option>#}
+{#                <option value="2" {% if request.GET.deletion_status == 2 %}selected{% endif %}>Удаленные</option>#}
+{#            </select>#}
             <table style="">
                 <tr>
-                    <td><button type="submit"><span class="glyphicon glyphicon-search"></span></button></td>
-                    <td><button type="reset"><span class="glyphicon glyphicon-remove"></span></button></td>
+                    <td><button type="submit" style="color: var(--main-color-inversed)"><span class="glyphicon glyphicon-search"></span></button></td>
+                    <td><button type="reset" style="color: var(--main-color-inversed)"><span class="glyphicon glyphicon-remove"></span></button></td>
                 </tr>
             </table>
         </form>
@@ -111,14 +122,14 @@
             <input type="text" name="liter" placeholder="Л" style="width: 20px;">
             <table style="">
                 <tr>
-                    <td><button type="submit"><span class="glyphicon glyphicon-plus"></span></button></td>
-                    <td><button type="reset"><span class="glyphicon glyphicon-remove"></span></button></td>
+                    <td><button type="submit" style="color: var(--main-color-inversed)"><span class="glyphicon glyphicon-plus"></span></button></td>
+                    <td><button type="reset" style="color: var(--main-color-inversed)"><span class="glyphicon glyphicon-remove"></span></button></td>
                 </tr>
             </table>
         </form>
     </div>
 
-    <a class="filter-div" style="background-color: #3b5998; color: white; text-align: center; font-size: 20px;" href="/student_add/">Расширенное добавление</a>
+    <a class="filter-div" style="background-color: var(--main-color); color: white; text-align: center; font-size: 20px;" href="/student_add/">Расширенное добавление</a>
         {% endif %}
     </div>
 

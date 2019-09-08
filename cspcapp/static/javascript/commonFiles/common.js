@@ -102,17 +102,17 @@ function aaa() {
     $("#dialog").dialog();
 }
 
-window.onload = function () {
-    if (!sessionStorage.getItem('is_session_data_loaded')) {
-        $.ajax({
-            url : `/session_data/`,
-            dataType : "json",
-            success : function(json) {
-                for (let key in json) {
-                    sessionStorage.setItem(key, JSON.stringify(json[key]));
-                    console.log(json[key]);
-                }
-            }
-        });
-    }
-};
+// window.onload = function () {
+//     if (!sessionStorage.getItem('is_session_data_loaded')) {
+//         $.ajax({
+//             url : `/session_data/`,
+//             dataType : "json",
+//             success : function(json) {
+//                 for (let key in json) {
+//                     sessionStorage.setItem(key, JSON.stringify(json[key]));
+//                     console.log(json[key]);
+//                 }
+//             }
+//         });
+//     }
+// };

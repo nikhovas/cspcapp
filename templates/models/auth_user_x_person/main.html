@@ -4,9 +4,9 @@
     <td><input type="text" name="person.person_surname_txt" value="{{ object.person.person_surname_txt }}" style="border-width: 0; width: 100%;" readonly/></td>
     <td><input type="text" name="person.person_name_txt" value="{{ object.person.person_name_txt }}" style="border-width: 0; width: 100%;" readonly/></td>
     <td><input type="text" name="person.person_father_name_txt" value="{{ object.person.person_father_name_txt }}" style="border-width: 0; width: 100%;" readonly/></td>
-    <td><input type="text" name="person.birth_dt_day" value="{{ object.person.birth_dt.day }}" style="border-width: 0; width: 18px;" readonly/>-
-        <input type="text" name="person.birth_dt_month" value="{{ object.person.birth_dt.month }}" style="border-width: 0; width: 18px;" readonly/>-
-        <input type="text" name="person.birth_dt_year" value="{{ object.person.birth_dt.year }}" style="border-width: 0; width: 33px;" readonly/>
+    <td><input type="text" name="person.birth_dt__day" value="{{ object.person.birth_dt.day }}" style="border-width: 0; width: 18px;" readonly/>-
+        <input type="text" name="person.birth_dt__month" value="{{ object.person.birth_dt.month }}" style="border-width: 0; width: 18px;" readonly/>-
+        <input type="text" name="person.birth_dt__year" value="{{ object.person.birth_dt.year }}" style="border-width: 0; width: 33px;" readonly/>
     <td>
     <input type="checkbox" name="auth_user.is_superuser" {% if object.auth_user.is_superuser %} checked {% endif %} readonly>
             </td>
@@ -15,12 +15,11 @@
                     <div class="buttons-table-horizontal default-buttons">
                         {{ object.person.versions_button }}
                         {{ object.expand_button }}
-                    <button id="teacher_data_change_password_{{ object.person.pk }}" onclick=" " >
+                    <button id="teacher_data_change_password_{{ object.auth_user.pk }}" onclick="newPassword({{ object.auth_user.pk }})" >
                                                 П
                                             </button>
 
                     {{ object.edit_button }}
-                    {{ object.remove_button }}
                         </div>
 
                 </td>

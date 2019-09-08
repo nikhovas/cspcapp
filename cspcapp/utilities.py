@@ -17,17 +17,18 @@ def overview_get_format(params: dict) -> dict:
 
 
 def make_date_in_dict(d: dict, name: str):
+    print(d)
     d[name] = date(int(d[name + '__year']), int(d[name + '__month']), int(d[name + '__day']))
     del d[name + '__year']
     del d[name + '__month']
     del d[name + '__day']
 
 
-def make_date_in_dict(d: dict, name: str):
-    d[name] = date(int(d[name + '__year']), int(d[name + '__month']), int(d[name + '__day']))
-    del d[name + '__year']
-    del d[name + '__month']
-    del d[name + '__day']
+# def make_date_in_dict(d: dict, name: str):
+#     d[name] = date(int(d[name + '__year']), int(d[name + '__month']), int(d[name + '__day']))
+#     del d[name + '__year']
+#     del d[name + '__month']
+#     del d[name + '__day']
 
 
 def rename_arg_in_dict(d: dict, _from: str, to: str):

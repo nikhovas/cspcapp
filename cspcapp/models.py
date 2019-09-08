@@ -44,6 +44,8 @@ class Model(models.Model):
                 raise
         super().__setattr__(item, value)
 
+
+
     @property
     def version_history(self):
         cur = connection.cursor()
@@ -62,7 +64,7 @@ class Model(models.Model):
 
     def delete(self, using=None, keep_parents=False, user=None):
         if hasattr(self, 'VersionInfo'):
-            for i, j in self.VersionInfo.check_if_deleted:
+            for i, j in self.VersionInfo.check_if_deleted.items():
                 setattr(self, i, j)
             self.change_user = user
             self.save()
@@ -221,7 +223,7 @@ class Contract(Model):
     class VersionInfo:
         version_control_visible_fields = ('student_phone_no', 'payer_phone_no', 'payer_inn_no',)
         check_if_deleted = {'student_document': None, 'student_address': None, 'payer_document': None,
-                            'payer_address': None, 'course_element': None}
+                            'payer_address': None}
 
     @property
     def payment_details(self):
@@ -233,20 +235,14 @@ class Contract(Model):
             'need_to_pay': full_price - payed
         }
 
-    def delete(self, using=None, keep_parents=False, user=None, date=datetime.datetime.now().date, reason=''):
-        if date == '':
-            print('here')
-            date = datetime.datetime.now().date()
-        print(date)
-        ct = ContractTermination(
-            contract=self, termination_dt=date, termination_reason_txt=reason,
-            course_name_txt=f"{self.course_element.course.sphere_txt} {self.course_element.course.name_txt}"
-        )
-        ct.save()
-        for i, j in self.VersionInfo.check_if_deleted.items():
-            setattr(self, i, j)
-        self.change_user = user
-        self.save()
+    # def delete(self, using=None, keep_parents=False, user=None, __date=datetime.datetime.now().date, reason=''):
+    #     if __date == '':
+    #         __date = str(datetime.datetime.now().date())
+    #     ContractTermination.objects.create(contract=self, termination_dt=__date, termination_reason_txt=reason)
+    #     for i, j in self.VersionInfo.check_if_deleted.items():
+    #         setattr(self, i, j)
+    #     self.change_user = user
+    #     self.save()
 
 
 class ContractPayment(Model):
@@ -274,7 +270,7 @@ class ContractTermination(models.Model):
     contract = models.OneToOneField(Contract, models.CASCADE)
     termination_dt = models.DateField(blank=True, null=True)
     termination_reason_txt = models.CharField(max_length=100, blank=True, null=True)
-    course_name_txt = models.CharField(max_length=128)
+    course_name_txt = models.CharField(max_length=128, default='')
     contract_termination_id = models.AutoField(primary_key=True)
 
     class Meta:
@@ -291,6 +287,7 @@ class Course(Model):
     price_per_hour = models.IntegerField()
     number_of_hours = models.IntegerField()
     number_of_month = models.IntegerField()
+    deleted_flg = models.BooleanField(null=False, blank=False, default=False)
 
     class Meta:
         managed = False
@@ -307,6 +304,14 @@ class Course(Model):
     @property
     def half_price(self):
         return self.price_per_hour * self.number_of_hours / 2
+
+    def delete(self, using=None, keep_parents=False, user=None):
+        self.deleted_flg = True
+        self.save()
+
+    @property
+    def deleted(self) -> bool:
+        return self.deleted_flg
 
 
 class CourseClass(Model):
@@ -327,6 +332,7 @@ class CourseElement(Model):
     course_element_id = models.AutoField(primary_key=True)
     course = models.ForeignKey(Course, models.CASCADE, blank=True, null=True)
     teacher_person = models.ForeignKey('Person', models.DO_NOTHING, blank=True, null=True)
+    deleted_flg = models.BooleanField(null=False, blank=False, default=False)
 
     class Meta:
         managed = False
@@ -370,6 +376,10 @@ class CourseElement(Model):
                     on_current_day[0].end_tm = end_tm
                     on_current_day[0].save()
 
+    def delete(self, using=None, keep_parents=False, user=None):
+        self.deleted_flg = True
+        self.save()
+
     course_class = property(get_course_class, set_course_class)
 
     @property
@@ -383,6 +393,10 @@ class CourseElement(Model):
         result_dict = super().deep_json
         result_dict['get_course_classes'] = [i.deep_json if i is not None else {} for i in self.get_course_classes]
         return result_dict
+
+    @property
+    def deleted(self) -> bool:
+        return self.deleted_flg
 
 
 class Person(Model):
@@ -410,6 +424,13 @@ class Person(Model):
         if self.person_father_name_txt is not None:
             res += " " + str(self.person_father_name_txt)[0] + "."
         return res
+
+    def delete(self, using=None, keep_parents=False, user=None):
+        if hasattr(self, 'studentperson'):
+            self.studentperson.delete(user=user)
+        if hasattr(self, 'authuserxperson'):
+            self.authuserxperson.delete(user=user)
+        super().delete(using, keep_parents, user=user)
 
 
 class PersonDocument(Model):

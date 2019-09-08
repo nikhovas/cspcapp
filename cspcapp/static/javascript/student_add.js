@@ -7,9 +7,11 @@ function addRow() {
 <tr id="course_row_${newRowID}">
                         <td><input type="hidden" name="course_element" value="${val}">${text}</td>
                         <td>
-                            <button type="button" style="width: 100%" onclick="deleteRow(${newRowID})">
+                        <div class="buttons-table-horizontal default-buttons">
+                            <button type="button" onclick="deleteRow(${newRowID})">
                                 <span class="glyphicon glyphicon-trash" "></span>
                             </button>
+                            </div>
                         </td>
                         </tr>
     `);

@@ -25,7 +25,7 @@ SECRET_KEY = '_71u@id)7c6n$p98q96z=n%z47m37_4b1(gfjk2%d1$iu4pd$w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -74,25 +74,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'cspc.wsgi.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'main_db',
+#         'USER': 'superuser',
+#         'PASSWORD': 'this_is_password',
+#         'HOST': 'rc1c-353tuhcgju5pf775.mdb.yandexcloud.net',
+#         'PORT': '6432',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'main_db',
-        'USER': 'superuser',
-        'PASSWORD': 'this_is_password',
-        'HOST': 'rc1c-353tuhcgju5pf775.mdb.yandexcloud.net',
-        'PORT': '6432',
+        'HOST': '127.0.0.1',
+        'PORT': '5437',
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'postgres',
-#         'HOST': '127.0.0.1',
-#         'PORT': '5436',
-#     }
-# }
 
 
 
@@ -120,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Yekaterinburg'
 
 USE_I18N = True
 
@@ -134,6 +134,7 @@ USE_TZ = True
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
+# STATIC_URL = STATIC_ROOT
 
 STATICFILES_DIRS = [
     os.path.join(os.path.join(BASE_DIR, 'cspcapp'), 'static')

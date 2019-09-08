@@ -72,8 +72,15 @@ def object_delete(request: WSGIRequest, object_type: str) -> HttpResponse:
     id = request.POST['id']
     try:
         if object_type == 'contract':
-            Contract.objects.get(pk=id).delete(date=request.POST['delete_date'], reason=request.POST['delete_reason'])
-        MODEL_TYPES_DICT[object_type].type_name.objects.get(pk=id).delete()
+            contract = Contract.objects.get(pk=id)
+            date = request.POST['delete_date']
+            if date is '':
+                date = datetime.datetime.now().date()
+            ContractTermination.objects.create(contract=contract, termination_dt=date,
+                                               termination_reason_txt=request.POST['delete_reason'])
+            contract.delete(user=request.user)
+        else:
+            MODEL_TYPES_DICT[object_type].type_name.objects.get(pk=id).delete(user=request.user)
     except IntegrityError:
         exc_type, value, exc_traceback = sys.exc_info()
         return JsonResponse({
@@ -130,44 +137,50 @@ def submit_registration_form(request: WSGIRequest) -> JsonResponse:
 
 @superuser_only
 def submit_student_form(request: WSGIRequest) -> JsonResponse:
-    req = StudentRequest.objects.get(pk=request.POST['id'])
-    now = datetime.datetime.now().date()
-    ed_year = now.year - req.student_class
-    if now.month > 6:
-        ed_year += 1
-    add_student(request.user,
-                document_no=[req.student_document_no, req.payer_document_no],
-                document_series=[req.student_document_series, req.payer_document_series],
-                person_surname_txt=[req.student_surname_txt, req.payer_surname_txt],
-                person_name_txt=[req.student_name_txt, req.payer_name_txt],
-                person_father_name_txt=[req.student_father_name_txt, req.payer_father_name_txt],
-                authority_no=[req.student_authority_no, req.payer_authority_no],
-                authority_txt=[req.student_authority_txt, req.payer_authority_txt],
-                issue_dt=[req.student_issue_dt, req.payer_issue_dt],
-                document_type_txt=[req.student_document_type_txt, req.payer_document_type_txt],
+    try:
+        req = StudentRequest.objects.get(pk=request.POST['id'])
+        now = datetime.datetime.now().date()
+        ed_year = now.year - req.student_class
+        if now.month > 6:
+            ed_year += 1
+    except Exception:
+        return JsonResponse({'result': False, 'error': 'Ошибка обработки класса'})
+    try:
+        add_student(request.user,
+                    document_no=[req.student_document_no, req.payer_document_no],
+                    document_series=[req.student_document_series, req.payer_document_series],
+                    person_surname_txt=[req.student_surname_txt, req.payer_surname_txt],
+                    person_name_txt=[req.student_name_txt, req.payer_name_txt],
+                    person_father_name_txt=[req.student_father_name_txt, req.payer_father_name_txt],
+                    authority_no=[req.student_authority_no, req.payer_authority_no],
+                    authority_txt=[req.student_authority_txt, req.payer_authority_txt],
+                    issue_dt=[req.student_issue_dt, req.payer_issue_dt],
+                    document_type_txt=[req.student_document_type_txt, req.payer_document_type_txt],
 
-                region_cd=[req.student_region_cd, req.payer_region_cd],
-                area_txt=[req.student_area_txt, req.payer_area_txt],
-                city_txt=[req.student_city_txt, req.payer_city_txt],
-                street_txt=[req.student_street_txt, req.payer_street_txt],
-                house_txt=[req.student_house_txt, req.payer_house_txt],
-                building_no=[req.student_building_no, req.payer_building_no],
-                structure_no=[req.student_structure_no, req.payer_structure_no],
-                flat_nm=[req.student_flat_nm, req.payer_flat_nm],
+                    region_cd=[req.student_region_cd, req.payer_region_cd],
+                    area_txt=[req.student_area_txt, req.payer_area_txt],
+                    city_txt=[req.student_city_txt, req.payer_city_txt],
+                    street_txt=[req.student_street_txt, req.payer_street_txt],
+                    house_txt=[req.student_house_txt, req.payer_house_txt],
+                    building_no=[req.student_building_no, req.payer_building_no],
+                    structure_no=[req.student_structure_no, req.payer_structure_no],
+                    flat_nm=[req.student_flat_nm, req.payer_flat_nm],
 
-                birth_dt=[req.student_birth_dt],
-                education_dt=[datetime.date(ed_year, 9, 1)],
-                school_name_txt=[req.student_school_name_txt],
-                liter=[req.student_liter],
+                    birth_dt=[req.student_birth_dt],
+                    education_dt=[datetime.date(ed_year, 9, 1)],
+                    school_name_txt=[req.student_school_name_txt],
+                    liter=[req.student_liter],
 
-                student_phone_no=[req.student_phone_no],
-                payer_phone_no=[req.payer_phone_no],
-                payer_inn_no=[req.payer_inn_no],
+                    student_phone_no=[req.student_phone_no],
+                    payer_phone_no=[req.payer_phone_no],
+                    payer_inn_no=[req.payer_inn_no],
 
-                course_element=req.courses.split(' ')
-                )
-    req.delete()
-    return JsonResponse({})
+                    course_element=req.courses.split(' ')
+                    )
+        req.delete()
+        return JsonResponse({'result': True})
+    except Exception:
+        return JsonResponse({'result': False, 'error': 'Ошибка обработки полей'})
 
 
 def search_dates_in_json(data: dict):
@@ -253,6 +266,80 @@ def add_object(request: WSGIRequest, object_type) -> JsonResponse:
     })
 
 
+def add_course_class(request: WSGIRequest) -> JsonResponse:
+    try:
+        date = datetime.date(int(request.POST['class_dt_year']), int(request.POST['class_dt_month']), int(request.POST['class_dt_day']))
+    except Exception:
+        return JsonResponse({'result': False, 'error': 'Неправильный формат даты'})
+    try:
+        start_tm = datetime.time(int(request.POST['start_tm_hour']), int(request.POST['start_tm_minute']))
+    except Exception:
+        return JsonResponse({'result': False, 'error': 'Неправильный формат времени начала'})
+    try:
+        end_tm = datetime.time(int(request.POST['end_tm_hour']), int(request.POST['end_tm_minute']))
+    except Exception:
+        return JsonResponse({'result': False, 'error': 'Неправильный формат времени окончания'})
+    try:
+        ce = CourseElement.objects.get(pk=request.POST['course_element_id'])
+        if ce.teacher_person.authuserxperson.auth_user != request.user:
+            return JsonResponse({'result': False, 'error': 'ОШИБКА БЕЗОПАСНОСТИ: ДАННЫЙ ЭЛЕМЕНТ НЕ ПРИНАДЛЕЖИТ ВАМ'})
+    except Exception:
+        return JsonResponse({'result': False, 'error': 'ОШИБКА БЕЗОПАСНОСТИ: НЕ СУЩЕСТВУЮЩИЙ ЭЛЕМЕНТ'})
+    # try:
+    #
+    # except Exception:
+    #     return JsonResponse({'html': render(request, 'models/course_class/main.html', {'object': elem}).content.decode('utf-8')})
+    elem = CourseElementDefiniteClass(course_element_id=request.POST['course_element_id'], class_dt=date,
+                                      start_tm=start_tm, end_tm=end_tm)
+    elem.save()
+    return JsonResponse({
+        'result': True,
+        'html': render(request, 'models/course_class/main.html', {'object': elem}).content.decode('utf-8')
+    })
+
+
+def edit_course_class(request: WSGIRequest) -> JsonResponse:
+    try:
+        date = datetime.date(int(request.POST['class_dt_year']), int(request.POST['class_dt_month']), int(request.POST['class_dt_day']))
+    except Exception:
+        return JsonResponse({'result': False, 'error': 'Неправильный формат даты'})
+    try:
+        start_tm = datetime.time(int(request.POST['start_tm_hour']), int(request.POST['start_tm_minute']))
+    except Exception:
+        return JsonResponse({'result': False, 'error': 'Неправильный формат времени начала'})
+    try:
+        end_tm = datetime.time(int(request.POST['end_tm_hour']), int(request.POST['end_tm_minute']))
+    except Exception:
+        return JsonResponse({'result': False, 'error': 'Неправильный формат времени окончания'})
+    try:
+        ce = CourseElementDefiniteClass.objects.get(pk=request.POST['id'])
+        if ce.course_element.teacher_person.authuserxperson.auth_user != request.user:
+            return JsonResponse({'result': False, 'error': 'ОШИБКА БЕЗОПАСНОСТИ: ДАННЫЙ ЭЛЕМЕНТ НЕ ПРИНАДЛЕЖИТ ВАМ'})
+        ce.class_dt = date
+        ce.start_tm = start_tm
+        ce.end_tm = end_tm
+        ce.save()
+        return JsonResponse({
+            'result': True
+        })
+    except Exception:
+        return JsonResponse({'result': False, 'error': 'ОШИБКА БЕЗОПАСНОСТИ: НЕ СУЩЕСТВУЮЩИЙ ЭЛЕМЕНТ'})
+
+
+def delete_course_class(request: WSGIRequest) -> JsonResponse:
+    try:
+        ce = CourseElementDefiniteClass.objects.get(pk=request.POST['id'])
+        if ce.course_element.teacher_person.authuserxperson.auth_user != request.user:
+            return JsonResponse({'result': False, 'error': 'ОШИБКА БЕЗОПАСНОСТИ: ДАННЫЙ ЭЛЕМЕНТ НЕ ПРИНАДЛЕЖИТ ВАМ'})
+        ce.delete()
+        return JsonResponse({
+            'result': True
+        })
+    except Exception:
+        return JsonResponse({'result': False, 'error': 'ОШИБКА БЕЗОПАСНОСТИ: НЕ СУЩЕСТВУЮЩИЙ ЭЛЕМЕНТ'})
+
+
+
 def get_session_data(request: WSGIRequest) -> JsonResponse:
     models_dict = {}
     parent_dir = os.path.join(os.path.join(cspc.settings.BASE_DIR, 'templates'), 'models')
@@ -272,3 +359,18 @@ def get_session_data(request: WSGIRequest) -> JsonResponse:
             'user': {'pk': request.user.pk, 'username': request.user.username, 'is_superuser': request.user.is_superuser}
         }
     })
+
+
+@superuser_only
+def change_user_password(request: WSGIRequest) -> JsonResponse:
+    if request.POST:
+        if 'user_id' not in request.POST:
+            JsonResponse({'result': False, 'error': 'отсутствует id пользователя'})
+        if 'new_password' not in request.POST or request.POST['new_password'] == '':
+            JsonResponse({'result': False, 'error': 'пустой пароль'})
+        u = User.objects.get(pk=request.POST['user_id'])
+        u.set_password(request.POST['new_password'])
+        u.save()
+        return JsonResponse({'result': True})
+    else:
+        return JsonResponse({'result': False, 'error': 'отсутствует тело запроса'})

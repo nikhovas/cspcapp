@@ -7,7 +7,7 @@
                 <td style="width: 140px">Дата рождения</td>
                 <td style="width: 10px;">SU</td>
                 <td>Логин</td>
-                <td style="width: 210px"></td>
+                <td style="width: 170px"></td>
             </tr>
         </thead>
         {% for object in object_set %}
@@ -23,9 +23,9 @@
             <input type="text" name="name" placeholder="Имя"/>
             <input type="text" name="father_name" placeholder="Отчество"/>
             День рождения:
-            <input type="text" name="birth_dt_day" placeholder="ДД" style="width: 30px;"/>-
-                <input type="text" name="birth_dt_month" placeholder="ММ" style="width: 32px;"/>-
-                <input type="text" name="birth_dt_year" placeholder="ГГГГ" style="width: 44px;"/>
+            <input type="text" name="person.birth_dt__day" placeholder="ДД" style="width: 30px;"/>-
+                <input type="text" name="person.birth_dt__month" placeholder="ММ" style="width: 32px;"/>-
+                <input type="text" name="person.birth_dt__year" placeholder="ГГГГ" style="width: 44px;"/>
             <input type="text" name="username" placeholder="Логин"/>
             <input type="password" name="password" placeholder="Пароль"/>
             <input type="password" name="password_repeat" placeholder="Повторите пароль"/>

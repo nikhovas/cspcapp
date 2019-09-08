@@ -11,7 +11,7 @@
 /*}*/
 
 /*.main-table thead {*/
-/*    background-color: #3b5998;*/
+/*    background-color: var(--main-color);*/
 /*    color: white;*/
 /*}*/
 
@@ -23,7 +23,7 @@
 /*.main-table a, button{*/
 /*    display: inline-block;*/
 /*    margin-right: 2px;*/
-/*    background-color: #3b5998;*/
+/*    background-color: var(--main-color);*/
 /*    color: white;*/
 /*    border-width: 0;*/
 /*    text-align: center;*/

@@ -111,7 +111,9 @@ def dump_to_local_database(reuqest: WSGIRequest) -> HttpResponse:
             row[43]
         except IndexError:
             row.append('')
+        print(row)
         courses_vals = ' '.join([i.split(' ')[0] for i in ''.join(row[38]).split(', ')])
+        print(courses_vals)
         new_elem = StudentRequest(
             is_two_side=True, student_surname_txt=row[1], student_name_txt=row[2], student_father_name_txt=row[3],
             student_birth_dt=datetime.datetime.strptime(row[4], '%d.%m.%Y').date(), student_class=row[5],

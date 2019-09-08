@@ -9,3 +9,11 @@
 {% block content %}
     {% include 'models/auth_user_x_person/query.html' %}
 {% endblock %}
+
+{% block teachers_overview %}
+    style="background-color: var(--main-color-darker); border-left: 5px solid white; padding-left: 8px;"
+{% endblock %}
+
+{% block scriptconnect %}
+    <script src="{% static 'javascript/teachers_view.js' %}" type="text/javascript"></script>
+{% endblock %}

@@ -4,23 +4,24 @@
                             <form action="" method="post" id="person_document_data_form_{{ object.pk }}" name="person_document_data_form_{{ object.pk }}">
                                 {% csrf_token %}
                                 <input type="hidden" name="id" value="{{ object.pk }}"/>
-                                <input type="text" name="person_surname_txt" value="{{ object.person_surname_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
-                                <input type="text" name="person_name_txt" value="{{ object.person_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
-                                <input type="text" name="person_father_name_txt" value="{{ object.person_father_name_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)" readonly/>
-                                <input type="text" name="authority_txt" value="{{ object.authority_txt }}" style="background-color: #3b5998; border-width: 0; width: 100%" readonly/>
-                                <input type="text" name="document_type_txt" value="{{ object.document_type_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 314px)" readonly/>
-                                <input type="text" name="authority_no" value="{{ object.authority_no }}" style="background-color: #3b5998; border-width: 0; width: 90px" readonly/>
-                                <input type="text" name="issue_dt__day" value="{{ object.issue_dt.day }}" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px" readonly/>-
-                                <input type="text" name="issue_dt__month" value="{{ object.issue_dt.month }}" style="background-color: #3b5998; border-width: 0; width: 16px" readonly/>-
-                                <input type="text" name="issue_dt__year" value="{{ object.issue_dt.year }}" style="background-color: #3b5998; border-width: 0; width: 33px" readonly/>
-                                <input type="text" name="document_series" value="{{ object.document_series }}" style="background-color: #3b5998; border-width: 0; width: 33px; margin-left: 20px" readonly/>
-                                <input type="text" name="document_no" value="{{ object.document_no }}" style="background-color: #3b5998; border-width: 0; width: 50px" readonly/>
+                                <input type="text" name="person_surname_txt" value="{{ object.person_surname_txt }}" style="background-color: var(--main-color); border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="person_name_txt" value="{{ object.person_name_txt }}" style="background-color: var(--main-color); border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="person_father_name_txt" value="{{ object.person_father_name_txt }}" style="background-color: var(--main-color); border-width: 0; width: calc(33% - 2px)" readonly/>
+                                <input type="text" name="authority_txt" value="{{ object.authority_txt }}" style="background-color: var(--main-color); border-width: 0; width: 100%" readonly/>
+                                <input type="text" name="document_type_txt" value="{{ object.document_type_txt }}" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 314px)" readonly/>
+                                <input type="text" name="authority_no" value="{{ object.authority_no }}" style="background-color: var(--main-color); border-width: 0; width: 90px" readonly/>
+                                <input type="text" name="issue_dt__day" value="{{ object.issue_dt.day }}" style="background-color: var(--main-color); border-width: 0; width: 16px; margin-left: 20px" readonly/>-
+                                <input type="text" name="issue_dt__month" value="{{ object.issue_dt.month }}" style="background-color: var(--main-color); border-width: 0; width: 16px" readonly/>-
+                                <input type="text" name="issue_dt__year" value="{{ object.issue_dt.year }}" style="background-color: var(--main-color); border-width: 0; width: 33px" readonly/>
+                                <input type="text" name="document_series" value="{{ object.document_series }}" style="background-color: var(--main-color); border-width: 0; width: 33px; margin-left: 20px" readonly/>
+                                <input type="text" name="document_no" value="{{ object.document_no }}" style="background-color: var(--main-color); border-width: 0; width: 50px" readonly/>
                             </form>
                         </div>
-
-                        <button style="background-color: #3b5998; height: 89px;" onclick="enableEditObjectMode('person_document', {{ object.pk }})" id="person_document_data_button_{{ object.pk }}">
+<div class="buttons-table-horizontal default-buttons" style="width: 30px; margin-left: 5px;">
+                        <button style="height: 89px;" onclick="enableEditObjectMode('person_document', {{ object.pk }})" id="person_document_data_button_{{ object.pk }}">
                             <span class="glyphicon glyphicon-pencil" id="person_document_data_button_span_{{ object.pk }}"></div>
                         </button>
+</div>
                     </div>
 {% else %}
     <div class="editing-field-container" id="person_document_row_{{ object.pk }}" >

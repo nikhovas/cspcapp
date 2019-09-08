@@ -13,10 +13,11 @@
                             </tr>
                         </thead>
                         <tbody id="course_element_table_body_{{ object.pk }}">
+
                             {% for object in object.courseelement_set.all %}
-
+{% if not object.deleted_flg %}
                             {% include 'models/course_element/main.html' %}
-
+{% endif %}
                                 {% endfor %}
                         </tbody>
 {% if user.is_superuser %}

@@ -1,27 +1,82 @@
 :root {
-    --main-color: #3b5998;
-    --main-color-2: white;
-    --main-background: whitesmoke;
+    --main-background-1: whitesmoke;
+    --main-background-2: white;
+
+
+
+    --main-color-inversed: white;
+    --background-color-inversed: black;
+    --main-color-to-white-middle: #899bc1;
+    --main-color-darker: #23355b;
+
+
+    --text-field-on-main-color: white;
+
+    /*--main-color: #333333;*/
+    /*--main-color-little-darker: #242424;*/
+    /*--main-color-middle-lighter: #7e7e7e;*/
+    /*--main-color-inversed: white;*/
+    /*--main-color-to-white-middle: #707070;*/
+
+    /*--main-background-1: #222222;*/
+    /*--main-background-2: #2a2a2a;*/
+    /*--background-color-inversed: white;*/
+    /*--main-border: 0 solid gainsboro;*/
+
+    --main-triade-blue: #3b5998;
+    --main-triade-red: #983b59;
+    --main-triade-green: #59983b;
+
+    --main-color: var(--main-triade-blue);
+    --main-color-little-darker: #355088;
+    --main-color-middle-lighter: #899bc1;
+
+    /*--text-field-on-main-color: var(--main-background-1);*/
+
     --main-margin-padding: 10px;
+
+    --main-border: 1px solid gainsboro;
+
 }
 
 body {
-    background-color: var(--main-background);
+    background-color: var(--main-background-1);
+    /*color: white;*/
 }
 
 /*table*/
 
 .table {
-    background-color: var(--main-color-2);
+    background-color: var(--main-background-2);
     margin-top: var(--main-margin-padding);
+}
+
+/*.table td {*/
+/*    border: 1px solid red;*/
+/*    !*border-color: var(--main-background-1);*!*/
+/*}*/
+
+/*.table tr {*/
+/*    border: 1px solid red;*/
+/*    !*border-color: var(--main-background-1);*!*/
+/*}*/
+
+/*.table th {*/
+/*    border: 1px solid red;*/
+/*    !*border-color: var(--main-background-1);*!*/
+/*}*/
+
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    border-top: 1px solid var(--main-background-1);
 }
 
 .table thead {
     background-color: var(--main-color);
-    color: var(--main-color-2);;
+    color: var(--main-color-inversed);
+
 }
 
-.table tr {
+.table td {
     border-width: 0;
 }
 
@@ -30,8 +85,9 @@ body {
     margin: var(--main-margin-padding);
     padding: var(--main-margin-padding);
     display: block;
-    border: 1px solid gainsboro;
-    background-color: var(--main-color-2);
+    /*border: 1px solid gainsboro;*/
+    border-width: 0;
+    background-color: var(--main-background-2);
 }
 
 .static-right-block {
@@ -49,18 +105,31 @@ body {
 /*filter-div*/
 
 .filter-div h3 {
-    color: black;
+
+    color: var(--background-color-inversed);
 }
 
 
 .filter-div input[type="text"] {
     width: 100%;
     margin-bottom: 10px;
+    height: 25px;
+    border: var(--main-border);
+    background-color: var(--text-field-on-main-color);
 }
 
 .filter-div input[type="password"] {
     width: 100%;
     margin-bottom: 10px;
+    height: 25px;
+    border: var(--main-border);
+    background-color: var(--text-field-on-main-color);
+}
+
+.filter-div input[type="number"] {
+    height: 25px;
+    border: var(--main-border);
+    background-color: var(--text-field-on-main-color);
 }
 
 .filter-div table {
@@ -71,8 +140,8 @@ body {
 .filter-div table button {
     width: 100%;
     height: 30px;
-    background-color: #3b5998;
-    color: white;
+    background-color: var(--main-color);
+    color: var(--main-background-1);
     border-width: 0;
     text-align: center;
     vertical-align: middle;
@@ -83,7 +152,7 @@ body {
 .filter-div table a {
     width: 100%;
     height: 30px;
-    background-color: #3b5998;
+    background-color: var(--main-color);
     color: white;
     border-width: 0;
     text-align: center;
@@ -172,4 +241,18 @@ body {
 .table-buttons a {
     width: 100%;
     height: 30px;
+}
+
+.full-width-height-button { }
+
+.full-width-height-button button {
+    vertical-align: middle;
+    width: 100%;
+    height: 100%;
+}
+
+.full-width-height-button a {
+    vertical-align: middle;
+    width: 100%;
+    height: 100%;
 }

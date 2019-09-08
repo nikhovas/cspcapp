@@ -1,5 +1,5 @@
 {% if user.is_superuser %}
-<tr id="contract_tr_main_{{ object.pk }}">
+<tr id="contract_row_{{ object.pk }}">
                 <td colspan="2">
                     <div>
                         <div class="non-editing-field-container" style="width: 200px">
@@ -34,7 +34,7 @@
                             <form action="" method="post" id="contract_course_element_data_form_{{ object.pk }}" name="contract_course_element_data_form_{{ object.pk }}">
                                 {% csrf_token %}
                             <input type="hidden" name="id" value="{{ object.pk }}">
-                                <select name="course_element_id" style="width: 100%; border-width: 0; -webkit-appearance:none; background-color: #3b5998" disabled>
+                                <select name="course_element_id" style="width: 100%; border-width: 0; -webkit-appearance:none; background-color: var(--main-color)" disabled>
                                     {% for course in courses %}
                                         {% if course == object.course_element.course %}
                                             {% for course_element in course.courseelement_set.all %}
@@ -48,9 +48,11 @@
                             </form>
                         </div>
                     </div>
-                        <button style="background-color: #3b5998; height: 40px;" onclick="enableEditObjectMode('contract_course_element', {{ object.pk }})" id="contract_course_element_data_button_{{ object.pk }}">
+                    <div class="buttons-table-horizontal default-buttons" style="width: 30px; margin-left: 5px;">
+                        <button style="height: 42px;" onclick="enableEditObjectMode('contract_course_element', {{ object.pk }})" id="contract_course_element_data_button_{{ object.pk }}">
                             <span class="glyphicon glyphicon-pencil" id="contract_course_element_data_button_span_{{ object.pk }}"/>
                         </button>
+                    </div>
                     </div>
                 {% endif %}
 {#                <div class="buttons-table-horizontal default-buttons">#}
@@ -59,7 +61,7 @@
 {#                            {{ object.versions_button }}#}
 {#                            {{ object.expand_button }}#}
 {#                        </div>#}
-                <table class="buttons-table-horizontal table-buttons" style="width: 100%">
+                <table class="buttons-table-horizontal table-buttons" style="width: 100%; margin-top: 5px;">
                     <tr>
                         <td>{{ object.print_button }}</td>
                         {% if user.is_superuser %}<td>{{ object.remove_button }}</td>{% endif %}

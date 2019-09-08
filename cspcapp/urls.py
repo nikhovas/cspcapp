@@ -4,9 +4,12 @@ from . import api_requests
 from . import dump_google_sheets
 import django.contrib.auth.views
 
-
 urlpatterns = [
     url(r'^base/$', views.meta_base_view, name='cspcapp_base'),
+    url(r'^api/change_password/', api_requests.change_user_password, name='change_user_password'),
+    url(r'^api/add_course_class/', api_requests.add_course_class, name='add_course_class'),
+    url(r'^api/edit_course_class/', api_requests.edit_course_class, name='edit_course_class'),
+    url(r'^api/delete_course_class/', api_requests.delete_course_class, name='delete_course_class'),
     url(r'^api/add/course_element/', api_requests.course_element_add, name='course_element_add'),
     url(r'^api/add/course_detail/', api_requests.course_detail_add, name='course_detail_add'),
     url(r'^api/add/(?P<object_type>\S+)/', api_requests.add_object, name='add_object'),
@@ -20,6 +23,8 @@ urlpatterns = [
     url(r'^teachers/$', views.teachers_view, name='cspcapp_teachers_view'),
     url(r'^student_add/$', views.student_add_function, name='cspcapp_student_add'),
     url(r'^session_data/$', api_requests.get_session_data, name='get_session_data'),
+
+
 
     url(r'^contract/(?P<pk>\S+)/print/$', views.print_contract, name='contract_print'),
 
@@ -38,7 +43,7 @@ urlpatterns = [
     url(r'^(?P<model_name>\S+)/(?P<pk>\S+)/versions/$', views.versions, name='cspcapp_versions'),
     url(r'^(?P<model_name>\S+)/(?P<pk>\S+)/$', views.details, name='cspcapp_details'),
 
-    url(r'^', views.students_overview, name='cspcapp_students_overview'),
+    url(r'^$', views.students_overview, name='cspcapp_students_overview'),
 
 
 ]

@@ -31,7 +31,7 @@
                         <div class="non-editing-field-container">
                             <div class="main-contract-data-box" style="width: 200px">
                                 {% csrf_token %}
-                                <select name="course_element_id" style="width: 100%; border-width: 0; -webkit-appearance:none; background-color: #3b5998">
+                                <select name="course_element_id" style="width: 100%; border-width: 0; -webkit-appearance:none; background-color: var(--main-color)">
                                     <option disabled selected>Выберите элемент</option>
                                     {% for i in courses %}
                                         {% if i.length != 0 %}
@@ -43,78 +43,80 @@
                                     {% endfor %}
                                 </select>
                                 <input type="hidden" name="student_person_id" value="{{ object.pk }}">
-                                +<input type="text" name="student_phone_no" placeholder="Телефон ученика" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)"/>
-                                +<input type="text" name="payer_phone_no" placeholder="Телефон плательщика" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)"/>
-                                <input type="text" name="payer_inn_no" placeholder="ИНН плательщика" style="background-color: #3b5998; border-width: 0; width: calc(100% - 9px)"/>
+                                +<input type="text" name="student_phone_no" placeholder="Телефон ученика" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 9px)"/>
+                                +<input type="text" name="payer_phone_no" placeholder="Телефон плательщика" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 9px)"/>
+                                <input type="text" name="payer_inn_no" placeholder="ИНН плательщика" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 9px)"/>
                             </div>
                         </div>
                     </div>
-                    {% with db_table='contract' %}
+                    {% with db_table='contract' custom_width='200px;' %}
+                        <div class="buttons-table-horizontal default-buttons" style="width: 200px;">
                                                     {% include 'buttons/add.html' %}
+                        </div>
                                                 {% endwith %}
-{#                    <button type="submit" style="background-color: #3b5998; height: 45px; margin-top: 5px; width: 100%">#}
+{#                    <button type="submit" style="background-color: var(--main-color); height: 45px; margin-top: 5px; width: 100%">#}
 {#                            <span class="glyphicon glyphicon-plus"/>#}
 {#                        </button>#}
                 </td>
                 <td colspan="3">
                     <div class="passport-data-box" id="contract_add_document_data_student" style="margin-top: 5px;">
-                                <input type="text" name="student_document.person_surname_txt" placeholder="Фамилия" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)"/>
-                                <input type="text" name="student_document.person_name_txt" placeholder="Имя" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)"/>
-                                <input type="text" name="student_document.person_father_name_txt" placeholder="Отчество" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)"/>
-                                <input type="text" name="student_document.authority_txt" placeholder="Кем выдан" style="background-color: #3b5998; border-width: 0; width: 100%"/>
-                                <input type="text" name="student_document.document_type_txt" placeholder="Тип документа" style="background-color: #3b5998; border-width: 0; width: calc(100% - 314px)"/>
-                                <input type="text" name="student_document.authority_no" placeholder="Номер подразделения" style="background-color: #3b5998; border-width: 0; width: 90px"/>
-                                <input type="text" name="student_document.issue_dt__day" placeholder="ДД" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px"/>-
-                                <input type="text" name="student_document.issue_dt__month" placeholder="ММ" style="background-color: #3b5998; border-width: 0; width: 16px"/>-
-                                <input type="text" name="student_document.issue_dt__year" placeholder="ГГГГ" style="background-color: #3b5998; border-width: 0; width: 33px"/>
-                                <input type="text" name="student_document.document_series" placeholder="Серия" style="background-color: #3b5998; border-width: 0; width: 33px; margin-left: 20px"/>
-                                <input type="text" name="student_document.document_no" placeholder="Номер" style="background-color: #3b5998; border-width: 0; width: 50px"/>
+                                <input type="text" name="student_document.person_surname_txt" placeholder="Фамилия" style="background-color: var(--main-color); border-width: 0; width: calc(33% - 2px)"/>
+                                <input type="text" name="student_document.person_name_txt" placeholder="Имя" style="background-color: var(--main-color); border-width: 0; width: calc(33% - 2px)"/>
+                                <input type="text" name="student_document.person_father_name_txt" placeholder="Отчество" style="background-color: var(--main-color); border-width: 0; width: calc(33% - 2px)"/>
+                                <input type="text" name="student_document.authority_txt" placeholder="Кем выдан" style="background-color: var(--main-color); border-width: 0; width: 100%"/>
+                                <input type="text" name="student_document.document_type_txt" placeholder="Тип документа" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 314px)"/>
+                                <input type="text" name="student_document.authority_no" placeholder="Номер подразделения" style="background-color: var(--main-color); border-width: 0; width: 90px"/>
+                                <input type="text" name="student_document.issue_dt__day" placeholder="ДД" style="background-color: var(--main-color); border-width: 0; width: 16px; margin-left: 20px"/>-
+                                <input type="text" name="student_document.issue_dt__month" placeholder="ММ" style="background-color: var(--main-color); border-width: 0; width: 16px"/>-
+                                <input type="text" name="student_document.issue_dt__year" placeholder="ГГГГ" style="background-color: var(--main-color); border-width: 0; width: 33px"/>
+                                <input type="text" name="student_document.document_series" placeholder="Серия" style="background-color: var(--main-color); border-width: 0; width: 33px; margin-left: 20px"/>
+                                <input type="text" name="student_document.document_no" placeholder="Номер" style="background-color: var(--main-color); border-width: 0; width: 50px"/>
                     </div>
                     <div class="address-data-box" id="contract_add_address_data_student" style="margin-top: 5px;">
-                                <select name="student_address.region_cd" style="background-color: #3b5998; border-width: 0; width: 150px; -webkit-appearance:none;" onclick="return false;">
+                                <select name="student_address.region_cd" style="background-color: var(--main-color); border-width: 0; width: 150px; -webkit-appearance:none;" onclick="return false;">
                                     <option value="" disabled selected>Регион</option>
                                     {% for i, j in regions.items %}
                                         <option value="{{ i }}">{{ j }}</option>
                                     {% endfor %}
                                 </select>
-                                <input type="text" name="student_address.area_txt" placeholder="Район" style="background-color: #3b5998; border-width: 0; width: calc(50% - 80px)" />
-                                <input type="text" name="student_address.city_txt" placeholder="Город" style="background-color: #3b5998; border-width: 0; width: calc(50% - 80px)"/>
-                                <input type="text" name="student_address.street_txt" placeholder="Улица" style="background-color: #3b5998; border-width: 0; width: calc(100% - 194px)"/>
-                                <input type="text" name="student_address.house_txt" placeholder="дом" style="background-color: #3b5998; border-width: 0; width: 40px"/>-
-                                <input type="text" name="student_address.building_no" placeholder="стр." style="background-color: #3b5998; border-width: 0; width: 40px"/>-
-                                <input type="text" name="student_address.structure_no" placeholder="корп." style="background-color: #3b5998; border-width: 0; width: 40px"/>-
-                                <input type="text" name="student_address.flat_nm" placeholder="кв." style="background-color: #3b5998; border-width: 0; width: 40px"/>
+                                <input type="text" name="student_address.area_txt" placeholder="Район" style="background-color: var(--main-color); border-width: 0; width: calc(50% - 80px)" />
+                                <input type="text" name="student_address.city_txt" placeholder="Город" style="background-color: var(--main-color); border-width: 0; width: calc(50% - 80px)"/>
+                                <input type="text" name="student_address.street_txt" placeholder="Улица" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 194px)"/>
+                                <input type="text" name="student_address.house_txt" placeholder="дом" style="background-color: var(--main-color); border-width: 0; width: 40px"/>-
+                                <input type="text" name="student_address.building_no" placeholder="стр." style="background-color: var(--main-color); border-width: 0; width: 40px"/>-
+                                <input type="text" name="student_address.structure_no" placeholder="корп." style="background-color: var(--main-color); border-width: 0; width: 40px"/>-
+                                <input type="text" name="student_address.flat_nm" placeholder="кв." style="background-color: var(--main-color); border-width: 0; width: 40px"/>
                     </div>
                 </td>
                 <td colspan="3">
                     <div class="passport-data-box" id="contract_add_document_data_payer" style="margin-top: 5px;">
-                                <input type="text" name="payer_document.person_surname_txt" placeholder="Фамилия" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)"/>
-                                <input type="text" name="payer_document.person_name_txt" placeholder="Имя" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)"/>
-                                <input type="text" name="payer_document.person_father_name_txt" placeholder="Отчество" style="background-color: #3b5998; border-width: 0; width: calc(33% - 2px)"/>
-                                <input type="text" name="payer_document.authority_txt" placeholder="Кем выдан" style="background-color: #3b5998; border-width: 0; width: 100%"/>
-                                <input type="text" name="payer_document.document_type_txt" placeholder="Тип документа" style="background-color: #3b5998; border-width: 0; width: calc(100% - 314px)"/>
-                                <input type="text" name="payer_document.authority_no" placeholder="Номер подразделения" style="background-color: #3b5998; border-width: 0; width: 90px"/>
-                                <input type="text" name="payer_document.issue_dt__day" placeholder="ДД" style="background-color: #3b5998; border-width: 0; width: 16px; margin-left: 20px"/>-
-                                <input type="text" name="payer_document.issue_dt__month" placeholder="ММ" style="background-color: #3b5998; border-width: 0; width: 16px"/>-
-                                <input type="text" name="payer_document.issue_dt__year" placeholder="ГГГГ" style="background-color: #3b5998; border-width: 0; width: 33px"/>
-                                <input type="text" name="payer_document.document_series" placeholder="Серия" style="background-color: #3b5998; border-width: 0; width: 33px; margin-left: 20px"/>
-                                <input type="text" name="payer_document.document_no" placeholder="Номер" style="background-color: #3b5998; border-width: 0; width: 50px"/>
+                                <input type="text" name="payer_document.person_surname_txt" placeholder="Фамилия" style="background-color: var(--main-color); border-width: 0; width: calc(33% - 2px)"/>
+                                <input type="text" name="payer_document.person_name_txt" placeholder="Имя" style="background-color: var(--main-color); border-width: 0; width: calc(33% - 2px)"/>
+                                <input type="text" name="payer_document.person_father_name_txt" placeholder="Отчество" style="background-color: var(--main-color); border-width: 0; width: calc(33% - 2px)"/>
+                                <input type="text" name="payer_document.authority_txt" placeholder="Кем выдан" style="background-color: var(--main-color); border-width: 0; width: 100%"/>
+                                <input type="text" name="payer_document.document_type_txt" placeholder="Тип документа" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 314px)"/>
+                                <input type="text" name="payer_document.authority_no" placeholder="Номер подразделения" style="background-color: var(--main-color); border-width: 0; width: 90px"/>
+                                <input type="text" name="payer_document.issue_dt__day" placeholder="ДД" style="background-color: var(--main-color); border-width: 0; width: 16px; margin-left: 20px"/>-
+                                <input type="text" name="payer_document.issue_dt__month" placeholder="ММ" style="background-color: var(--main-color); border-width: 0; width: 16px"/>-
+                                <input type="text" name="payer_document.issue_dt__year" placeholder="ГГГГ" style="background-color: var(--main-color); border-width: 0; width: 33px"/>
+                                <input type="text" name="payer_document.document_series" placeholder="Серия" style="background-color: var(--main-color); border-width: 0; width: 33px; margin-left: 20px"/>
+                                <input type="text" name="payer_document.document_no" placeholder="Номер" style="background-color: var(--main-color); border-width: 0; width: 50px"/>
 
                     </div>
                     <div class="address-data-box" id="contract_add_address_data_payer" style="margin-top: 5px;">
-                                <select name="payer_address.region_cd" style="background-color: #3b5998; border-width: 0; width: 150px; -webkit-appearance:none;" onclick="return false;">
+                                <select name="payer_address.region_cd" style="background-color: var(--main-color); border-width: 0; width: 150px; -webkit-appearance:none;" onclick="return false;">
                                     <option value="" disabled selected>Регион</option>
                                     {% for i, j in regions.items %}
                                         <option value="{{ i }}">{{ j }}</option>
                                     {% endfor %}
                                 </select>
-                                <input type="text" name="payer_address.area_txt" placeholder="Район" style="background-color: #3b5998; border-width: 0; width: calc(50% - 80px)" />
-                                <input type="text" name="payer_address.city_txt" placeholder="Город" style="background-color: #3b5998; border-width: 0; width: calc(50% - 80px)" />
-                                <input type="text" name="payer_address.street_txt" placeholder="Улица" style="background-color: #3b5998; border-width: 0; width: calc(100% - 194px)"/>
-                                <input type="text" name="payer_address.house_txt" placeholder="дом" style="background-color: #3b5998; border-width: 0; width: 40px"/>-
-                                <input type="text" name="payer_address.building_no" placeholder="стр." style="background-color: #3b5998; border-width: 0; width: 40px"/>-
-                                <input type="text" name="payer_address.structure_no" placeholder="корп." style="background-color: #3b5998; border-width: 0; width: 40px"/>-
-                                <input type="text" name="payer_address.flat_nm" placeholder="кв." style="background-color: #3b5998; border-width: 0; width: 40px"/>
+                                <input type="text" name="payer_address.area_txt" placeholder="Район" style="background-color: var(--main-color); border-width: 0; width: calc(50% - 80px)" />
+                                <input type="text" name="payer_address.city_txt" placeholder="Город" style="background-color: var(--main-color); border-width: 0; width: calc(50% - 80px)" />
+                                <input type="text" name="payer_address.street_txt" placeholder="Улица" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 194px)"/>
+                                <input type="text" name="payer_address.house_txt" placeholder="дом" style="background-color: var(--main-color); border-width: 0; width: 40px"/>-
+                                <input type="text" name="payer_address.building_no" placeholder="стр." style="background-color: var(--main-color); border-width: 0; width: 40px"/>-
+                                <input type="text" name="payer_address.structure_no" placeholder="корп." style="background-color: var(--main-color); border-width: 0; width: 40px"/>-
+                                <input type="text" name="payer_address.flat_nm" placeholder="кв." style="background-color: var(--main-color); border-width: 0; width: 40px"/>
                     </div>
                 </td>
             </tr>

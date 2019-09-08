@@ -4,23 +4,25 @@
                             <form action="" method="post" id="person_home_address_data_form_{{ object.pk }}" name="person_home_address_data_form_{{ object.pk }}">
                                 {% csrf_token %}
                                 <input type="hidden" name="id" value="{{ object.pk }}">
-                                <select name="region_cd" style="background-color: #3b5998; border-width: 0; width: 150px; -webkit-appearance:none;">
+                                <select name="region_cd" style="background-color: var(--main-color); border-width: 0; width: 150px; -webkit-appearance:none;">
                                     {% for i, j in REGIONS_DICT.items %}
                                         <option value="{{ i }}" {% if i == object.region_cd %}selected{% endif %}>{{ j }}</option>
                                     {% endfor %}
                                 </select>
-                                <input type="text" name="area_txt" value="{{ object.area_txt|default:'' }}" style="background-color: #3b5998; border-width: 0; width: calc(50% - 80px)" readonly/>
-                                <input type="text" name="city_txt" value="{{ object.city_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(50% - 80px)" readonly/>
-                                <input type="text" name="street_txt" value="{{ object.street_txt }}" style="background-color: #3b5998; border-width: 0; width: calc(100% - 194px)" readonly/>
-                                <input type="text" name="house_txt" value="{{ object.house_txt }}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
-                                <input type="text" name="building_no" value="{% if object.building_no %}{{ object.building_no }}{% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
-                                <input type="text" name="structure_no" value="{% if object.structure_no %}{{ object.structure_no }}{% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>-
-                                <input type="text" name="flat_nm" value="{% if object.flat_nm %}{{ object.flat_nm }}{% endif %}" style="background-color: #3b5998; border-width: 0; width: 40px" readonly/>
+                                <input type="text" name="area_txt" value="{{ object.area_txt|default:'' }}" style="background-color: var(--main-color); border-width: 0; width: calc(50% - 80px)" readonly/>
+                                <input type="text" name="city_txt" value="{{ object.city_txt }}" style="background-color: var(--main-color); border-width: 0; width: calc(50% - 80px)" readonly/>
+                                <input type="text" name="street_txt" value="{{ object.street_txt }}" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 194px)" readonly/>
+                                <input type="text" name="house_txt" value="{{ object.house_txt }}" style="background-color: var(--main-color); border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="building_no" value="{% if object.building_no %}{{ object.building_no }}{% endif %}" style="background-color: var(--main-color); border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="structure_no" value="{% if object.structure_no %}{{ object.structure_no }}{% endif %}" style="background-color: var(--main-color); border-width: 0; width: 40px" readonly/>-
+                                <input type="text" name="flat_nm" value="{% if object.flat_nm %}{{ object.flat_nm }}{% endif %}" style="background-color: var(--main-color); border-width: 0; width: 40px" readonly/>
                             </form>
                         </div>
-                        <button style="background-color: #3b5998; height: 65px;" onclick="enableEditObjectMode('person_home_address', {{ object.pk }})" id="person_home_address_data_button_{{ object.pk }}">
+<div class="buttons-table-horizontal default-buttons" style="width: 30px; margin-left: 5px;">
+                        <button style="height: 65px;" onclick="enableEditObjectMode('person_home_address', {{ object.pk }})" id="person_home_address_data_button_{{ object.pk }}">
                             <span class="glyphicon glyphicon-pencil" id="person_home_address_data_button_span_{{ object.pk }}"/>
                         </button>
+</div>
                     </div>
 {% else %}
     <div class="editing-field-container">

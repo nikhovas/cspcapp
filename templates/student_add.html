@@ -107,10 +107,20 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="text" name="region_cd" placeholder="Регион" style="border-width: 0;">
+                            <select name="region_cd" style="border-width: 0; width: 150px; -webkit-appearance:none;">
+                                    {% for i, j in REGIONS_DICT.items %}
+                                        <option value="{{ i }}">{{ j }}</option>
+                                    {% endfor %}
+                                </select>
+{#                            <input type="text" name="region_cd" placeholder="Регион" style="border-width: 0;">#}
                         </td>
                         <td>
-                            <input type="text" name="region_cd" placeholder="Регион" style="border-width: 0;">
+                            <select name="region_cd" style="border-width: 0; width: 150px; -webkit-appearance:none;">
+                                    {% for i, j in REGIONS_DICT.items %}
+                                        <option value="{{ i }}">{{ j }}</option>
+                                    {% endfor %}
+                                </select>
+{#                            <input type="text" name="region_cd" placeholder="Регион" style="border-width: 0;">#}
                         </td>
                     </tr>
                     <tr>
@@ -170,7 +180,9 @@
                 </table>
 
             <div>
+                <div class="buttons-table-horizontal default-buttons">
             <button style=" width: 100px; margin-bottom: 20px">Добавить</button>
+                </div>
         </div>
         </div>
         <div class="col-sm-5">
@@ -189,7 +201,7 @@
                             <input type="text" name="education_year" placeholder="ГГГГ" style="border-width: 0; width: 40px"/>
                         </td>
                         <td>
-                            <input type="text" name="school_name_txt" placeholder="№" style="border-width: 0; width: 26px;"/>
+                            <input type="text" name="school_name_txt" placeholder="№" style="border-width: 0; width: 100%;"/>
                         </td>
                         <td>
                             <input type="text" name="liter" placeholder="А" style="border-width: 0; width: 26px;">
@@ -212,18 +224,22 @@
                         <tr>
                             <td><select id="add_course_element_select" style="width: 100%">
                                 {% for elem in courses %}
-                                    <option value="{{ elem.pk }}">{{ elem.course.sphere_txt }}
-                                    {{ elem.course.name_txt }} {{ elem.teacher_person.person_surname_txt }}
-                                    {{ elem.teacher_person.person_name_txt }}
-                                    {% if elem.teacher_person.person_father_name_txt %}
-                                    {{ elem.teacher_person.person_father_name_txt }}
-                                    {% endif %} {{ elem.get_week_days_str }}
+                                    {% if not elem.deleted %}
+                                        <option value="{{ elem.pk }}">{{ elem.course.sphere_txt }} -
+                                        {{ elem.course.name_txt }} - {{ elem.course.short_nm }} - {{ elem.teacher_person.person_surname_txt }}
+                                        {{ elem.teacher_person.person_name_txt }}
+                                        {% if elem.teacher_person.person_father_name_txt %}
+                                        {{ elem.teacher_person.person_father_name_txt }}
+                                        {% endif %} - {{ elem.get_week_days_str }}
+                                    {% endif %}
                                 {% endfor %}
                             </select></td>
                             <td>
-                                <button type="button" style="width: 100%" onclick="addRow()">
-                                    <span class="glyphicon glyphicon-plus"></span>
-                                </button>
+                                <div class="buttons-table-horizontal default-buttons">
+                                    <button type="button" onclick="addRow()">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     </tfoot>

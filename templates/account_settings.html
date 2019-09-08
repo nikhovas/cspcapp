@@ -18,35 +18,20 @@
                         <td> Имя </td>
                         <td> Отчество </td>
                         <td> Дата рождения </td>
-                        <td style="width: 80px;"></td>
                     </tr>
                     </thead>
-                    <tr style="" id="student_row_{{ person.pk }}">
-                        {% csrf_token %}
-                        <input type="hidden" name="id" value="{{ person.pk }}" readonly>
-                        <td><input type="text" name="person_surname_txt" value="{{ person.person_surname_txt }}" style="width: 100%; border-width: 0;" readonly/></td>
-                        <td><input type="text" name="person_name_txt" value="{{ person.person_name_txt }}" style="width: 100%; border-width: 0;" readonly/></td>
-                        <td><input type="text" name="person_father_name_txt" value="{{ person.person_father_name_txt }}" style="width: 100%; border-width: 0;" readonly/></td>
-                        <td><input type="text" name="birth_dt_day" value="{{ person.birth_dt.day }}" style="border-width: 0; width: 18px; border-width: 0;" readonly/>-
-                        <input type="text" name="birth_dt_month" value="{{ person.birth_dt.month }}" style="border-width: 0; width: 18px; border-width: 0;" readonly/>-
-                        <input type="text" name="birth_dt_year" value="{{ person.birth_dt.year }}" style="border-width: 0; width: 33px; border-width: 0;" readonly/></td>
-                        <td>
-                            <button type="submit" onclick="enableEditObjectMode('student', {{ person.pk }})" id="student_data_button_{{ person.pk }}">
-                                                <span class="glyphicon glyphicon-pencil" id="student_data_button_span_{{ person.pk }}"></span>
-                                            </button>
-                            <a href="/person/{{ student_person.pk }}/"><span class="glyphicon glyphicon-time"></span></a>
-                        </td>
+                    <tr>
+                        <td>{{ person.person_surname_txt }}</td>
+                        <td>{{ person.person_name_txt }}</td>
+                        <td>{{ person.person_father_name_txt }}</td>
+                        <td>{{ person.birth_dt }}</td>
                     </tr>
                 </table>
 
-    <div style="width: 100%; background-color: #3b5998; padding: 20px; color: white">
-  Для изменения данных авторизации обращайтесь к администратору
+    <div style="width: 100%; background-color: var(--main-color); padding: 20px; color: white">
+  Для изменения данных обращайтесь к администратору
 </div>
 <br>
-    <h2 style="color: black">Изменить пароль</h2>
-    <a style="padding: 10px; background-color: #3b5998; color: white">Изменить пароль</a>
-
-<br><br><br>
     <h2 style="color: black">Отчеты о курсах</h2>
     {% for course_element, details_set in courses_info %}
         <h3 style="color: black;">{{ course_element.course.sphere_txt }} {{ course_element.course.name_txt }} {{ course_element.get_week_days_str }}</h3>
@@ -59,28 +44,11 @@
                                 <td style="width: 80px;"></td>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="course_detail_table_body_{{ course_element.pk }}">
                         {% for i in details_set %}
-                            <tr id="course_detail_row_{{ i.pk }}">
-                                {% csrf_token %}
-                                <input type="hidden" name="id" value="{{ i.pk }}">
-                                <td><input type="text" name="class_dt_day" value="{{ i.class_dt.day }}" placeholder="ДД" style="width: 24px; border-width: 0" readonly>-
-                                <input type="text" name="class_dt_month" value="{{ i.class_dt.month }}" placeholder="ММ" style="width: 24px; border-width: 0" readonly>-
-                                <input type="text" name="class_dt_year" value="{{ i.class_dt.year }}" placeholder="ГГГГ" style="width: 48px; border-width: 0" readonly></td>
-                                    <td><input type="text" name="start_tm_hour" value="{{ i.start_tm.hour }}" placeholder="ЧЧ" style="width: 24px; border-width: 0" readonly>
-                                        : <input type="text" name="start_tm_minute" value="{{ i.start_tm.minute }}" placeholder="ММ" style="width: 24px; border-width: 0" readonly></td>
-                                    <td><input type="text" name="end_tm_hour" value="{{ i.end_tm.hour }}" placeholder="ЧЧ" style="width: 24px; border-width: 0" readonly>
-                                        : <input type="text" name="end_tm_minute" value="{{ i.end_tm.minute }}" placeholder="ММ" style="width: 24px; border-width: 0" readonly></td>
-                                <td>
-
-                    <button id="course_detail_data_button_{{ i.pk }}" onclick="enableEditObjectMode('course_detail', {{ i.pk }})">
-                        <span id="course_detail_data_button_span_{{ i.pk }}" class="glyphicon glyphicon-pencil"></span>
-                    </button>
-                    <button id="delete_course_detail_data_button_{{ i.pk }}" onclick="deleteItem('course_detail', {{ i.pk }})">
-                            <span id="delete_course_detail_data_button_span_{{ i.pk }}" class="glyphicon glyphicon-remove"></span>
-                    </button>
-                                </td>
-                            </tr>
+                            {% with object=i %}
+                                {% include 'models/course_class/main.html' %}
+                            {% endwith %}
                             {% endfor %}
                         </tbody>
                         <tfoot>
@@ -94,16 +62,23 @@
                                     <td><input type="text" name="start_tm_hour" placeholder="ЧЧ" style="width: 30px;"> : <input type="text" name="start_tm_minute" placeholder="ММ" style="width: 30px;"></td>
                                     <td><input type="text" name="end_tm_hour" placeholder="ЧЧ" style="width: 30px;"> : <input type="text" name="end_tm_minute" placeholder="ММ" style="width: 30px;"></td>
                                 <td>
-                                    <button id="course_detail_add_button_{{ course_element.pk }}" onclick="addNewObject('course_detail', {{ course_element.pk }})">
+                                    <div class="buttons-table-horizontal default-buttons" style="width: 70px;">
+                                    <button id="course_detail_add_button_{{ course_element.pk }}" onclick="addNewCourseClass({{ course_element.pk }})">
                                         <span class="glyphicon glyphicon-plus" id="course_detail_add_button_span_{{ course_element.pk }}"></span>
                                     </button>
                                     <button>
                                         <span class="glyphicon glyphicon-erase"></span>
                                     </button>
+                                    </div>
                                 </td>
                         </tr>
                         </tfoot>
                     </table>
                 {% endfor %}
 
+{% endblock %}
+
+
+{% block scriptconnect %}
+    <script src="{% static 'javascript/settings.js' %}" ></script>
 {% endblock %}
