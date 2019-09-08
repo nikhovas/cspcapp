@@ -1,0 +1,148 @@
+{% if user.is_superuser %}
+<table class="table main-table contracts-table" style="width: 100%" id="contract_table_{{ object.pk }}">
+        <colgroup>
+            <col style="width: 45px">
+            <col style="width: 45px">
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+        </colgroup>
+        <thead>
+            <tr>
+                <td colspan="2">Общие данные</td>
+                <td colspan="3">Потребитель</td>
+                <td colspan="3">Плательщик</td>
+            </tr>
+        </thead>
+<tbody id="contract_table_body_{{ object.pk }}">
+        {% for object in object_set %}
+            {% if not object.deleted %}
+                {% include 'models/contract/main.html' %}
+            {% endif %}
+        {% endfor %}
+</tbody>
+<tfoot>
+<tr id="contract_add_row_{{ object.pk }}">
+                <td colspan="2">
+                    <div>
+                        <div class="non-editing-field-container">
+                            <div class="main-contract-data-box" style="width: 200px">
+                                {% csrf_token %}
+                                <select name="course_element_id" style="width: 100%; border-width: 0; -webkit-appearance:none; background-color: var(--main-color)">
+                                    <option disabled selected>Выберите элемент</option>
+                                    {% for i in courses %}
+                                        {% if i.length != 0 %}
+                                            <option value="{{ i.pk }}" disabled>{{ i.sphere_txt }} - {{ i.name_txt }}</option>
+                                            {% for j in i.courseelement_set.all%}
+                                                <option value="{{ j.pk }}">{{ j.teacher_person.get_surname_and_initials }} {{ j.get_week_days_str }}</option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <input type="hidden" name="student_person_id" value="{{ object.pk }}">
+                                +<input type="text" name="student_phone_no" placeholder="Телефон ученика" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 9px)"/>
+                                +<input type="text" name="payer_phone_no" placeholder="Телефон плательщика" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 9px)"/>
+                                <input type="text" name="payer_inn_no" placeholder="ИНН плательщика" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 9px)"/>
+                            </div>
+                        </div>
+                    </div>
+                    {% with db_table='contract' custom_width='200px;' %}
+                        <div class="buttons-table-horizontal default-buttons" style="width: 200px;">
+                                                    {% include 'buttons/add.html' %}
+                        </div>
+                                                {% endwith %}
+{#                    <button type="submit" style="background-color: var(--main-color); height: 45px; margin-top: 5px; width: 100%">#}
+{#                            <span class="glyphicon glyphicon-plus"/>#}
+{#                        </button>#}
+                </td>
+                <td colspan="3">
+                    <div class="passport-data-box" id="contract_add_document_data_student" style="margin-top: 5px;">
+                                <input type="text" name="student_document.person_surname_txt" placeholder="Фамилия" style="background-color: var(--main-color); border-width: 0; width: calc(33% - 2px)"/>
+                                <input type="text" name="student_document.person_name_txt" placeholder="Имя" style="background-color: var(--main-color); border-width: 0; width: calc(33% - 2px)"/>
+                                <input type="text" name="student_document.person_father_name_txt" placeholder="Отчество" style="background-color: var(--main-color); border-width: 0; width: calc(33% - 2px)"/>
+                                <input type="text" name="student_document.authority_txt" placeholder="Кем выдан" style="background-color: var(--main-color); border-width: 0; width: 100%"/>
+                                <input type="text" name="student_document.document_type_txt" placeholder="Тип документа" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 314px)"/>
+                                <input type="text" name="student_document.authority_no" placeholder="Номер подразделения" style="background-color: var(--main-color); border-width: 0; width: 90px"/>
+                                <input type="text" name="student_document.issue_dt__day" placeholder="ДД" style="background-color: var(--main-color); border-width: 0; width: 16px; margin-left: 20px"/>-
+                                <input type="text" name="student_document.issue_dt__month" placeholder="ММ" style="background-color: var(--main-color); border-width: 0; width: 16px"/>-
+                                <input type="text" name="student_document.issue_dt__year" placeholder="ГГГГ" style="background-color: var(--main-color); border-width: 0; width: 33px"/>
+                                <input type="text" name="student_document.document_series" placeholder="Серия" style="background-color: var(--main-color); border-width: 0; width: 33px; margin-left: 20px"/>
+                                <input type="text" name="student_document.document_no" placeholder="Номер" style="background-color: var(--main-color); border-width: 0; width: 50px"/>
+                    </div>
+                    <div class="address-data-box" id="contract_add_address_data_student" style="margin-top: 5px;">
+                                <select name="student_address.region_cd" style="background-color: var(--main-color); border-width: 0; width: 150px; -webkit-appearance:none;" onclick="return false;">
+                                    <option value="" disabled selected>Регион</option>
+                                    {% for i, j in regions.items %}
+                                        <option value="{{ i }}">{{ j }}</option>
+                                    {% endfor %}
+                                </select>
+                                <input type="text" name="student_address.area_txt" placeholder="Район" style="background-color: var(--main-color); border-width: 0; width: calc(50% - 80px)" />
+                                <input type="text" name="student_address.city_txt" placeholder="Город" style="background-color: var(--main-color); border-width: 0; width: calc(50% - 80px)"/>
+                                <input type="text" name="student_address.street_txt" placeholder="Улица" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 194px)"/>
+                                <input type="text" name="student_address.house_txt" placeholder="дом" style="background-color: var(--main-color); border-width: 0; width: 40px"/>-
+                                <input type="text" name="student_address.building_no" placeholder="стр." style="background-color: var(--main-color); border-width: 0; width: 40px"/>-
+                                <input type="text" name="student_address.structure_no" placeholder="корп." style="background-color: var(--main-color); border-width: 0; width: 40px"/>-
+                                <input type="text" name="student_address.flat_nm" placeholder="кв." style="background-color: var(--main-color); border-width: 0; width: 40px"/>
+                    </div>
+                </td>
+                <td colspan="3">
+                    <div class="passport-data-box" id="contract_add_document_data_payer" style="margin-top: 5px;">
+                                <input type="text" name="payer_document.person_surname_txt" placeholder="Фамилия" style="background-color: var(--main-color); border-width: 0; width: calc(33% - 2px)"/>
+                                <input type="text" name="payer_document.person_name_txt" placeholder="Имя" style="background-color: var(--main-color); border-width: 0; width: calc(33% - 2px)"/>
+                                <input type="text" name="payer_document.person_father_name_txt" placeholder="Отчество" style="background-color: var(--main-color); border-width: 0; width: calc(33% - 2px)"/>
+                                <input type="text" name="payer_document.authority_txt" placeholder="Кем выдан" style="background-color: var(--main-color); border-width: 0; width: 100%"/>
+                                <input type="text" name="payer_document.document_type_txt" placeholder="Тип документа" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 314px)"/>
+                                <input type="text" name="payer_document.authority_no" placeholder="Номер подразделения" style="background-color: var(--main-color); border-width: 0; width: 90px"/>
+                                <input type="text" name="payer_document.issue_dt__day" placeholder="ДД" style="background-color: var(--main-color); border-width: 0; width: 16px; margin-left: 20px"/>-
+                                <input type="text" name="payer_document.issue_dt__month" placeholder="ММ" style="background-color: var(--main-color); border-width: 0; width: 16px"/>-
+                                <input type="text" name="payer_document.issue_dt__year" placeholder="ГГГГ" style="background-color: var(--main-color); border-width: 0; width: 33px"/>
+                                <input type="text" name="payer_document.document_series" placeholder="Серия" style="background-color: var(--main-color); border-width: 0; width: 33px; margin-left: 20px"/>
+                                <input type="text" name="payer_document.document_no" placeholder="Номер" style="background-color: var(--main-color); border-width: 0; width: 50px"/>
+
+                    </div>
+                    <div class="address-data-box" id="contract_add_address_data_payer" style="margin-top: 5px;">
+                                <select name="payer_address.region_cd" style="background-color: var(--main-color); border-width: 0; width: 150px; -webkit-appearance:none;" onclick="return false;">
+                                    <option value="" disabled selected>Регион</option>
+                                    {% for i, j in regions.items %}
+                                        <option value="{{ i }}">{{ j }}</option>
+                                    {% endfor %}
+                                </select>
+                                <input type="text" name="payer_address.area_txt" placeholder="Район" style="background-color: var(--main-color); border-width: 0; width: calc(50% - 80px)" />
+                                <input type="text" name="payer_address.city_txt" placeholder="Город" style="background-color: var(--main-color); border-width: 0; width: calc(50% - 80px)" />
+                                <input type="text" name="payer_address.street_txt" placeholder="Улица" style="background-color: var(--main-color); border-width: 0; width: calc(100% - 194px)"/>
+                                <input type="text" name="payer_address.house_txt" placeholder="дом" style="background-color: var(--main-color); border-width: 0; width: 40px"/>-
+                                <input type="text" name="payer_address.building_no" placeholder="стр." style="background-color: var(--main-color); border-width: 0; width: 40px"/>-
+                                <input type="text" name="payer_address.structure_no" placeholder="корп." style="background-color: var(--main-color); border-width: 0; width: 40px"/>-
+                                <input type="text" name="payer_address.flat_nm" placeholder="кв." style="background-color: var(--main-color); border-width: 0; width: 40px"/>
+                    </div>
+                </td>
+            </tr>
+</tfoot>
+    </table>
+{#    <form method="post">#}
+{#        <table class="table main-table" style="width: 100%">#}
+{#            #}
+{#        </table>#}
+{#    </form>#}
+{% else %}
+<table class="table main-table contracts-table" style="width: 100%">
+        <thead>
+            <tr>
+                <td>Направление</td>
+                <td>Полное имя</td>
+                <td>Краткое имя</td>
+                <td>Учитель</td>
+                <td style="width: 40px;"></td>
+            </tr>
+        </thead>
+        {% for object in object_set %}
+            {% if object.course_element.teacher_person == user.authuserxperson.person %}
+                {% include 'models/contract/main.html' %}
+            {% endif %}
+        {% endfor %}
+    </table>
+
+{% endif %}

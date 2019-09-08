@@ -17,17 +17,18 @@ def overview_get_format(params: dict) -> dict:
 
 
 def make_date_in_dict(d: dict, name: str):
-    d[name] = date(int(d[name + '_year']), int(d[name + '_month']), int(d[name + '_day']))
-    del d[name + '_year']
-    del d[name + '_month']
-    del d[name + '_day']
+    print(d)
+    d[name] = date(int(d[name + '__year']), int(d[name + '__month']), int(d[name + '__day']))
+    del d[name + '__year']
+    del d[name + '__month']
+    del d[name + '__day']
 
 
-def make_date_in_dict(d: dict, name: str):
-    d[name] = date(int(d[name + '_year']), int(d[name + '_month']), int(d[name + '_day']))
-    del d[name + '_year']
-    del d[name + '_month']
-    del d[name + '_day']
+# def make_date_in_dict(d: dict, name: str):
+#     d[name] = date(int(d[name + '__year']), int(d[name + '__month']), int(d[name + '__day']))
+#     del d[name + '__year']
+#     del d[name + '__month']
+#     del d[name + '__day']
 
 
 def rename_arg_in_dict(d: dict, _from: str, to: str):
@@ -36,16 +37,16 @@ def rename_arg_in_dict(d: dict, _from: str, to: str):
 
 
 def reformat_date_to_timestamp(d: dict, name: str):
-    d[name] = datetime(int(d[name + '_year']), int(d[name + '_month']), int(d[name + '_day']))
-    del d[name + '_year']
-    del d[name + '_month']
-    del d[name + '_day']
+    d[name] = datetime(int(d[name + '__year']), int(d[name + '__month']), int(d[name + '__day']))
+    del d[name + '__year']
+    del d[name + '__month']
+    del d[name + '__day']
 
 
 def make_time_in_dict(d: dict, name: str):
-    d[name] = time(int(d[name + '_hour']), int(d[name + '_minute']))
-    del d[name + '_hour']
-    del d[name + '_minute']
+    d[name] = time(int(d[name + '__hour']), int(d[name + '__minute']))
+    del d[name + '__hour']
+    del d[name + '__minute']
 
 
 def reconstruct_params(params: dict, to_int: list = [], to_date: list = [], date_to_timestamp = [], renaming: dict = {},

@@ -1,3 +1,8 @@
+String.prototype.replaceAll = function(search, replacement) {
+    return this.split(search).join(replacement);
+};
+
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -44,6 +49,21 @@ function serializeObject(object) {
 }
 
 
+function htmlInputToObject(object) {
+    let result = {};
+    object.find("input,select").each(function(item) {
+        if (this.type === 'checkbox') {
+            result[this.name] = $(this).is(':checked');
+        } else {
+            result[this.name] = this.value;
+        }
+
+    });
+    console.log(result);
+    return result;
+}
+
+
 function jsonFromObject(object) {
     let arr = [];
     object.find("input,select").each(function(item) {
@@ -81,3 +101,18 @@ function pair_array_to_map(array) {
 function aaa() {
     $("#dialog").dialog();
 }
+
+// window.onload = function () {
+//     if (!sessionStorage.getItem('is_session_data_loaded')) {
+//         $.ajax({
+//             url : `/session_data/`,
+//             dataType : "json",
+//             success : function(json) {
+//                 for (let key in json) {
+//                     sessionStorage.setItem(key, JSON.stringify(json[key]));
+//                     console.log(json[key]);
+//                 }
+//             }
+//         });
+//     }
+// };

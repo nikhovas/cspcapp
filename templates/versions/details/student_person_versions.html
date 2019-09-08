@@ -1,4 +1,4 @@
-<hr color="#3b5998" style="border-color: white; border-width: 4px; margin: -10px;"/>
+<hr color="var(--main-color)" style="border-color: white; border-width: 4px; margin: -10px;"/>
 
         <div style="margin-bottom: 60px">
             <h2 style="color: darkblue; margin-bottom: 30px">Данные студента</h2>
@@ -35,15 +35,21 @@
             </tr>
         </thead>
         {% for contract in object.contract_set.all %}
-            <tr id="contract_version_row_{{ contract.pk }}">
+            <tr id="contract_version_row_{{ contract.pk }}" {% if contract.deleted %}style="background-color: #C1899B"{% endif %}>
 {#            <td>{{ contract.course_element }}</td>#}
+                {% if not contract.deleted %}
                 <td>{{ contract.course_element.course.sphere_txt }}</td>
                 <td>{{ contract.course_element.course.name_txt }}</td>
                 <td>{{ contract.course_element.course.short_nm }}</td>
+                {% else %}
+                    <td colspan="3">{% if contract.contracttermination %}{{ contract.contracttermination.course_name_txt }}{% endif %}</td>
+                {% endif %}
                 <td>
-                    <button onclick="toggleInfoTab('contract_version', {{ contract.pk }})">
-                        <span id="contract_version_row_more_info_button_span_{{ contract.pk }}" class="glyphicon glyphicon-arrow-down"></span>
-                    </button>
+                <div class="buttons-table-horizontal default-buttons">
+                    {% with versions=True object=contract %}
+                        {% include 'buttons/goto.html' %}
+                    {% endwith %}
+                </div>
                 </td>
             </tr>
             <tr id="contract_version_row_more_info_{{ contract.pk }}" hidden="true">

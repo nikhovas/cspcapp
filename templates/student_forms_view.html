@@ -74,16 +74,18 @@
                     {% endfor %}
                 </td>
                 <td>
+                    <div class="buttons-table-horizontal default-buttons">
                     <button onclick="submit_student({{ elem.pk }})">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button><br>
                                             <button style="margin-top: 10px;" onclick="deleteItem('student_request', {{ elem.pk }})"><span class="glyphicon glyphicon-remove"></span></button>
+                    </div>
                 </td>
             </tr>
         {% endfor %}
     </table>
-
-    <div class="search-box">
+    <div class="static-right-block">
+    <div class="filter-div">
         <form method="GET">
             <h3>Поиск</h3>
             <input type="text" name="surname" value="{{ request_get.surname }}" placeholder="Фамилия"/>
@@ -101,6 +103,7 @@
                 </tr>
             </table>
         </form>
+    </div>
     </div>
 
 

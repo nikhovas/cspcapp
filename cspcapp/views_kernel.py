@@ -8,6 +8,16 @@ from django.template import Context
 from io import StringIO, BytesIO
 from .constants import REGIONS_DICT, PAYMENT_TYPES
 from xhtml2pdf import pisa
+from django.core.exceptions import PermissionDenied
+
+
+def superuser_only(function):
+    def _inner(request, *args, **kwargs):
+        if not request.user.is_superuser:
+            raise PermissionDenied
+        return function(request, *args, **kwargs)
+
+    return _inner
 
 
 def add_contract(user, student: StudentPerson, course_element, **data):
@@ -61,27 +71,43 @@ def add_contract(user, student: StudentPerson, course_element, **data):
 
 
 def add_student(user, **data):
-    person = Person(person_surname_txt=data['person_surname_txt'][0],
-                    person_name_txt=data['person_name_txt'][0],
-                    person_father_name_txt=data['person_father_name_txt'][0]
-                    if data['person_father_name_txt'][0] != '' else None,
-                    birth_dt=data['birth_dt'][0] if 'birth_dt' in data else
-                    datetime.date(int(data['birth_year'][0]), int(data['birth_month'][0]), int(data['birth_day'][0])),
-                    change_user=user)
-    person.save()
+    person = None
+    student = None
+    person_ok = False
+    student_ok = False
+    try:
+        person = Person(person_surname_txt=data['person_surname_txt'][0],
+                        person_name_txt=data['person_name_txt'][0],
+                        person_father_name_txt=data['person_father_name_txt'][0]
+                        if data['person_father_name_txt'][0] != '' else None,
+                        birth_dt=data['birth_dt'][0] if 'birth_dt' in data else
+                        datetime.date(int(data['birth_year'][0]), int(data['birth_month'][0]), int(data['birth_day'][0])),
+                        change_user=user)
+        person.save()
+        person_ok = True
 
-    student = StudentPerson(education_start_year=data['education_dt'][0] if 'education_dt' in data else
-                            datetime.date(int(data['education_year'][0]), int(data['education_month'][0]),
-                                          int(data['education_day'][0])),
-                            school_name_txt=data['school_name_txt'][0],
-                            liter=data['liter'][0], person=person, change_user=user)
-    student.save()
+        student = StudentPerson(education_start_year=data['education_dt'][0] if 'education_dt' in data else
+                                datetime.date(int(data['education_year'][0]), int(data['education_month'][0]),
+                                              int(data['education_day'][0])),
+                                school_name_txt=data['school_name_txt'][0],
+                                liter=data['liter'][0], person=person, change_user=user)
+        student.save()
+        student_ok= True
 
-    if 'course_element' in data:
-        for i in data['course_element'] if hasattr(data['course_element'], '__iter__') \
-                else data['course_element'].split(' '):
-            print(i)
-            add_contract(user, student=student, course_element_id=i, **data)
+        if 'course_element' in data:
+            for i in data['course_element'] if hasattr(data['course_element'], '__iter__') \
+                    else data['course_element'].split(' '):
+                print(i)
+                add_contract(user, student=student, course_element_id=i, **data)
+    except Exception:
+        if student_ok:
+            cur = connection.cursor()
+            cur.execute(f"DELETE FROM student_person WHERE person_id = {student.pk}")
+        if person_ok:
+            cur = connection.cursor()
+            cur.execute(f"DELETE FROM person WHERE person_id = {person.pk}")
+        raise
+
 
 
 def fetch_pdf_resources(uri, rel):

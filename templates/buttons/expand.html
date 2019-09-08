@@ -1,0 +1,9 @@
+{% if custom %}
+<button onclick="toggleInfoTab('{{ name }}', {{ id }})" {% if inversed %}style="background-color: white; color: var(--main-color)"{% endif %}>
+    <span id="{{ name }}_row_more_info_button_span_{{ id }}" class="glyphicon glyphicon-arrow-down"></span>
+</button>
+{% else %}
+<button onclick="toggleInfoTab('{{ db_table }}', {{ object.pk }})" {% if inversed %}style="background-color: white; color: var(--main-color)"{% endif %}>
+    <span id="{{ db_table }}_row_more_info_button_span_{{ object.pk }}" class="glyphicon glyphicon-arrow-down"></span>
+</button>
+{% endif %}

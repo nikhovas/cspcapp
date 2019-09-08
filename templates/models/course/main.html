@@ -1,0 +1,29 @@
+<tr id="course_row_{{ object.pk }}">
+{#    <form method="post" id="course_data_form_{{ object.pk }}">#}
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ object.pk }}">
+        <td><input type="text" name="sphere_txt" value="{{ object.sphere_txt }}" style="border-width: 0; width: 100%;" readonly/></td>
+        <td><input type="text" name="name_txt" value="{{ object.name_txt }}" style="border-width: 0; width: 100%;" readonly/></td>
+        <td><input type="text" name="short_nm" value="{{ object.short_nm }}" style="border-width: 0; width: 100%;" readonly/></td>
+        <td><input type="text" name="price_per_hour" value="{{ object.price_per_hour }}" style="border-width: 0; width: 100%;" readonly/></td>
+        <td><input type="text" name="number_of_hours" value="{{ object.number_of_hours }}" style="border-width: 0; width: 100%;" readonly/></td>
+        <td>{{ object.total_price }}</td>
+        <td><input type="text" name="number_of_month" value="{{ object.number_of_month }}" style="border-width: 0; width: 100%;" readonly/></td>
+{#    </form>#}
+                <td>
+                    <div class="buttons-table-horizontal default-buttons">
+                    {{ object.expand_button }}
+                        {% if user.is_superuser %}
+                    {{ object.edit_button }}
+                    {{ object.remove_button }}
+                        {% endif %}
+                        </div>
+                </td>
+            </tr>
+            <tr id="course_row_more_info_{{ object.pk }}" hidden="true">
+                <td colspan="8">
+                    {% with object_set=object.courseelement_set.all parent=object %}
+                        {% include 'models/course_element/query.html' %}
+                    {% endwith %}
+                </td>
+            </tr>

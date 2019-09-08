@@ -1,6 +1,4 @@
-body {
-  background-color: whitesmoke;
-}
+
 
 .circle {
     width: 46px;
@@ -8,7 +6,8 @@ body {
     /*-webkit-border-radius: 20px;*/
     /*-moz-border-radius: 20px;*/
     border-radius: 50%;
-    background: #596E98;
+    background: var(--main-color-to-white-middle);
+    color: var(--main-color);
 }
 
 
@@ -19,9 +18,15 @@ body {
     z-index: 2;
     top: 0;
     left: 0;
-    background-color: #3b5998;
+    background-color: var(--main-color);
     overflow-x: hidden;
     padding-top: 20px;
+    margin: 0;
+}
+
+.sidebar * {
+    margin: 0;
+    padding: 0;
 }
 
 .sidebar-element {
@@ -30,11 +35,12 @@ body {
 
 .sidebar-element a span {
     margin-top: 10px;
+    /*border-left:*/
 }
 
 .sidebar-element:hover,
 .exit-button:hover{
-    background: #8b9dc3;
+    background: var(--main-color-to-white-middle);
 }
 
 
@@ -111,7 +117,7 @@ input[type="checkbox"][readonly] {
     margin-left: 50px;
     margin-top: -100px;
     position: fixed;
-    background-color: #3b5998;
+    background-color: var(--main-color);
     color: white;
     min-width: 100px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -130,7 +136,7 @@ input[type="checkbox"][readonly] {
     margin: 0;
 }
 
-.dropdown-content a:hover {background-color: #8b9dc3}
+.dropdown-content a:hover {background-color: var(--main-color-to-white-middle);}
 
 
 .dropdown:hover .dropdown-content {

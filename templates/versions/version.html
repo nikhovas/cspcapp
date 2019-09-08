@@ -2,9 +2,24 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-    <title>Изменения</title>
+    <title>История: {{ object.ru_localization }} ID: {{ object.pk }} </title>
 {% endblock %}
 
 {% block content %}
+
+    <h1>
+    {{ object.ru_localization }} ID: {{ object.pk }}
+
+{% if object.deleted %}
+    <div style="display: inline-block; background-color: #983b59; padding: var(--main-margin-padding); margin: var(--main-margin-padding); color: white;">
+    Удален
+    </div>
+{% else %}
+    <div style="display: inline-block; background-color: #59983b; padding: var(--main-margin-padding); margin: var(--main-margin-padding); color: white;">
+    Активен
+    </div>
+{% endif %}
+</h1>
+
     {{ object.version_history_html_table }}
 {% endblock %}

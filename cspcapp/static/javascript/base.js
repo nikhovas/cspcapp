@@ -9,3 +9,4 @@ function update_google_info() {
         url : `/google/api/update_form/`
     });
 }
+

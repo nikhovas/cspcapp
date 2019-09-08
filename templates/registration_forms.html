@@ -24,7 +24,7 @@
                 <td>Отчество</td>
                 <td style="width: 140px">Дата рождения</td>
                 <td>Логин</td>
-                <td style="width: 110px"></td>
+                <td style="width: 130px"></td>
             </tr>
         </thead>
         {% for user in forms %}
@@ -34,11 +34,12 @@
                 <td><input type="text" name="person_surname_txt" value="{{ user.person_surname_txt }}" style="border-width: 0; width: 100%;" readonly/></td>
                 <td><input type="text" name="person_name_txt" value="{{ user.person_name_txt }}" style="border-width: 0; width: 100%;" readonly/></td>
                 <td><input type="text" name="person_father_name_txt" value="{{ user.person_father_name_txt }}" style="border-width: 0; width: 100%;" readonly/></td>
-                <td><input type="text" name="birth_dt_day" value="{{ user.birth_dt.day }}" style="border-width: 0; width: 18px;" readonly/>-
-                <input type="text" name="birth_dt_month" value="{{ user.birth_dt.month }}" style="border-width: 0; width: 18px;" readonly/>-
-                <input type="text" name="birth_dt_year" value="{{ user.birth_dt.year }}" style="border-width: 0; width: 33px;" readonly/>
+                <td><input type="text" name="birth_dt__day" value="{{ user.birth_dt.day|stringformat:"02d" }}" style="border-width: 0; width: 18px;" readonly/>-
+                <input type="text" name="birth_dt__month" value="{{ user.birth_dt.month|stringformat:"02d" }}" style="border-width: 0; width: 18px;" readonly/>-
+                <input type="text" name="birth_dt__year" value="{{ user.birth_dt.year|stringformat:"04d" }}" style="border-width: 0; width: 33px;" readonly/>
                 <td><input type="text" name="username" value="{{ user.username }}" style="border-width: 0; width: 100%;" readonly/></td>
                 <td>
+                    <div class="buttons-table-horizontal default-buttons">
                     <button onclick="submit_user({{ user.registration_request_id }})">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
@@ -46,6 +47,7 @@
                                                 <span class="glyphicon glyphicon-pencil" id="reg_form_data_button_span_{{ user.registration_request_id }}"></span>
                                             </button>
                                             <button onclick="deleteItem('reg_form', {{ user.registration_request_id }})"><span class="glyphicon glyphicon-remove"></span></button>
+                    </div>
 
                 </td>
             </tr>

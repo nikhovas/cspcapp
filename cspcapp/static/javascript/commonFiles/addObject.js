@@ -7,7 +7,7 @@ function addNewObject(type, parent_id) {
         type : "POST",
         data : serializeObject( $(`#${type}_add_row_${parent_id}`) ),
         dataType : "json",
-        success : function(json) { addObjectSuccess(type, json["new_element_id"], parent_id); },
+        success : function(json) { addObjectSuccess(type, json, parent_id); },
         error : function(xhr,errmsg,err) { alert("Err: " + xhr.responseText); addObjectFailure(type, parent_id); },
     });
 }
@@ -25,14 +25,10 @@ function addObjectFailure(type, parent_id) {
 }
 
 
-function addObjectSuccess(type, id, parent_id) {
-    let form = $(`#${type}_add_row_${parent_id}`);
-    let form_data = jsonFromObject(form);
-    // let template = window[`${type}Template`](form_data, id);
-    // let table = document.getElementById(`${type}_table_${parent_id}`);
-    $(`#${type}_table_${parent_id}`).find('tbody').append(window[`${type}Template`](form_data, id));
-    // table.insertRow(table.rows.length - 1).innerHTML = template;
-    form.trigger("reset");
+function addObjectSuccess(type, json, parent_id) {
+    $(`#${type}_table_body_${parent_id}`).append(json.html);
+    console.log(json.html);
+    $(`#${type}_add_row_${parent_id}`).trigger("reset");
     resetAddButtonStatus(type, parent_id);
 }
 

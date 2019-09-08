@@ -1,3 +1,5 @@
+
+
 <div style="margin-top: 80px; margin-bottom: 60px">
         <h2 style="color: darkblue; margin-bottom: 30px">Общие сведения</h2>
 
@@ -24,76 +26,168 @@
         </table>
     </div>
 
+{% if not object.deleted %}
+    {% if object.student_document %}
+        <div style="margin-bottom: 60px">
+        <h2 style="color: darkblue; margin-bottom: 30px">Данные потребителя</h2>
+    {{ object.student_document.version_history_html_table }}
+    </div>
+        {% endif %}
 
+
+        {% else %}
+    {% if object.first_version.student_document %}
     <div style="margin-bottom: 60px">
         <h2 style="color: darkblue; margin-bottom: 30px">Данные потребителя</h2>
-        {{ object.student_document.version_history_html_table }}
+    {{ object.first_version.student_document.version_history_html_table }}
     </div>
+        {% endif %}
+
+        {% endif %}
 
 
+
+{% if not object.deleted %}
+    {% if object.student_address %}
+        <div style="margin-bottom: 60px">
+        <h2 style="color: darkblue; margin-bottom: 30px">Место проживания потребителя</h2>
+    {{ object.student_address.version_history_html_table }}
+    </div>
+        {% endif %}
+
+
+        {% else %}
+    {% if object.first_version.student_address %}
     <div style="margin-bottom: 60px">
         <h2 style="color: darkblue; margin-bottom: 30px">Место проживания потребителя</h2>
-        {{ object.student_address.version_history_html_table }}
+    {{ object.first_version.student_address.version_history_html_table }}
     </div>
+        {% endif %}
+
+        {% endif %}
+
+
+
+{#    <div style="margin-bottom: 60px">#}
+{#        <h2 style="color: darkblue; margin-bottom: 30px">Место проживания потребителя</h2>#}
+{#        {% if not object.deleted %}#}
+{#            {{ object.student_address.version_history_html_table }}#}
+{#        {% else %}#}
+{#            {{  object.first_version.student_address.version_history_html_table }}#}
+{#        {% endif %}#}
+{#    </div>#}
 
     <div style="margin-bottom: 60px">
         <h2 style="color: darkblue; margin-bottom: 30px">Данные плательщика</h2>
-        {{ object.payer_document.version_history_html_table }}
+        {% if not object.deleted %}
+            {{ object.payer_document.version_history_html_table }}
+        {% else %}
+            {{  object.first_version.payer_document.version_history_html_table }}
+        {% endif %}
     </div>
-
 
     <div style="margin-bottom: 60px">
         <h2 style="color: darkblue; margin-bottom: 30px">Место проживания платильщика</h2>
-        {{ object.student_address.version_history_html_table }}
+        {% if not object.deleted %}
+            {{ object.payer_address.version_history_html_table }}
+        {% else %}
+            {{  object.first_version.payer_address.version_history_html_table }}
+        {% endif %}
     </div>
+{% if object.deleted %}
+<div style="width: 100%; padding: var(--main-margin-padding); background-color: #C1899B; color: white;">
+    {% if object.contracttermination %}
+        Контракт расторгнут {{ object.contracttermination.termination_dt }}<br>
+        Курс:    {{ object.contracttermination.course_name_txt }}<br>
+        Причина:    {{ object.contracttermination.termination_reason_txt }}
+        {% else %}
+        Контракт удален без информации о расторжении
+        {% endif %}
+</div>
+{% endif %}
 
 <table class="table main-table" style="width: 100%">
-        <thead>
-            <tr>
-                <td>Оплаты</td>
-                <td style="width: 40px;"><button onclick="toggleInfoTab('contract_payment_version', 0)" style="background-color: white; color: #3b5998">
-                        <span id="contract_payment_version_row_more_info_button_span_0" class="glyphicon glyphicon-arrow-down" ></span>
-                    </button></td>
-            </tr>
-        </thead>
-
-            <tr id="contract_payment_version_row_more_info_0" hidden="true">
-            <td colspan="2">
-                <div>
-                    <h3 style="color: black">Действующие</h3>
-                    {% for payment in object.contractpayment_set.all %}
+    <thead>
+    <tr>
+        <td>Оплаты</td>
+        <td style="width: 40px;">
+        <div class="buttons-table-horizontal default-buttons">
+            {% with inversed=True custom=True name='contract_payment_version' id=0 %}
+                {% include 'buttons/expand.html' %}
+            {% endwith %}
+        </div>
+{#            <button onclick="toggleInfoTab('contract_payment_version', 0)" style="background-color: white; color: var(--main-color)">#}
+{#                <span id="contract_payment_version_row_more_info_button_span_0" class="glyphicon glyphicon-arrow-down" ></span>#}
+{#            </button>#}
+        </td>
+    </tr>
+    </thead>
+    <tr id="contract_payment_version_row_more_info_0" hidden="true">
+        <td colspan="2">
+            <div>
+                <h3 style="color: black">Действующие</h3>
+                {% for payment in object.contractpayment_set.all %}
                     {% if not payment.deleted %}
                         <table class="table main-table" style="width: 100%; text-align: left;">
-            <thead>
-                <tr>
-                    <td>Дата оплаты</td>
-                    <td>Размер оплаты</td>
-                    <td>Тип оплаты</td>
-                    <td>Номер квитанции</td>
-                    <td>Логин пользователя</td>
-                    <td>Время изменения</td>
-                </tr>
-            </thead>
-            {% for elem in payment.version_history %}
-
-                    <tr>
-                        <td>{{ elem.payment_dt }}</td>
-                        <td>{{ elem.payment_amt }}</td>
-                        <td>{{ elem.payment_type }}</td>
-                        <td>{{ elem.voucher_no }}</td>
-                        <td>{{ elem.change_user }}</td>
-                        <td>{{ elem.change_timestamp }}</td>
-                    </tr>
-
-            {% endfor %}
-
-        </table>
-                        {% endif %}
-                    {% endfor %}
-
-                    <h3 style="color: black">Удаленные</h3>
-
-                </div>
-                </td>
-            </tr>
-    </table>
+                            <thead>
+                            <tr>
+                                <td>Дата оплаты</td>
+                                <td>Размер оплаты</td>
+                                <td>Тип оплаты</td>
+                                <td>Номер квитанции</td>
+                                <td>Логин пользователя</td>
+                                <td>Время изменения</td>
+                            </tr>
+                            </thead>
+                            {% for elem in payment.version_history %}
+                                <tr>
+                                    <td>{{ elem.payment_dt }}</td>
+                                    <td>{{ elem.payment_amt }}</td>
+                                    <td>{{ elem.payment_type }}</td>
+                                    <td>{{ elem.voucher_no }}</td>
+                                    <td>{{ elem.change_user }}</td>
+                                    <td>{{ elem.change_timestamp }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endif %}
+                {% endfor %}
+                <h3 style="color: black">Удаленные</h3>
+                {% for payment in object.contractpayment_set.all %}
+                    {% if payment.deleted %}
+                        <table class="table main-table" style="width: 100%; text-align: left;">
+                            <thead>
+                            <tr>
+                                <td>Дата оплаты</td>
+                                <td>Размер оплаты</td>
+                                <td>Тип оплаты</td>
+                                <td>Номер квитанции</td>
+                                <td>Логин пользователя</td>
+                                <td>Время изменения</td>
+                            </tr>
+                            </thead>
+                            {% for elem in payment.version_history %}
+                                {% if not forloop.last %}
+                                    <tr>
+                                        <td>{{ elem.payment_dt }}</td>
+                                        <td>{{ elem.payment_amt }}</td>
+                                        <td>{{ elem.payment_type }}</td>
+                                        <td>{{ elem.voucher_no }}</td>
+                                        <td>{{ elem.change_user }}</td>
+                                        <td>{{ elem.change_timestamp }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr style="background-color: #C1899B">
+                                        <td colspan="4" style="font-style: italic; text-align: center;">&lt;Удалено&gt;</td>
+                                        <td>{{ elem.change_user }}</td>
+                                        <td>{{ elem.change_timestamp }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </td>
+    </tr>
+</table>
