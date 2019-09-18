@@ -97,7 +97,6 @@ def add_student(user, **data):
         if 'course_element' in data:
             for i in data['course_element'] if hasattr(data['course_element'], '__iter__') \
                     else data['course_element'].split(' '):
-                print(i)
                 add_contract(user, student=student, course_element_id=i, **data)
     except Exception:
         if student_ok:
@@ -118,7 +117,6 @@ def generate_contract_pdf(pk: int):
     result = BytesIO()
     template = get_template('docs/contract_paper.html')
     html = template.render({'contract': Contract.objects.get(pk=pk), 'REGIONS_DICT': REGIONS_DICT})
-    print(settings.PROJECT_ROOT)
     pdf = pisa.CreatePDF(BytesIO(html.encode('UTF-8')), dest=result, encoding='UTF-8',
                          link_callback=fetch_pdf_resources)
     if not pdf.err:
@@ -133,7 +131,6 @@ def generate_contract_pdf_unchecked(student_req: StudentRequest):
         result = BytesIO()
         template = get_template('docs/contract_paper_unchecked.html')
         html = template.render({'data': student_req, 'REGIONS_DICT': REGIONS_DICT, 'course_element': elem})
-        print(settings.PROJECT_ROOT)
         pdf = pisa.CreatePDF(BytesIO(html.encode('UTF-8')), dest=result, encoding='UTF-8',
                              link_callback=fetch_pdf_resources)
         yield result.getvalue()

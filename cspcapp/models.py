@@ -81,7 +81,6 @@ class Model(models.Model):
         connections = set()
         for i in self.__class__._meta.get_fields():
             if i.auto_created and not i.concrete:
-                print(i.on_delete not in ignore_options)
                 rel_class = i.related_model
                 related_objects = rel_class.objects.filter(**{i.field_name: self.pk})
                 if related_objects.count() is not 0:
@@ -93,7 +92,7 @@ class Model(models.Model):
 
     def simple_version_history_html_table(self):
         for i in self.__class__._meta.get_fields():
-            print(i.__dict__)
+            pass
 
     @property
     def version_history_html_table(self) -> str:
@@ -157,7 +156,6 @@ class Model(models.Model):
         for i in self.__class__._meta.get_fields():
             if i.auto_created and not i.concrete:
                 rel_class = i.related_model
-                print(i.__dict__)
                 rel_objects = rel_class.objects.filter(**{i.field_name: self.pk})
                 if i.on_delete == models.CASCADE:
                     if hasattr(i.related_model, 'delete_connections'):

@@ -85,12 +85,24 @@ WSGI_APPLICATION = 'cspc.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         # 'NAME': 'main_db',
+#         'NAME': 'postgres',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5440',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'main_db',
-        'HOST': '127.0.0.1',
-        'PORT': '5437',
+        'USER': 'superuser',
+        'PASSWORD': 'asdfasdf12341234',
+        'HOST': 'rc1b-7ioyf7czwvj11sgf.mdb.yandexcloud.net',
+        'PORT': '6432',
     }
 }
 
