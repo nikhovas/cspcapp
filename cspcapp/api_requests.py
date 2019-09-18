@@ -35,10 +35,8 @@ def data_edit(request: WSGIRequest, object_type: str) -> HttpResponse:
     editing_object = config.type_name.objects.get(pk=request.POST['id'])
     del params['csrfmiddlewaretoken']
     del params['id']
-    print(params)
     reconstruct_args(params=params, to_date=config.to_date, date_to_timestamp=config.date_to_timestamp,
                      to_time=config.to_time)
-    print(params)
     for i, j in params.items():
         rsetattr(editing_object, i, j)
     if hasattr(editing_object, 'change_user'):
@@ -102,8 +100,9 @@ def new_user(request: WSGIRequest) -> JsonResponse:
     new_person = Person(person_surname_txt=request.POST['surname'],
                         person_name_txt=request.POST['name'],
                         person_father_name_txt=request.POST['father_name'],
-                        birth_dt=datetime.date(int(request.POST['birth_dt_year']), int(request.POST['birth_dt_month']),
-                                               int(request.POST['birth_dt_day'])))
+                        birth_dt=datetime.date(int(request.POST['person.birth_dt__year']),
+                                               int(request.POST['person.birth_dt__month']),
+                                               int(request.POST['person.birth_dt__day'])))
     new_person.save()
     conn = AuthUserXPerson(auth_user=_new_user, person=new_person)
     conn.save()

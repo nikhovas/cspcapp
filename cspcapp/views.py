@@ -18,7 +18,7 @@ def students_overview(request: WSGIRequest) -> HttpResponse:
     return render(request, 'students_overview.html', {'students_list': [
         i for i in StudentsOverviewFunction.execute(
             **dict(pre_format)
-        ) if i.person.has_contract_with_teacher(request.user.authuserxperson.person) or request.user.is_superuser
+        ) if request.user.is_superuser or i.person.has_contract_with_teacher(request.user.authuserxperson.person)
     ]})
 
 
@@ -47,7 +47,6 @@ def meta_base_view(request):
 @superuser_only
 def student_add_function(request: WSGIRequest) -> HttpResponse:
     if request.POST:
-        print(type(request.user))
         add_student(request.user, is_approved=True, **dict(request.POST))
         return redirect('/')
     else:
@@ -68,7 +67,6 @@ def account_settings(request: WSGIRequest) -> HttpResponse:
 def reg_request(request: WSGIRequest) -> HttpResponse:
     if request.POST['password'] != request.POST['password_repeat']:
         return redirect('/accounts/login/')
-    print(1111)
     reg_req = RegistrationRequest.objects.create(person_surname_txt=request.POST['surname'],
                                                  person_name_txt=request.POST['name'],
                                                  person_father_name_txt=request.POST['father_name'],
